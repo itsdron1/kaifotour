@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { getDictionary } from "@/lib/dictionaries";
 import { localizedPath, type Locale } from "@/lib/i18n";
@@ -9,7 +10,7 @@ interface PageShellProps {
   locale: Locale;
   children: ReactNode;
   headerVariant?: "overlay" | "solid";
-  /** Элементы после основного контента, например фиксированная панель брони на мобильных */
+  /** Элементы после футера, например фиксированная панель брони на мобильных */
   after?: ReactNode;
 }
 
@@ -41,6 +42,7 @@ export function PageShell({ locale, children, headerVariant = "overlay", after }
         }}
       />
       <main id="main">{children}</main>
+      <Footer locale={locale} />
       {after}
     </>
   );
