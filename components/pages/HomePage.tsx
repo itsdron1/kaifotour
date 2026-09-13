@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { HowWeRide } from "@/components/home/HowWeRide";
+import { ToursWorthRiding } from "@/components/home/ToursWorthRiding";
 import { PageShell } from "@/components/layout/PageShell";
 import type { Locale } from "@/lib/i18n";
 
@@ -15,6 +16,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <HowWeRide locale={locale} />
         </div>
       </div>
+      <ToursWorthRiding locale={locale} />
     </PageShell>
   );
 }
