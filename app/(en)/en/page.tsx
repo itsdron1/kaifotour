@@ -1,10 +1,5 @@
-import { PageShell } from "@/components/layout/PageShell";
+import { HomePage } from "@/components/pages/HomePage";
 
 export default function Page() {
-  return (
-    <PageShell locale="en">
-      <section className="min-h-[100dvh] bg-deep" />
-      <section className="min-h-[100dvh] bg-paper" />
-    </PageShell>
-  );
+  return <HomePage locale="en" />;
 }
