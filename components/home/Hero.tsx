@@ -1,22 +1,24 @@
-import { ArrowRight, ArrowUpRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
+import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { HeroBackdrop } from "@/components/home/HeroBackdrop";
+import { HeroTourStack, type HeroStackCard } from "@/components/home/HeroTourStack";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { Photo } from "@/components/ui/Photo";
 import { resolveMedia } from "@/data/media";
-import { getPublishedTour } from "@/data/tours";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
-import { toTourCard } from "@/lib/tour-view";
+import { getTourCards } from "@/lib/tour-view";
 import { whatsappUrl } from "@/lib/whatsapp";
-
-/** Тур на карточке-полароиде в hero */
-const FEATURED_TOUR_SLUG = "batur-sunrise-trekking";
 
 export function Hero({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
-  const featuredTour = getPublishedTour(FEATURED_TOUR_SLUG);
-  const featured = featuredTour ? toTourCard(featuredTour, locale) : null;
+  // Все опубликованные туры из data/tours.ts: Nusa Lembongan и Sumba скрыты через published: false
+  const stackCards: HeroStackCard[] = getTourCards(locale).map(({ slug, href, title, kicker, priceLabel, image }) => ({
+    slug,
+    href,
+    title,
+    kicker,
+    priceLabel,
+    image,
+  }));
 
   return (
     <section
@@ -28,46 +30,43 @@ export function Hero({ locale }: { locale: Locale }) {
       <div className="relative mx-auto flex w-full max-w-page flex-1 flex-col justify-between gap-10 px-5 pb-10 pt-24 sm:px-8 lg:px-12 lg:pb-14 lg:pt-28">
         <p className="max-w-[17rem] text-[0.9375rem] leading-relaxed text-on-dark/80">{t.hero.captionLeft}</p>
 
-        {/* Полароид только на широких и достаточно высоких экранах, чтобы не теснить заголовок и CTA */}
-        {featured ? (
-          <Link
-            href={featured.href}
-            className="group absolute right-12 top-28 hidden w-60 rotate-[4deg] bg-paper p-3 pb-4 text-ink shadow-postcard transition-transform duration-350 ease-editorial hover:-translate-y-1.5 hover:rotate-[1deg] xl:[@media(min-height:760px)]:block"
-          >
-            <Photo image={featured.image} sizes="15rem" className="aspect-[4/5] w-full" />
-            <span className="kicker mt-3 block text-[0.6875rem] text-secondary">{featured.kicker}</span>
-            <span className="display mt-1.5 block text-[1.375rem] leading-tight">{featured.title}</span>
-            <span className="mt-2 flex items-center justify-between gap-3 font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-accent-ink">
-              {featured.priceLabel}
-              <ArrowUpRight
-                size={16}
-                aria-hidden="true"
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </span>
-          </Link>
-        ) : null}
-
-        <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
-          <h1 id="hero-title" className="display max-w-[20ch] text-balance text-display-2xl text-on-dark">
-            {t.hero.title}
-          </h1>
-          <div className="flex shrink-0 flex-col gap-6 xl:items-end xl:text-right">
-            <p className="max-w-[20rem] text-[0.9375rem] leading-relaxed text-on-dark/80">{t.hero.captionRight}</p>
-            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:gap-4 xl:flex-col-reverse xl:items-end xl:gap-1">
-              <a href="#tours" className="kicker group inline-flex items-center justify-center gap-2 px-3 py-3.5 text-on-dark">
-                <span className="link-underline pb-0.5">{t.cta.explore}</span>
-                <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-              <ButtonLink
-                href={whatsappUrl(t.whatsapp.general)}
-                external
-                newTabLabel={t.a11y.newTab}
-                icon={<WhatsappLogo size={18} aria-hidden="true" />}
-              >
-                {t.cta.book}
-              </ButtonLink>
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
+            <h1 id="hero-title" className="display max-w-[20ch] text-balance text-display-2xl text-on-dark">
+              {t.hero.title}
+            </h1>
+            <div className="flex shrink-0 flex-col gap-6 xl:items-end xl:text-right">
+              <p className="max-w-[20rem] text-[0.9375rem] leading-relaxed text-on-dark/80">{t.hero.captionRight}</p>
+              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:gap-4 xl:flex-col-reverse xl:items-end xl:gap-1">
+                <a href="#tours" className="kicker group inline-flex items-center justify-center gap-2 px-3 py-3.5 text-on-dark">
+                  <span className="link-underline pb-0.5">{t.cta.explore}</span>
+                  <ArrowRight size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1" />
+                </a>
+                <ButtonLink
+                  href={whatsappUrl(t.whatsapp.general)}
+                  external
+                  newTabLabel={t.a11y.newTab}
+                  icon={<WhatsappLogo size={18} aria-hidden="true" />}
+                >
+                  {t.cta.book}
+                </ButtonLink>
+              </div>
             </div>
+          </div>
+
+          {/* Колода туров: на мобильных и планшетах под текстом, с 1024px справа поверх фото.
+              На невысоких экранах от 1024px скрыта, чтобы не наезжать на заголовок и CTA. */}
+          <div className="lg:absolute lg:right-20 lg:top-24 lg:hidden lg:[@media(min-height:680px)]:block">
+            <HeroTourStack
+              cards={stackCards}
+              labels={{
+                region: t.hero.stackLabel,
+                previous: t.hero.prevTour,
+                next: t.hero.nextTour,
+                status: t.hero.stackStatus,
+                openTour: t.hero.openTour,
+              }}
+            />
           </div>
         </div>
       </div>
