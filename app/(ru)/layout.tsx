@@ -3,12 +3,10 @@ import "../globals.css";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { cyrillicFontVariables } from "@/lib/fonts-cyrillic";
+import { rootMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: site.name,
-  icons: { icon: "/favicon.svg" },
-};
+export const metadata: Metadata = rootMetadata;
 
 export const viewport: Viewport = {
   themeColor: site.themeColor,
