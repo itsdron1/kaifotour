@@ -1,18 +1,25 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "../globals.css";
+import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { cyrillicFontVariables } from "@/lib/fonts-cyrillic";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "KAIFOTOUR BALI",
+  title: site.name,
   icons: { icon: "/favicon.svg" },
 };
 
-export default function RussianRootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = {
+  themeColor: site.themeColor,
+};
+
+export default function RussianRootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" data-palette={site.palette} className={`${fontVariables} ${cyrillicFontVariables}`}>
-      <body>{children}</body>
+      <body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }
