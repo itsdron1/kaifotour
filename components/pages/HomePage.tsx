@@ -1,11 +1,20 @@
 import { Hero } from "@/components/home/Hero";
+import { HowWeRide } from "@/components/home/HowWeRide";
 import { PageShell } from "@/components/layout/PageShell";
 import type { Locale } from "@/lib/i18n";
 
 export function HomePage({ locale }: { locale: Locale }) {
   return (
     <PageShell locale={locale}>
-      <Hero locale={locale} />
+      <div className="relative">
+        {/* На широких и достаточно высоких экранах следующая секция «наплывает» на hero */}
+        <div className="lg:[@media(min-height:720px)]:sticky lg:[@media(min-height:720px)]:top-0">
+          <Hero locale={locale} />
+        </div>
+        <div className="relative">
+          <HowWeRide locale={locale} />
+        </div>
+      </div>
     </PageShell>
   );
 }
