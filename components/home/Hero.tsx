@@ -55,8 +55,9 @@ export function Hero({ locale }: { locale: Locale }) {
           </div>
 
           {/* Колода туров: на мобильных и планшетах под текстом, с 1024px справа поверх фото.
-              На невысоких экранах от 1024px скрыта, чтобы не наезжать на заголовок и CTA. */}
-          <div className="lg:absolute lg:right-20 lg:top-24 lg:hidden lg:[@media(min-height:680px)]:block">
+              На невысоких экранах от 1024px скрыта, чтобы веер не наезжал на заголовок и CTA:
+              до 1280px заголовок шире относительно экрана, поэтому порог по высоте там выше. */}
+          <div className="lg:absolute lg:right-12 lg:top-24 lg:hidden lg:[@media(min-height:740px)]:block xl:[@media(min-height:680px)]:block">
             <HeroTourStack
               cards={stackCards}
               labels={{
