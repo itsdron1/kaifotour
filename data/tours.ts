@@ -1,0 +1,728 @@
+import type { MediaKey } from "@/data/media";
+import type { Locale, Localized } from "@/lib/i18n";
+
+/**
+ * Каталог туров KAIFOTOUR BALI.
+ *
+ * Источники:
+ * - 10 текущих категорий: docs/tz-main.md, раздел 3.4 (таблица каталога);
+ * - 7 Day Tours и расширения B1 / B2: docs/new-tours-content.md, блоки A и B;
+ * - Nusa Lembongan (A8) и Sumba (блок C): published: false до решения заказчика.
+ *
+ * Порядок массива = нумерация 01-17 в секции «Tours Worth Riding»
+ * (docs/editorial-style.md, раздел 3) и сортировка «Популярные».
+ * Все цены «от» и требуют подтверждения у заказчика перед запуском.
+ */
+
+export type TourCategory = "ocean" | "offroad" | "day-tours" | "rides";
+/** Фильтр «вода / суша» из docs/tz-main.md, раздел 3.4 */
+export type Environment = "water" | "land";
+export type Difficulty = "easy" | "medium" | "hard";
+/** null: длительность не указана в ТЗ и уточняется у заказчика */
+export type DurationBucket = "hours" | "full-day" | "extended";
+/** Подборки для коллажа «How We Ride & Explore» */
+export type Collection = "sunset";
+export type Badge = "new";
+
+export interface TourVariant {
+  id: string;
+  title: string;
+  lead: Localized;
+  durationLabel?: Localized;
+  priceFromIDR: number;
+  includes: Localized<string[]>;
+  note?: Localized;
+  ctaWhatsappText: Localized;
+  image: MediaKey;
+}
+
+export interface Tour {
+  slug: string;
+  title: string;
+  category: TourCategory;
+  kicker: Localized;
+  lead: Localized;
+  durationLabel: Localized;
+  duration: DurationBucket | null;
+  /** null: «по запросу» */
+  priceFromIDR: number | null;
+  priceToIDR?: number;
+  includes: Localized<string[]>;
+  /** null: сложность не указана в ТЗ */
+  difficulty: Difficulty | null;
+  difficultyNote?: Localized;
+  badge: Badge | null;
+  ctaWhatsappText: Localized;
+  environment: Environment;
+  collections: Collection[];
+  image: MediaKey;
+  gallery: MediaKey[];
+  /** Дополнительные маршруты внутри тура (docs/new-tours-content.md, блок B) */
+  variants: TourVariant[];
+  isMultiDay: boolean;
+  published: boolean;
+}
+
+/** Формат из docs/tz-main.md, раздел 5 */
+const interestQuoted = (title: string): Localized => ({
+  ru: `Здравствуйте! Интересует тур «${title}»`,
+  en: `Hello! I'm interested in the "${title}" tour`,
+});
+
+/** Формат готовых ссылок из docs/new-tours-content.md */
+const interest = (title: string): Localized => ({
+  ru: `Здравствуйте! Интересует тур ${title}`,
+  en: `Hello! I'm interested in the ${title} tour`,
+});
+
+const onRequest: Localized = { ru: "По запросу", en: "On request" };
+const oneDay: Localized = { ru: "1 день", en: "1 day" };
+
+export const categories: { id: TourCategory; label: Localized }[] = [
+  { id: "ocean", label: { ru: "Океан", en: "Ocean" } },
+  { id: "offroad", label: { ru: "Бездорожье", en: "Off-road" } },
+  // Между Off-road и Rides: docs/new-tours-content.md, «Куда добавлять на сайте»
+  { id: "day-tours", label: { ru: "Экскурсии", en: "Day Tours" } },
+  { id: "rides", label: { ru: "Прокат с гидом", en: "Rides" } },
+];
+
+export const tours: Tour[] = [
+  {
+    slug: "traditional-boat",
+    title: "Traditional Boat",
+    category: "ocean",
+    kicker: { ru: "01 / Океан", en: "01 / Ocean" },
+    lead: {
+      ru: "Закатные и вечерние круизы на традиционной лодке: ужин на борту, живая музыка и огненное шоу.",
+      en: "Sunset and evening cruises on a traditional boat, with dinner on board, live music and a fire show.",
+    },
+    durationLabel: { ru: "Вечерний круиз", en: "Evening cruise" },
+    duration: "hours",
+    priceFromIDR: 850_000,
+    includes: {
+      ru: ["Закатный или вечерний круиз", "Ужин на борту", "Живая музыка", "Огненное шоу"],
+      en: ["Sunset or evening cruise", "Dinner on board", "Live music", "Fire show"],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interestQuoted("Traditional Boat"),
+    environment: "water",
+    collections: ["sunset"],
+    image: "traditional-boat",
+    gallery: ["boat-dusk", "sunset-boats"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "beat-boat",
+    title: "Beat Boat",
+    category: "ocean",
+    kicker: { ru: "02 / Океан", en: "02 / Ocean" },
+    lead: {
+      ru: "Трёхчасовой круиз с остановками для купания. На борту бар, DJ и вышка для прыжков в воду.",
+      en: "A three-hour cruise with swim stops. On board: a bar, a DJ and a tower for jumping into the sea.",
+    },
+    durationLabel: { ru: "3 часа", en: "3 hours" },
+    duration: "hours",
+    priceFromIDR: 350_000,
+    includes: {
+      ru: [
+        "Круиз 3 часа",
+        "Остановки для купания",
+        "Бар и DJ на борту",
+        "Вышка для прыжков в воду",
+        "Дневной выход 10:00-13:00 или вечерний 15:00-18:30",
+      ],
+      en: [
+        "3-hour cruise",
+        "Swim stops",
+        "Bar and DJ on board",
+        "Jumping tower",
+        "Day trip 10:00-13:00 or evening trip 15:00-18:30",
+      ],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interestQuoted("Beat Boat"),
+    environment: "water",
+    collections: ["sunset"],
+    image: "beat-boat",
+    gallery: ["boat-turquoise", "sunset-boats"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "fishing",
+    title: "Fishing",
+    category: "ocean",
+    kicker: { ru: "03 / Океан", en: "03 / Ocean" },
+    lead: {
+      ru: "Рыбалка в океане в двух форматах: локальная и профессиональная. Снаряжение и еда уже включены в стоимость.",
+      en: "Ocean fishing in two formats, local or professional. Gear and food are included in the price.",
+    },
+    durationLabel: onRequest,
+    duration: null,
+    priceFromIDR: 490_000,
+    priceToIDR: 1_800_000,
+    includes: {
+      ru: ["Локальная рыбалка", "Профессиональная рыбалка", "Снаряжение", "Еда"],
+      en: ["Local fishing trip", "Professional fishing trip", "Fishing gear", "Food"],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interestQuoted("Fishing"),
+    environment: "water",
+    collections: [],
+    image: "fishing",
+    gallery: ["fishing-boats", "boat-turquoise"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "surfing",
+    title: "Surfing",
+    category: "ocean",
+    kicker: { ru: "04 / Океан", en: "04 / Ocean" },
+    lead: {
+      ru: "Серфинг на секретных пляжах: малые группы и сопровождение гида.",
+      en: "Surfing on secret beaches, in small groups and with a guide.",
+    },
+    durationLabel: onRequest,
+    duration: null,
+    priceFromIDR: 200_000,
+    includes: {
+      ru: ["Споты на секретных пляжах", "Малые группы", "Сопровождение гида"],
+      en: ["Spots on secret beaches", "Small groups", "Guide"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("Surfing"),
+    environment: "water",
+    collections: [],
+    image: "surfing",
+    gallery: ["surf-wave", "bukit-cliffs"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "snorkeling",
+    title: "Snorkeling",
+    category: "ocean",
+    kicker: { ru: "05 / Океан", en: "05 / Ocean" },
+    lead: {
+      ru: "Снорклинг на стандартных спотах или премиум-выход к мантам. Самый длинный вариант занимает полный день на Нуса-Пенида.",
+      en: "Snorkeling at standard spots or a premium trip to see manta rays. The longest option is a full day on Nusa Penida.",
+    },
+    durationLabel: { ru: "До 9 часов", en: "Up to 9 hours" },
+    duration: null,
+    priceFromIDR: 250_000,
+    priceToIDR: 1_000_000,
+    includes: {
+      ru: ["Стандартные споты", "Премиум-выход с мантами", "Полный день на Нуса-Пенида, около 9 часов"],
+      en: ["Standard spots", "Premium trip with manta rays", "Full day on Nusa Penida, about 9 hours"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("Snorkeling"),
+    environment: "water",
+    collections: [],
+    image: "snorkeling",
+    gallery: ["manta", "reef"],
+    variants: [
+      {
+        // B2: docs/new-tours-content.md
+        id: "nusa-penida-full-day",
+        title: "Nusa Penida Full Day",
+        lead: {
+          ru: "Полный день на Нуса-Пенида: снорклинг с мантами плюс главные смотровые точки острова, Kelingking Cliff и Broken Beach.",
+          en: "A full day on Nusa Penida: snorkeling with manta rays plus the island's main viewpoints, Kelingking Cliff and Broken Beach.",
+        },
+        durationLabel: { ru: "1 день, около 9 часов", en: "1 day, about 9 hours" },
+        priceFromIDR: 2_100_000,
+        includes: {
+          ru: ["Снорклинг с мантами", "Kelingking Cliff", "Broken Beach", "Трансфер на лодке туда и обратно", "Гид"],
+          en: ["Snorkeling with manta rays", "Kelingking Cliff", "Broken Beach", "Return boat transfer", "Guide"],
+        },
+        ctaWhatsappText: interest("Nusa Penida Full Day"),
+        image: "kelingking",
+      },
+    ],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "atv",
+    title: "ATV Tours",
+    category: "offroad",
+    kicker: { ru: "01 / Бездорожье", en: "01 / Off-road" },
+    lead: {
+      ru: "Маршруты на квадроциклах от 1 до 4 часов. Новая техника, сопровождение гида и трансфер.",
+      en: "ATV routes from 1 to 4 hours, with new vehicles, a guide and transfer.",
+    },
+    durationLabel: { ru: "1-4 часа", en: "1-4 hours" },
+    duration: "hours",
+    priceFromIDR: null,
+    includes: {
+      ru: ["Маршруты от 1 до 4 часов", "Новая техника", "Гид", "Трансфер"],
+      en: ["Routes from 1 to 4 hours", "New vehicles", "Guide", "Transfer"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("ATV Tours"),
+    environment: "land",
+    collections: [],
+    image: "atv",
+    gallery: ["atv-river", "ubud-terraces"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "enduro",
+    title: "Enduro Tours",
+    category: "offroad",
+    kicker: { ru: "02 / Бездорожье", en: "02 / Off-road" },
+    lead: {
+      ru: "Эндуро по маршрутам Kintamani, Tabanan и Secret Forest на мотоциклах Yamaha, Honda и KTM.",
+      en: "Enduro rides on the Kintamani, Tabanan and Secret Forest routes on Yamaha, Honda and KTM bikes.",
+    },
+    durationLabel: onRequest,
+    duration: null,
+    priceFromIDR: 1_500_000,
+    includes: {
+      ru: ["Мотоциклы Yamaha, Honda и KTM", "Маршрут Kintamani", "Маршрут Tabanan", "Маршрут Secret Forest"],
+      en: ["Yamaha, Honda and KTM bikes", "Kintamani route", "Tabanan route", "Secret Forest route"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("Enduro Tours"),
+    environment: "land",
+    collections: [],
+    image: "enduro",
+    gallery: ["enduro-trail", "batur-crater"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "jeep",
+    title: "Jeep Tours",
+    category: "offroad",
+    kicker: { ru: "03 / Бездорожье", en: "03 / Off-road" },
+    lead: {
+      ru: "Джип-туры к рассветам и вулканам. Маршруты: Batur и Kintamani, Ubud, Jatiluwih и Bedugul, Munduk.",
+      en: "Jeep tours to sunrises and volcanoes. Routes: Batur and Kintamani, Ubud, Jatiluwih and Bedugul, Munduk.",
+    },
+    durationLabel: onRequest,
+    duration: null,
+    priceFromIDR: 1_250_000,
+    includes: {
+      ru: ["Рассвет у вулкана", "Маршрут Batur / Kintamani", "Маршрут Ubud", "Маршрут Jatiluwih / Bedugul", "Маршрут Munduk"],
+      en: ["Sunrise by the volcano", "Batur / Kintamani route", "Ubud route", "Jatiluwih / Bedugul route", "Munduk route"],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interestQuoted("Jeep Tours"),
+    environment: "land",
+    collections: [],
+    image: "jeep",
+    gallery: ["jeep-volcano", "batur-sunrise"],
+    variants: [
+      {
+        // B1: docs/new-tours-content.md
+        id: "batur-sunrise-jeep-safari",
+        title: "Batur Sunrise Jeep Safari",
+        lead: {
+          ru: "Джип-сафари по застывшим лавовым полям вулкана Батур: встреча рассвета, завтрак и купание в природных горячих источниках. Без пешего восхождения.",
+          en: "A jeep safari across the frozen lava fields of Mount Batur: sunrise, breakfast and a swim in natural hot springs. No hiking involved.",
+        },
+        priceFromIDR: 1_300_000,
+        includes: {
+          ru: ["Рассвет на смотровой точке", "Джип по чёрной лаве", "Завтрак или ланч", "Горячие источники"],
+          en: ["Sunrise at a viewpoint", "Jeep ride over black lava", "Breakfast or lunch", "Hot springs"],
+        },
+        note: {
+          ru: "В отличие от Batur Sunrise Trekking, здесь нет пешего подъёма: весь маршрут проходит на джипе. Подходит тем, кто не готов к треккингу.",
+          en: "Unlike Batur Sunrise Trekking, there is no hike: the whole route is by jeep. A good fit if you are not up for trekking.",
+        },
+        ctaWhatsappText: interest("Batur Sunrise Jeep Safari"),
+        image: "jeep-volcano",
+      },
+    ],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "jet-ski",
+    title: "Jet Ski Tours",
+    category: "rides",
+    kicker: { ru: "01 / Прокат с гидом", en: "01 / Rides" },
+    lead: {
+      ru: "Прогулки на гидроциклах от 30 минут до 6 часов. Локации: Sanur, Jimbaran, Nusa Dua и Uluwatu.",
+      en: "Jet ski rides from 30 minutes to 6 hours. Locations: Sanur, Jimbaran, Nusa Dua and Uluwatu.",
+    },
+    durationLabel: { ru: "30 мин - 6 ч", en: "30 min - 6 h" },
+    duration: "hours",
+    priceFromIDR: null,
+    includes: {
+      ru: ["Прогулка от 30 минут до 6 часов", "Sanur или Jimbaran", "Nusa Dua или Uluwatu"],
+      en: ["Rides from 30 minutes to 6 hours", "Sanur or Jimbaran", "Nusa Dua or Uluwatu"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("Jet Ski Tours"),
+    environment: "water",
+    collections: [],
+    image: "jet-ski",
+    gallery: ["jet-ski-aerial", "uluwatu"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "harley",
+    title: "Harley Tours",
+    category: "rides",
+    kicker: { ru: "02 / Прокат с гидом", en: "02 / Rides" },
+    lead: {
+      ru: "Туры на Harley-Davidson: пять моделей на выбор, гид на маршруте, фото и видео поездки.",
+      en: "Harley-Davidson tours with five models to choose from, a guide on the route, and photos and video of the ride.",
+    },
+    durationLabel: onRequest,
+    duration: null,
+    priceFromIDR: 600_000,
+    includes: {
+      ru: ["5 моделей: Dyna, Sportster, Fat Bob, Heritage, Softail", "Гид", "Фото и видео"],
+      en: ["5 models: Dyna, Sportster, Fat Bob, Heritage, Softail", "Guide", "Photos and video"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interestQuoted("Harley Tours"),
+    environment: "land",
+    collections: [],
+    image: "harley",
+    gallery: ["coastal-ride", "ubud-terraces"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "ubud-culture-day",
+    title: "Ubud Culture Day",
+    category: "day-tours",
+    kicker: { ru: "01 / Экскурсии", en: "01 / Day Tours" },
+    lead: {
+      ru: "Однодневный культурный маршрут по сердцу Бали: рисовые террасы, храмы, ремесленные деревни. Маршрут собирается под ваш интерес, можно выбрать из нескольких комбинаций локаций.",
+      en: "A one-day cultural route through the heart of Bali: rice terraces, temples and craft villages. The route is built around your interests, with several combinations of locations to choose from.",
+    },
+    durationLabel: oneDay,
+    duration: "full-day",
+    priceFromIDR: 1_600_000,
+    includes: {
+      ru: [
+        "Личный гид и трансфер на весь день",
+        "Рисовые террасы Тегалаланг",
+        "Храмовый комплекс на выбор",
+        "Ремесленные деревни (серебро, дерево, батик)",
+        "Выбор из 4 вариантов состава локаций",
+      ],
+      en: [
+        "Private guide and transfer for the whole day",
+        "Tegallalang rice terraces",
+        "A temple complex of your choice",
+        "Craft villages (silver, wood, batik)",
+        "4 location combinations to choose from",
+      ],
+    },
+    difficulty: "easy",
+    badge: "new",
+    ctaWhatsappText: interest("Ubud Culture Day"),
+    environment: "land",
+    collections: [],
+    image: "ubud-terraces",
+    gallery: ["ubud-craft", "ubud-gate"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "batur-sunrise-trekking",
+    title: "Batur Sunrise Trekking",
+    category: "day-tours",
+    kicker: { ru: "02 / Экскурсии", en: "02 / Day Tours" },
+    lead: {
+      ru: "Пеший подъём на вершину вулкана Батур в темноте, чтобы встретить рассвет над облаками. Потом спуск, завтрак и купание в природных горячих источниках.",
+      en: "A hike to the summit of Mount Batur in the dark to watch the sunrise above the clouds, followed by the descent, breakfast and a swim in natural hot springs.",
+    },
+    durationLabel: { ru: "1 день, ночной старт", en: "1 day, night start" },
+    duration: "full-day",
+    priceFromIDR: 1_300_000,
+    includes: {
+      ru: [
+        "Гид-проводник, фонари, трансфер",
+        "Восхождение к рассвету",
+        "Завтрак на вершине",
+        "Купание в горячих источниках после спуска",
+      ],
+      en: ["Trekking guide, flashlights, transfer", "Sunrise ascent", "Breakfast at the summit", "Hot springs swim after the descent"],
+    },
+    difficulty: "medium",
+    difficultyNote: { ru: "пеший подъём около 2 часов", en: "about 2 hours of uphill hiking" },
+    badge: null,
+    ctaWhatsappText: interest("Batur Sunrise Trekking"),
+    environment: "land",
+    collections: [],
+    image: "batur-sunrise",
+    gallery: ["batur-crater", "agung-sunrise"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "mount-agung-sunrise-climb",
+    title: "Mount Agung Sunrise Climb",
+    category: "day-tours",
+    kicker: { ru: "03 / Экскурсии", en: "03 / Day Tours" },
+    lead: {
+      ru: "Восхождение на высшую точку Бали, 3 145 метров. Для тех, кто хочет более серьёзный вызов, чем Батур: панорама на весь остров с рассветом на вершине.",
+      en: "A climb to Bali's highest point at 3,145 metres. For those who want a bigger challenge than Batur: a view over the whole island with sunrise at the summit.",
+    },
+    durationLabel: { ru: "1,5 дня, ночной выезд", en: "1.5 days, night departure" },
+    duration: "extended",
+    priceFromIDR: 2_200_000,
+    includes: {
+      ru: [
+        "Опытный гид, снаряжение для восхождения",
+        "Трансфер и логистика ночного старта",
+        "Рассвет на высоте 3 145 м",
+        "Панорамные виды на весь остров",
+      ],
+      en: [
+        "Experienced guide, climbing gear",
+        "Transfer and night-start logistics",
+        "Sunrise at 3,145 m",
+        "Panoramic views over the whole island",
+      ],
+    },
+    difficulty: "hard",
+    difficultyNote: { ru: "требует физической подготовки", en: "requires good fitness" },
+    badge: null,
+    ctaWhatsappText: interest("Mount Agung Sunrise Climb"),
+    environment: "land",
+    collections: [],
+    image: "agung-sunrise",
+    gallery: ["agung-clouds", "agung-gates"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "temples-purification-ritual",
+    title: "Temples & Purification Ritual",
+    category: "day-tours",
+    kicker: { ru: "04 / Экскурсии", en: "04 / Day Tours" },
+    lead: {
+      ru: "Погружение в духовную сторону Бали: церемония очищения Мелукат в святом источнике и посещение одного из главных храмов острова.",
+      en: "A journey into Bali's spiritual side: a Melukat purification ceremony at a holy spring and a visit to one of the island's main temples.",
+    },
+    durationLabel: oneDay,
+    duration: "full-day",
+    priceFromIDR: 1_600_000,
+    includes: {
+      ru: [
+        "Церемония Мелукат (ритуальное очищение водой)",
+        "Посещение главного храмового комплекса",
+        "Традиционная одежда (саронг) для входа в храм",
+        "Гид, знающий культурный контекст церемоний",
+      ],
+      en: [
+        "Melukat ceremony (ritual water purification)",
+        "Visit to a major temple complex",
+        "Traditional sarong for entering the temple",
+        "A guide who knows the cultural context of the ceremonies",
+      ],
+    },
+    difficulty: "easy",
+    badge: "new",
+    ctaWhatsappText: interest("Temples & Purification Ritual"),
+    environment: "land",
+    collections: [],
+    image: "purification",
+    gallery: ["water-temple", "ubud-gate"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "east-bali-explorer",
+    title: "East Bali Explorer",
+    category: "day-tours",
+    kicker: { ru: "05 / Экскурсии", en: "05 / Day Tours" },
+    lead: {
+      ru: "Самые живописные точки востока острова за один день: легендарные Врата Рая, водные дворцы и смотровая площадка с видом на вулкан Агунг.",
+      en: "The most scenic spots of East Bali in one day: the famous Gates of Heaven, water palaces and a viewpoint facing Mount Agung.",
+    },
+    durationLabel: oneDay,
+    duration: "full-day",
+    priceFromIDR: 1_700_000,
+    includes: {
+      ru: [
+        "Врата Рая (Lempuyang, «Gates of Heaven»)",
+        "Водный дворец Тирта Ганга",
+        "Смотровая площадка с видом на Агунг",
+        "Трансфер и гид на весь день",
+      ],
+      en: [
+        "Gates of Heaven at Lempuyang",
+        "Tirta Gangga water palace",
+        "Viewpoint facing Mount Agung",
+        "Transfer and guide for the whole day",
+      ],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interest("East Bali Explorer"),
+    environment: "land",
+    collections: [],
+    image: "lempuyang",
+    gallery: ["tirta-gangga", "agung-gates"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "bukit-peninsula-day",
+    title: "Bukit Peninsula Day",
+    category: "day-tours",
+    kicker: { ru: "06 / Экскурсии", en: "06 / Day Tours" },
+    lead: {
+      ru: "Однодневный маршрут по южному полуострову Букит: райский пляж, бич-клаб со стеклянным бассейном над океаном, самая высокая статуя Индонезии и закат у храма на скале.",
+      en: "A one-day route around the southern Bukit Peninsula: a dream beach, a beach club with a glass pool above the ocean, Indonesia's tallest statue and sunset at a clifftop temple.",
+    },
+    durationLabel: oneDay,
+    duration: "full-day",
+    priceFromIDR: 1_800_000,
+    includes: {
+      ru: [
+        "Один из лучших пляжей полуострова",
+        "Бич-клаб с инфинити или стеклянным бассейном",
+        "Статуя Гаруда Вишну Кенчана",
+        "Закат у храма Улувату на скале",
+      ],
+      en: [
+        "One of the peninsula's best beaches",
+        "Beach club with an infinity or glass pool",
+        "Garuda Wisnu Kencana statue",
+        "Sunset at the clifftop Uluwatu Temple",
+      ],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interest("Bukit Peninsula Day"),
+    environment: "land",
+    collections: [],
+    image: "uluwatu",
+    gallery: ["bukit-cliffs", "gwk"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    slug: "dolphins-waterfalls",
+    title: "Dolphins & Waterfalls",
+    category: "day-tours",
+    kicker: { ru: "07 / Экскурсии", en: "07 / Day Tours" },
+    lead: {
+      ru: "Поездка на север острова: утренняя лодка к диким дельфинам в открытом море и купание у одного из самых живописных водопадов Бали.",
+      en: "A trip to the north of the island: a morning boat ride to wild dolphins in the open sea and a swim at one of Bali's most scenic waterfalls.",
+    },
+    durationLabel: { ru: "1 день, ранний старт", en: "1 day, early start" },
+    duration: "full-day",
+    priceFromIDR: 1_800_000,
+    includes: {
+      ru: ["Утренний выход в море к дельфинам", "Посещение водопада, купание", "Трансфер и гид на весь день"],
+      en: ["Morning boat trip to see dolphins", "Waterfall visit and swim", "Transfer and guide for the whole day"],
+    },
+    difficulty: "easy",
+    badge: null,
+    ctaWhatsappText: interest("Dolphins & Waterfalls"),
+    environment: "water",
+    collections: [],
+    image: "dolphins",
+    gallery: ["waterfall", "waterfall-twin"],
+    variants: [],
+    isMultiDay: false,
+    published: true,
+  },
+  {
+    // A8: первый мультидневный формат, требует решения по бизнес-модели.
+    // Категория условная, уточняется при публикации.
+    slug: "nusa-lembongan-ceningan",
+    title: "Nusa Lembongan & Ceningan",
+    category: "day-tours",
+    kicker: { ru: "08 / Экскурсии", en: "08 / Day Tours" },
+    lead: {
+      ru: "Двухдневный маршрут по островам Лембонган и Ченинган: визитные локации, снорклинг, каякинг.",
+      en: "A two-day route around Nusa Lembongan and Nusa Ceningan: signature spots, snorkeling and kayaking.",
+    },
+    durationLabel: { ru: "2 дня / 1 ночь", en: "2 days / 1 night" },
+    duration: "extended",
+    priceFromIDR: 2_600_000,
+    includes: {
+      ru: ["Визитные локации островов", "Снорклинг", "Каякинг"],
+      en: ["Signature island spots", "Snorkeling", "Kayaking"],
+    },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interest("Nusa Lembongan & Ceningan"),
+    environment: "water",
+    collections: [],
+    image: "reef",
+    gallery: [],
+    variants: [],
+    isMultiDay: true,
+    published: false,
+  },
+  {
+    // Блок C: другой остров, выходит за модель «Бали за один день».
+    // Контент не пишется до решения заказчика о расширении бизнеса.
+    slug: "sumba-island",
+    title: "Sumba Island",
+    category: "day-tours",
+    kicker: { ru: "Sumba", en: "Sumba" },
+    lead: { ru: "", en: "" },
+    durationLabel: { ru: "3 дня / 2 ночи", en: "3 days / 2 nights" },
+    duration: "extended",
+    priceFromIDR: null,
+    includes: { ru: [], en: [] },
+    difficulty: null,
+    badge: null,
+    ctaWhatsappText: interest("Sumba Island"),
+    environment: "land",
+    collections: [],
+    image: "sunset-boats",
+    gallery: [],
+    variants: [],
+    isMultiDay: true,
+    published: false,
+  },
+];
+
+export const publishedTours: Tour[] = tours.filter((tour) => tour.published);
+
+export function getPublishedTour(slug: string): Tour | undefined {
+  return publishedTours.find((tour) => tour.slug === slug);
+}
+
+/** Сквозной номер тура в каталоге: "01" ... "17" */
+export function tourNumber(tour: Tour): string {
+  return String(publishedTours.indexOf(tour) + 1).padStart(2, "0");
+}
+
+export function categoryLabel(category: TourCategory, locale: Locale): string {
+  return categories.find((item) => item.id === category)?.label[locale] ?? category;
+}
