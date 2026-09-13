@@ -4,9 +4,7 @@ import { getPublishedTour, publishedTours } from "@/data/tours";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-/** Страницы генерируются только для опубликованных туров, остальные адреса отдают 404 */
-export const dynamicParams = false;
-
+/** Статически генерируются опубликованные туры; для остальных адресов notFound() отдаёт оформленную 404 */
 export function generateStaticParams() {
   return publishedTours.map((tour) => ({ slug: tour.slug }));
 }
