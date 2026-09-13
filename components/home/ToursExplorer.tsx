@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, ArrowUpRight, WhatsappLogo } from "@phosphor-icons/react";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useSpring } from "motion/react";
 import Link from "next/link";
 import { useMemo, useRef, useState, type PointerEvent } from "react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -40,11 +40,16 @@ const MOBILE_LIMIT = 6;
 const CURSOR_SIZE = 56;
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Курсор-иконка над открытками (docs/editorial-style.md, раздел 3) включается только CSS-вариантами
+ * motion-safe и pointer: fine, поэтому серверная и клиентская разметка совпадают.
+ */
+const CURSOR_TARGET = "motion-safe:[@media(pointer:fine)]:cursor-none";
+
 export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplorerProps) {
   const [tab, setTab] = useState("all");
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [cursorVisible, setCursorVisible] = useState(false);
-  const reduceMotion = useReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
@@ -71,9 +76,6 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
     .map((offset) => filtered[(activeIndex + offset) % filtered.length])
     .filter((card, index, list) => card.slug !== active.slug && list.findIndex((item) => item.slug === card.slug) === index);
 
-  // Курсор-иконка над открытками (docs/editorial-style.md, раздел 3). Выключен при reduced motion.
-  const customCursor = reduceMotion === false;
-
   function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
     const rect = stageRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -81,9 +83,10 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
     cursorY.set(event.clientY - rect.top - CURSOR_SIZE / 2);
   }
 
-  const cursorHandlers = customCursor
-    ? { onPointerEnter: () => setCursorVisible(true), onPointerLeave: () => setCursorVisible(false) }
-    : {};
+  const cursorHandlers = {
+    onPointerEnter: () => setCursorVisible(true),
+    onPointerLeave: () => setCursorVisible(false),
+  };
 
   return (
     <div className="mt-10 lg:mt-12">
@@ -137,8 +140,8 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
                         <span className="display flex-1 text-[1.625rem] leading-[1.2]">{card.title}</span>
                         <span
                           className={cn(
-                            "font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps transition-opacity duration-300",
-                            isActive ? "text-accent opacity-100" : "text-accent opacity-60",
+                            "font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-accent transition-opacity duration-300",
+                            isActive ? "opacity-100" : "opacity-60",
                           )}
                         >
                           {card.priceLabel}
@@ -153,11 +156,7 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
         </ol>
 
         <div className="relative hidden lg:col-span-7 lg:block">
-          <div
-            ref={stageRef}
-            onPointerMove={customCursor ? handlePointerMove : undefined}
-            className="sticky top-28 h-[38rem] xl:h-[41rem]"
-          >
+          <div ref={stageRef} onPointerMove={handlePointerMove} className="sticky top-28 h-[38rem] xl:h-[41rem]">
             {backCards.map((card, index) => (
               <Link
                 key={index}
@@ -165,7 +164,7 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
                 {...cursorHandlers}
                 className={cn(
                   "group absolute z-10 block bg-paper p-2.5 pb-3 text-ink shadow-postcard transition-[transform,box-shadow] duration-350 ease-editorial hover:z-30 hover:-translate-y-2 hover:rotate-0 hover:shadow-postcard-lift",
-                  customCursor && "cursor-none",
+                  CURSOR_TARGET,
                   BACK_SLOTS[index],
                 )}
               >
@@ -201,7 +200,7 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
                     tabIndex={-1}
                     aria-hidden="true"
                     {...cursorHandlers}
-                    className={cn("block", customCursor && "cursor-none")}
+                    className={cn("block", CURSOR_TARGET)}
                   >
                     <Photo image={active.image} sizes="26rem" className="aspect-[4/3] w-full" />
                   </Link>
@@ -239,18 +238,16 @@ export function ToursExplorer({ cards, tabs, catalogHref, labels }: ToursExplore
               </AnimatePresence>
             </div>
 
-            {customCursor ? (
-              <motion.div
-                aria-hidden="true"
-                className="pointer-events-none absolute left-0 top-0 z-cursor flex h-14 w-14 items-center justify-center bg-accent text-ink"
-                style={{ x: smoothX, y: smoothY }}
-                initial={false}
-                animate={{ opacity: cursorVisible ? 1 : 0, scale: cursorVisible ? 1 : 0.6 }}
-                transition={{ duration: 0.2, ease }}
-              >
-                <ArrowUpRight size={22} weight="bold" />
-              </motion.div>
-            ) : null}
+            <motion.div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-0 z-cursor hidden h-14 w-14 items-center justify-center bg-accent text-ink motion-safe:[@media(pointer:fine)]:flex"
+              style={{ x: smoothX, y: smoothY }}
+              initial={false}
+              animate={{ opacity: cursorVisible ? 1 : 0, scale: cursorVisible ? 1 : 0.6 }}
+              transition={{ duration: 0.2, ease }}
+            >
+              <ArrowUpRight size={22} weight="bold" />
+            </motion.div>
           </div>
         </div>
       </div>
