@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Палитры из docs/tz-main.md (разделы 4.1 и 4.2).
+ * Значения хранятся как "R G B", чтобы Tailwind мог добавлять прозрачность.
+ * Активная палитра выбирается атрибутом data-palette на <html> (см. lib/site.ts).
+ */
+:root,
+[data-palette="deep-ocean-brass"] {
+  --color-bg: 244 241 235; /* #F4F1EB */
+  --color-surface-dark: 15 34 48; /* #0F2230 */
+  --color-surface-teal: 20 84 92; /* #14545C */
+  --color-accent: 192 145 63; /* #C0913F */
+  --color-accent-ink: 116 86 38; /* #745626: акцент для мелкого текста на светлом фоне */
+  --color-sand: 217 205 186; /* #D9CDBA */
+  --color-text-on-dark: 239 231 218; /* #EFE7DA */
+  --color-text: 15 34 48; /* #0F2230 */
+  --color-muted-on-dark: 185 196 204; /* #B9C4CC */
+  --color-outline: 126 142 153; /* #7E8E99 */
+  --color-divider: 201 194 180; /* #C9C2B4 */
+  --color-note: 123 138 147; /* #7B8A93 */
+  --color-label: 92 107 116; /* #5C6B74 */
+  --color-shade: 5 13 19;
+}
+
+/* 02 Basalt & Copper */
+[data-palette="basalt-copper"] {
+  --color-bg: 242 237 227; /* #F2EDE3 */
+  --color-surface-dark: 22 19 15; /* #16130F */
+  --color-surface-teal: 60 54 48; /* #3C3630 */
+  --color-accent: 176 101 74; /* #B0654A */
+  --color-accent-ink: 128 70 48;
+  --color-sand: 207 195 175; /* #CFC3AF */
+  --color-text-on-dark: 238 230 218;
+  --color-text: 22 19 15;
+  --color-muted-on-dark: 196 188 176;
+  --color-outline: 140 130 118;
+  --color-divider: 200 190 174;
+  --color-note: 150 140 128;
+  --color-label: 98 90 80;
+  --color-shade: 10 8 6;
+}
+
+/* 03 Jungle & Gold */
+[data-palette="jungle-gold"] {
+  --color-bg: 245 242 233; /* #F5F2E9 */
+  --color-surface-dark: 18 37 28; /* #12251C */
+  --color-surface-teal: 47 107 84; /* #2F6B54 */
+  --color-accent: 198 169 106; /* #C6A96A */
+  --color-accent-ink: 118 94 44;
+  --color-sand: 213 205 184; /* #D5CDB8 */
+  --color-text-on-dark: 238 233 220;
+  --color-text: 18 37 28;
+  --color-muted-on-dark: 184 200 190;
+  --color-outline: 124 146 134;
+  --color-divider: 200 194 176;
+  --color-note: 124 144 134;
+  --color-label: 86 106 96;
+  --color-shade: 6 14 10;
+}
+
+/*
+ * Шрифтовые стеки. Barlow и Barlow Condensed не содержат кириллицу,
+ * поэтому в русской версии за ними стоит Sofia Sans (lib/fonts-cyrillic.ts).
+ */
+:root {
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-barlow), system-ui, "Segoe UI", sans-serif;
+  --font-condensed: var(--font-barlow-condensed), "Arial Narrow", system-ui, sans-serif;
+}
+
+:root:lang(ru) {
+  --font-sans: var(--font-barlow), var(--font-sofia), system-ui, "Segoe UI", sans-serif;
+  --font-condensed: var(--font-barlow-condensed), var(--font-sofia-condensed), "Arial Narrow", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background: rgb(var(--color-accent) / 0.35);
+    color: rgb(var(--color-text));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 3px;
+  }
+
+  /* Бумажное зерно: фиксированный слой, не перерисовывается при скролле */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.13 0 0 0 0 0.19 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Кикер / лейбл: Barlow Condensed капсом с разрядкой */
+  .kicker {
+    @apply font-condensed text-[0.8125rem] font-semibold uppercase leading-none tracking-kicker;
+  }
+
+  /* Крупный курсивный заголовок. Межстрочный интервал не меньше 1.1: у курсива есть выносные элементы */
+  .display {
+    @apply font-display font-medium italic;
+    padding-bottom: 0.08em;
+  }
+
+  /* Единая цветокоррекция всех фото (правило 4.3.4): приглушённая насыщенность и тёплый сдвиг */
+  .photo-grade {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: rgb(var(--color-surface-dark));
+  }
+
+  .photo-grade img {
+    filter: saturate(0.7) sepia(0.14) contrast(1.04) brightness(0.95);
+  }
+
+  .photo-grade::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgb(var(--color-surface-dark) / 0.12);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+}
