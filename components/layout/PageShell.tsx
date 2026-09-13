@@ -9,9 +9,11 @@ interface PageShellProps {
   locale: Locale;
   children: ReactNode;
   headerVariant?: "overlay" | "solid";
+  /** Элементы после основного контента, например фиксированная панель брони на мобильных */
+  after?: ReactNode;
 }
 
-export function PageShell({ locale, children, headerVariant = "overlay" }: PageShellProps) {
+export function PageShell({ locale, children, headerVariant = "overlay", after }: PageShellProps) {
   const t = getDictionary(locale);
 
   return (
@@ -39,6 +41,7 @@ export function PageShell({ locale, children, headerVariant = "overlay" }: PageS
         }}
       />
       <main id="main">{children}</main>
+      {after}
     </>
   );
 }
