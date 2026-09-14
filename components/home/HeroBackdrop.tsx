@@ -4,15 +4,15 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Photo, type PhotoSource } from "@/components/ui/Photo";
 
 /**
- * Фон hero: фото медленнее контента (parallax) и постепенно темнеет,
- * пока следующая секция «наплывает» сверху (docs/editorial-style.md, раздел 3).
+ * Фон hero: сцена прилипает к экрану, поэтому фото лишь слегка смещается (сдвиг меньше запаса масштаба,
+ * край кадра не открывается) и темнеет, пока колода туров собирается в дугу (docs/editorial-style.md, раздел 3).
  * При prefers-reduced-motion эффекты гасятся CSS-вариантами, разметка не меняется.
  */
 export function HeroBackdrop({ image }: { image: PhotoSource }) {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 900], [0, 140]);
-  const scale = useTransform(scrollY, [0, 900], [1.04, 1.1]);
-  const shade = useTransform(scrollY, [0, 800], [0, 0.6]);
+  const y = useTransform(scrollY, [0, 1800], [0, 30]);
+  const scale = useTransform(scrollY, [0, 1800], [1.04, 1.08]);
+  const shade = useTransform(scrollY, [0, 1200], [0, 0.5]);
 
   return (
     <div className="absolute inset-0 -z-10">
