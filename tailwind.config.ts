@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Дизайн-токены KAIFOTOUR BALI.
+ * Дизайн-токены KAIFO.
  *
  * Палитра Deep Ocean & Brass (docs/tz-main.md, раздел 4.1) задана CSS-переменными
  * в app/globals.css. Переключение на палитры 02/03 (раздел 4.2) меняет только

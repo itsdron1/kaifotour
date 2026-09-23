@@ -2,7 +2,7 @@ import type { MediaKey } from "@/data/media";
 import type { Locale, Localized } from "@/lib/i18n";
 
 /**
- * Каталог туров KAIFOTOUR BALI.
+ * Каталог туров KAIFO.
  *
  * Источники:
  * - 10 текущих категорий: docs/tz-main.md, раздел 3.4 (таблица каталога);

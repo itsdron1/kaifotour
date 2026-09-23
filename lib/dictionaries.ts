@@ -12,14 +12,14 @@ const pf = (forms: PluralForms): PluralForms => forms;
  */
 const ru = {
   meta: {
-    homeTitle: "KAIFOTOUR BALI: лодки, серфинг, ATV, джип-туры и экскурсии на Бали",
+    homeTitle: "KAIFO: лодки, серфинг, ATV, джип-туры и экскурсии на Бали",
     homeDescription:
       "Лодочные прогулки, серфинг, снорклинг, ATV, джип и Harley-туры, однодневные экскурсии. Организуем безопасные и атмосферные приключения на Бали.",
     toursTitle: "Туры на Бали: каталог маршрутов",
     toursDescription:
       "Морские прогулки, бездорожье, экскурсии и прокат с гидом на Бали. Фильтры по типу активности, цене и длительности.",
     tourSuffix: "Бронирование в WhatsApp.",
-    legalDescription: "Документ KAIFOTOUR BALI находится в подготовке.",
+    legalDescription: "Документ KAIFO находится в подготовке.",
   },
   a11y: {
     skip: "Перейти к содержанию",
@@ -262,14 +262,14 @@ export type Dictionary = typeof ru;
 
 const en: Dictionary = {
   meta: {
-    homeTitle: "KAIFOTOUR BALI: boat trips, surfing, ATV, jeep tours and day tours in Bali",
+    homeTitle: "KAIFO: boat trips, surfing, ATV, jeep tours and day tours in Bali",
     homeDescription:
       "Boat trips, surfing, snorkeling, ATV, jeep and Harley tours, plus day tours across the island. Scenic, safe and real Bali experiences.",
     toursTitle: "Bali Tours: the Full Catalog",
     toursDescription:
       "Ocean trips, off-road rides, day tours and guided rentals in Bali. Filter by activity, price and duration.",
     tourSuffix: "Book via WhatsApp.",
-    legalDescription: "This KAIFOTOUR BALI document is being prepared.",
+    legalDescription: "This KAIFO document is being prepared.",
   },
   a11y: {
     skip: "Skip to content",

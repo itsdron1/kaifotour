@@ -43,7 +43,7 @@ export function Footer({ locale }: { locale: Locale }) {
     <footer className="border-t border-ink/15 bg-sand text-ink">
       <div className="mx-auto max-w-page px-5 pb-10 pt-16 sm:px-8 lg:px-12 lg:pt-20">
         <p className="font-condensed text-[clamp(3rem,1.6rem+6.4vw,8.75rem)] font-semibold uppercase leading-[0.88] tracking-[0.005em]">
-          KAIFOTOUR BALI
+          KAIFO
         </p>
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/80">{t.footer.tagline}</p>
 
@@ -109,7 +109,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <div className="mt-14 grid gap-4 border-t border-ink/15 pt-6 text-sm leading-relaxed text-ink/75 lg:grid-cols-12">
           <p className="max-w-3xl lg:col-span-8">{t.footer.disclaimer}</p>
           <p className="lg:col-span-4 lg:text-right">
-            © {year} KAIFOTOUR BALI. {t.footer.rights}
+            © {year} KAIFO. {t.footer.rights}
           </p>
         </div>
       </div>

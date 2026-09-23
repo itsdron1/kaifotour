@@ -3,7 +3,7 @@ import { getPublishedTour } from "@/data/tours";
 import { getDictionary } from "@/lib/dictionaries";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og";
 
-export const alt = "KAIFOTOUR BALI";
+export const alt = "KAIFO";
 export const size = ogSize;
 export const contentType = ogContentType;
 

@@ -30,10 +30,7 @@ export interface HeaderProps {
 
 function Wordmark() {
   return (
-    <>
-      <span className="font-display text-[1.375rem] font-semibold italic leading-none tracking-[0.02em]">KAIFOTOUR</span>
-      <span className="kicker text-[0.6875rem] text-mist">BALI</span>
-    </>
+    <span className="font-display text-[1.375rem] font-semibold italic leading-none tracking-[0.02em]">KAIFO</span>
   );
 }
 

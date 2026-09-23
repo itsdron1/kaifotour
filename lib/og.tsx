@@ -87,7 +87,7 @@ export async function renderOgImage({ title, kicker, photo }: OgCardOptions): Pr
           }}
         >
           <div style={{ display: "flex", fontFamily: "Sofia Sans Condensed", fontSize: 26, letterSpacing: 6, color: colors.accent }}>
-            KAIFOTOUR BALI
+            KAIFO
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontFamily: "Sofia Sans Condensed", fontSize: 24, letterSpacing: 3, color: colors.mist }}>

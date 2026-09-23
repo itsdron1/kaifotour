@@ -32,7 +32,7 @@ export function PageShell({ locale, children, headerVariant = "overlay", after }
         whatsappHref={whatsappUrl(t.whatsapp.general)}
         variant={headerVariant}
         labels={{
-          home: `KAIFOTOUR BALI, ${t.nav.home}`,
+          home: `KAIFO, ${t.nav.home}`,
           mainNav: t.a11y.mainNav,
           openMenu: t.a11y.openMenu,
           closeMenu: t.a11y.closeMenu,

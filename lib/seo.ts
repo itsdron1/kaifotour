@@ -17,7 +17,7 @@ interface PageMetadataOptions {
   path: string;
   title: string;
   description: string;
-  /** Заголовок без шаблона «| KAIFOTOUR BALI» */
+  /** Заголовок без шаблона «| KAIFO» */
   absoluteTitle?: boolean;
   noindex?: boolean;
 }

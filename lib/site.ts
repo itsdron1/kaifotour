@@ -1,6 +1,6 @@
 /** Подтверждённые контакты и бренд (docs/tz-main.md, раздел 2) */
 export const site = {
-  name: "KAIFOTOUR BALI",
+  name: "KAIFO",
   url: "https://kaifotour-bali.com",
   /** Палитра из docs/tz-main.md, раздел 4: "deep-ocean-brass" | "basalt-copper" | "jungle-gold" */
   palette: "deep-ocean-brass",
@@ -11,8 +11,8 @@ export const site = {
     number: "6285190101270",
   },
   instagram: {
-    handle: "@kaifotour.bali",
-    url: "https://instagram.com/kaifotour.bali",
+    handle: "@kaifo.bali",
+    url: "https://instagram.com/kaifo.bali",
   },
-  email: "kaifotour.bali@gmail.com",
+  email: "kaifotourbali@gmail.com",
 } as const;
