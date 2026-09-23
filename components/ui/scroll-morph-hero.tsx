@@ -264,7 +264,7 @@ interface ScrollMorphHeroProps {
   backdrop?: ReactNode;
   /** Центр круга: главный заголовок. Кегль и ширину задаёт компонент по радиусу круга */
   intro: ReactNode;
-  /** Подсказка прокрутки под заголовком */
+  /** Подсказка прокрутки рядом с кнопками */
   scrollHint: string;
   /** Верх сцены, когда карточки собрались в дугу */
   content: ReactNode;
@@ -426,9 +426,6 @@ export function ScrollMorphHero({
           >
             <motion.div style={{ opacity: introFade }} className="flex flex-col items-center">
               <div>{intro}</div>
-              <p aria-hidden="true" className="kicker mt-6 text-mist">
-                {scrollHint}
-              </p>
             </motion.div>
           </motion.div>
         </div>
@@ -449,6 +446,9 @@ export function ScrollMorphHero({
             >
               <div className="flex">{primaryAction}</div>
               {secondaryAction ? <div className="flex">{secondaryAction}</div> : null}
+              <p aria-hidden="true" className="kicker text-mist">
+                {scrollHint}
+              </p>
             </motion.div>
           </motion.div>
         ) : null}

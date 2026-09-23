@@ -1,4 +1,3 @@
-import { InstagramLogo } from "@phosphor-icons/react/dist/ssr";
 import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { resolveMedia } from "@/data/media";
@@ -6,26 +5,28 @@ import { publishedTours } from "@/data/tours";
 import { getDictionary } from "@/lib/dictionaries";
 import { plural } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
-import { site } from "@/lib/site";
 
 /**
- * «Beyond the Booking / Into the Moment» (docs/editorial-style.md, раздел 4).
- * Цифры компании: только плейсхолдеры [X] до получения данных от заказчика.
- * Число маршрутов считается из data/tours.ts, это не выдуманная цифра.
+ * Секция о моментах поездки (docs/editorial-style.md, раздел 4).
+ * Число маршрутов считается из data/tours.ts, остальные цифры — данные заказчика.
  */
 export function BeyondTheBooking({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const routeCount = publishedTours.length;
-  const stats = [...t.stories.stats, { value: String(routeCount), label: plural(locale, routeCount, t.stories.catalogStat) }];
+  const stats = [
+    t.stories.stats.years,
+    { value: String(routeCount), label: plural(locale, routeCount, t.stories.catalogStat) },
+    t.stories.stats.activities,
+    t.stories.stats.guests,
+  ];
 
   return (
     <section id="stories" aria-labelledby="stories-title" className="overflow-hidden bg-paper py-20 lg:py-28">
       <div className="mx-auto grid max-w-page gap-16 px-5 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <div className="lg:col-span-7">
           <Reveal>
-            <h2 id="stories-title" className="text-display-xl">
-              <span className="display block">{t.stories.titleTop}</span>
-              <span className="display -mt-[0.1em] block pl-[10%] text-secondary">{t.stories.titleBottom}</span>
+            <h2 id="stories-title" className="display max-w-[26ch] text-balance text-display-lg">
+              {t.stories.title}
             </h2>
             <p className="mt-8 max-w-prose text-lg leading-relaxed text-label">{t.stories.intro}</p>
           </Reveal>
@@ -49,17 +50,8 @@ export function BeyondTheBooking({ locale }: { locale: Locale }) {
             />
             <figcaption className="px-2 pt-5">
               <p className="kicker text-[0.75rem] text-ink/75">{t.stories.storyLabel}</p>
-              <blockquote className="display mt-3 text-2xl leading-snug text-ink">{t.stories.storyQuote}</blockquote>
-              <a
-                href={site.instagram.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kicker mt-6 inline-flex items-center gap-2 text-secondary"
-              >
-                <InstagramLogo size={16} aria-hidden="true" />
-                <span className="link-underline">{t.stories.storyLink}</span>
-                <span className="sr-only">({t.a11y.newTab})</span>
-              </a>
+              <blockquote className="display mt-3 text-lg leading-snug text-ink">{t.stories.storyQuote}</blockquote>
+              <p className="kicker mt-4 text-[0.75rem] text-ink/70">{t.stories.storyAuthor}</p>
             </figcaption>
           </figure>
         </Reveal>

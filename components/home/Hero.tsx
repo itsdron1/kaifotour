@@ -44,9 +44,12 @@ export function Hero({ locale }: { locale: Locale }) {
       cards={cards}
       backdrop={<HeroBackdrop image={resolveMedia("hero", locale)} />}
       intro={
-        <h1 id="hero-title" className="display text-balance text-on-dark">
-          {t.hero.title}
-        </h1>
+        <div className="flex flex-col items-center">
+          <h1 id="hero-title" className="display text-balance text-on-dark">
+            {t.hero.title}
+          </h1>
+          <p className="kicker mt-4 text-sand">{t.hero.subtitle}</p>
+        </div>
       }
       scrollHint={t.hero.scrollHint}
       content={

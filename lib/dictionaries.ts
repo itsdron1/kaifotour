@@ -63,13 +63,14 @@ const ru = {
     disclaimer: "Цены ориентировочные и уточняются до брони",
   },
   hero: {
-    title: "Бали, который останется с тобой",
+    title: "Весь Бали в одном месте",
+    subtitle: "Туры, активности, аренда и приключения",
     captionLeft: "Мы продумываем каждый маршрут так, чтобы вы вспоминали его годами",
     captionRight: "Рассвет, который вы чуть не проспали. Риф, о котором знают только местные.",
     scrollHint: "Листайте вниз",
   },
   ride: {
-    title: "Разные маршруты, одно настроение",
+    title: "Один остров, сотни маршрутов",
     intro: "Лодки, джипы, байки и пешие тропы. Выберите, каким вы хотите увидеть остров.",
     sectors: {
       ocean: {
@@ -143,24 +144,24 @@ const ru = {
     consultText: "Расскажем, какой тур подойдёт именно вам, подберём даты и соберём программу под ваши пожелания.",
   },
   stories: {
-    titleTop: "Больше, чем бронь",
-    titleBottom: "Ближе к моменту",
-    intro:
-      "Мы собираем маршруты ради момента, который остаётся с вами после поездки. Скоро здесь появятся истории наших гостей.",
-    stats: [
-      { value: "[X]", label: "туров проведено" },
-      { value: "[X]", label: "довольных гостей" },
-      { value: "[X]", label: "лет работы" },
-    ],
+    title: "Мы создаём маршруты ради моментов, которые хочется запомнить",
+    intro: "Мы собираем маршруты ради момента, который остаётся с вами после поездки.",
+    stats: {
+      years: { value: "5+", label: "лет живём на Бали" },
+      activities: { value: "10+", label: "видов активностей" },
+      // TODO: заменить на реальное число гостей
+      guests: { value: "1 200+", label: "довольных гостей" },
+    },
     catalogStat: pf({
-      one: "маршрут в каталоге",
-      few: "маршрута в каталоге",
-      many: "маршрутов в каталоге",
-      other: "маршрута в каталоге",
+      one: "маршрут и активность",
+      few: "маршрута и активности",
+      many: "маршрутов и активностей",
+      other: "маршрута и активности",
     }),
     storyLabel: "История гостя",
-    storyQuote: "[Здесь появится короткая цитата гостя после первой опубликованной истории]",
-    storyLink: "Истории гостей в Instagram",
+    storyQuote:
+      "Мы планировали просто съездить на Бали на неделю, но в итоге каждый день получался совершенно разным. Снорклинг, поездка к вулкану, ATV, закат на лодке — и всё без ощущения, что мы куда-то спешим. Наверное, именно таким Бали и запомнится больше всего.",
+    storyAuthor: "— Гость KAIFO",
   },
   faq: {
     title: "Вопросы перед поездкой",
@@ -313,13 +314,14 @@ const en: Dictionary = {
     disclaimer: "Prices are for reference only",
   },
   hero: {
-    title: "Find the Bali That Stays With You",
+    title: "All of Bali in one place",
+    subtitle: "Tours, activities, rentals and adventures",
     captionLeft: "We plan each route so you remember it years later",
     captionRight: "The sunrise you almost slept through. The reef only locals know.",
     scrollHint: "Scroll to explore",
   },
   ride: {
-    title: "How We Ride & Explore",
+    title: "One island, hundreds of routes",
     intro: "Boats, jeeps, bikes and hiking trails. Choose how you want to see the island.",
     sectors: {
       ocean: {
@@ -393,19 +395,19 @@ const en: Dictionary = {
     consultText: "We will tell you which tour suits you, help with dates and put together a plan around your wishes.",
   },
   stories: {
-    titleTop: "Beyond the Booking",
-    titleBottom: "Into the Moment",
-    intro:
-      "We build every route around the moment that stays with you after the trip. Guest stories will appear here soon.",
-    stats: [
-      { value: "[X]", label: "tours completed" },
-      { value: "[X]", label: "happy travelers" },
-      { value: "[X]", label: "years in business" },
-    ],
-    catalogStat: pf({ one: "route in the catalog", other: "routes in the catalog" }),
+    title: "We create routes for the moments you'll want to remember",
+    intro: "We build every route around the moment that stays with you after the trip.",
+    stats: {
+      years: { value: "5+", label: "years living in Bali" },
+      activities: { value: "10+", label: "types of activities" },
+      // TODO: заменить на реальное число гостей
+      guests: { value: "1 200+", label: "happy guests" },
+    },
+    catalogStat: pf({ one: "route and activity", other: "routes and activities" }),
     storyLabel: "Guest story",
-    storyQuote: "[A short guest quote will appear here after the first published story]",
-    storyLink: "Guest stories on Instagram",
+    storyQuote:
+      "We planned just a week in Bali, but every day turned out completely different. Snorkeling, a trip to the volcano, ATVs, a sunset on a boat — and never the feeling that we were rushing anywhere. That's probably how we'll remember Bali most.",
+    storyAuthor: "— KAIFO guest",
   },
   faq: {
     title: "Questions Before You Go",
