@@ -33,6 +33,7 @@ const ru = {
     toursList: "Список туров",
     categories: "Категории туров",
     gallery: "Фотографии тура",
+    closeCard: "Закрыть карточку",
   },
   nav: {
     stories: "Истории",
@@ -310,6 +311,7 @@ const en: Dictionary = {
     toursList: "Tour list",
     categories: "Tour categories",
     gallery: "Tour photos",
+    closeCard: "Close card",
   },
   nav: {
     stories: "Stories",
