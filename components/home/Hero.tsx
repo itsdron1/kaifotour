@@ -1,7 +1,7 @@
 import { ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { HeroBackdrop } from "@/components/home/HeroBackdrop";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { ScrollMorphHero, type MorphCard } from "@/components/ui/scroll-morph-hero";
+import { ScrollMorphHero } from "@/components/ui/scroll-morph-hero";
 import { resolveMedia } from "@/data/media";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
@@ -11,14 +11,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 export function Hero({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   // Все опубликованные туры из data/tours.ts, по карточке на тур: Nusa Lembongan и Sumba скрыты через published: false
-  const cards: MorphCard[] = getTourCards(locale).map(({ slug, href, title, kicker, priceLabel, image }) => ({
-    slug,
-    href,
-    title,
-    kicker,
-    priceLabel,
-    image,
-  }));
+  const cards = getTourCards(locale);
 
   const bookAction = (
     <ButtonLink
@@ -60,7 +53,12 @@ export function Hero({ locale }: { locale: Locale }) {
       }
       primaryAction={bookAction}
       secondaryAction={exploreAction}
-      detailsLabel={t.cta.details}
+      cardLabels={{
+        book: t.cta.book,
+        details: t.cta.details,
+        newTab: t.a11y.newTab,
+        close: t.a11y.closeCard,
+      }}
     />
   );
 }

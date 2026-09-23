@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  animate,
   motion,
   useMotionValue,
   useMotionValueEvent,
@@ -10,10 +11,21 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import Link from "next/link";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Photo, type PhotoSource } from "@/components/ui/Photo";
+import { useRouter } from "next/navigation";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from "react";
+import { Photo } from "@/components/ui/Photo";
+import { TourCardBack, type TourCardBackLabels } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
+import type { TourCardData } from "@/lib/tour-view";
 
 /*
  * Scroll morph hero (21st.dev, «scroll-morph-hero»), адаптирован под проект:
@@ -30,15 +42,6 @@ export type AnimationPhase = "scatter" | "line" | "circle";
 /** Где стоят кнопки, пока карточки собраны в круг */
 type ActionsPlacement = "corner" | "below" | "hidden";
 
-export interface MorphCard {
-  slug: string;
-  href: string;
-  title: string;
-  kicker: string;
-  priceLabel: string;
-  image: PhotoSource;
-}
-
 interface CardTarget {
   x: number;
   y: number;
@@ -47,9 +50,26 @@ interface CardTarget {
   opacity: number;
 }
 
-/** Карточка-полароид в круге; в дуге она увеличивается */
-const CARD_WIDTH = 72;
-const CARD_HEIGHT = 96;
+/**
+ * Карточка в DOM крупная, чтобы на обороте помещался текст 13px, а на сцене её уменьшает BASE_SCALE:
+ * видимый размер в круге прежний, 150×200 × 0.48 = 72×96.
+ */
+const CARD_WIDTH = 150;
+const CARD_HEIGHT = 200;
+const BASE_SCALE = 0.48;
+const VISIBLE_WIDTH = CARD_WIDTH * BASE_SCALE;
+const VISIBLE_HEIGHT = CARD_HEIGHT * BASE_SCALE;
+/** Наведение: карточка выпрямляется, приближается и подтягивается к центру сцены, чтобы не уехать за край */
+const HOVER_ZOOM = 1.35;
+const HOVER_ZOOM_MOBILE = 1.15;
+const HOVER_PULL = 0.2;
+const HOVER_DURATION = 0.6;
+const HOVER_EASE = [0.2, 0.7, 0.2, 1] as const;
+/** Пауза перед возвратом, чтобы карточка не мигала на краю курсора */
+const LEAVE_DELAY_MS = 150;
+/** Отступы увеличенной карточки от краёв сцены и от шапки сайта */
+const EDGE_MARGIN = 24;
+const HEADER_MARGIN = 88;
 /** Виртуальная прокрутка исходного компонента: 0–600 круг превращается в дугу, 600–3000 дуга сдвигается */
 const MAX_SCROLL = 3000;
 const MORPH_END = 600;
@@ -60,7 +80,7 @@ const PHASE_INDEX: Record<AnimationPhase, number> = { scatter: 0, line: 1, circl
 const CARD_SPRING = { stiffness: 40, damping: 15 };
 const SCROLL_SPRING = { stiffness: 40, damping: 20 };
 const PARALLAX_SPRING = { stiffness: 30, damping: 20 };
-const FLIP_TRANSITION = { type: "spring", stiffness: 260, damping: 20 } as const;
+const FLIP_TRANSITION = { duration: HOVER_DURATION, ease: HOVER_EASE } as const;
 
 /**
  * Раскладка кнопок у круга. Геометрия в placeActions повторяет эти классы:
@@ -107,15 +127,15 @@ function cardTarget(
       x: Math.round((seeded(index, 1) - 0.5) * 1500),
       y: Math.round((seeded(index, 2) - 0.5) * 1000),
       rotation: Math.round((seeded(index, 3) - 0.5) * 180),
-      scale: 0.6,
+      scale: 0.6 * BASE_SCALE,
       opacity: 0,
     };
   }
 
   if (phase === PHASE_INDEX.line) {
     // На узком экране линия сжимается, чтобы вся колода поместилась в ширину
-    const spacing = width > 0 ? Math.min(LINE_SPACING, (width - CARD_WIDTH) / Math.max(total - 1, 1)) : LINE_SPACING;
-    return { x: (index - (total - 1) / 2) * spacing, y: 0, rotation: 0, scale: 1, opacity: 1 };
+    const spacing = width > 0 ? Math.min(LINE_SPACING, (width - VISIBLE_WIDTH) / Math.max(total - 1, 1)) : LINE_SPACING;
+    return { x: (index - (total - 1) / 2) * spacing, y: 0, rotation: 0, scale: BASE_SCALE, opacity: 1 };
   }
 
   const isMobile = width < 768;
@@ -136,7 +156,7 @@ function cardTarget(
   const spreadAngle = isMobile ? 100 : 130;
   const step = spreadAngle / Math.max(total - 1, 1);
   // Сдвиг дуги: от первой карточки у левого края экрана до последней у правого
-  const visibleHalf = (Math.asin(clamp01((width / 2 - (CARD_WIDTH * arcScale) / 2) / arcRadius)) * 180) / Math.PI;
+  const visibleHalf = (Math.asin(clamp01((width / 2 - (VISIBLE_WIDTH * arcScale) / 2) / arcRadius)) * 180) / Math.PI;
   const sweep = Math.max(spreadAngle / 2 - visibleHalf, 0);
   const arcAngle = -90 - spreadAngle / 2 + index * step + lerp(sweep, -sweep, clamp01(shuffle));
   const arc = {
@@ -150,7 +170,7 @@ function cardTarget(
     x: lerp(circle.x, arc.x, morph),
     y: lerp(circle.y, arc.y, morph),
     rotation: lerp(circle.rotation, arc.rotation, morph),
-    scale: lerp(1, arcScale, morph),
+    scale: lerp(1, arcScale, morph) * BASE_SCALE,
     opacity: 1,
   };
 }
@@ -162,7 +182,7 @@ function cardTarget(
  */
 function placeActions(width: number, height: number, items: HTMLElement[]): ActionsPlacement {
   if (items.length === 0 || width === 0 || height === 0) return "hidden";
-  const outer = ringRadius(width, height) + CARD_HEIGHT / 2 + ACTIONS_GAP;
+  const outer = ringRadius(width, height) + VISIBLE_HEIGHT / 2 + ACTIONS_GAP;
   const sizes = items.map((item) => ({ width: item.offsetWidth, height: item.offsetHeight }));
 
   if (width >= height) {
@@ -184,18 +204,38 @@ function placeActions(width: number, height: number, items: HTMLElement[]): Acti
 }
 
 interface FlipCardProps {
-  card: MorphCard;
+  card: TourCardData;
   index: number;
   total: number;
   /** phase, morph, shuffle, parallax, width, height */
   inputs: MotionValue<number>[];
-  detailsLabel: string;
+  labels: TourCardBackLabels;
   reducedMotion: boolean;
+  mobile: boolean;
+  active: boolean;
+  onActivate: () => void;
+  onRelease: () => void;
+  onClose: () => void;
 }
 
-function FlipCard({ card, index, total, inputs, detailsLabel, reducedMotion }: FlipCardProps) {
+function FlipCard({
+  card,
+  index,
+  total,
+  inputs,
+  labels,
+  reducedMotion,
+  mobile,
+  active,
+  onActivate,
+  onRelease,
+  onClose,
+}: FlipCardProps) {
+  const router = useRouter();
   const compute = ([phase, morph, shuffle, parallax, width, height]: number[]) =>
     cardTarget(index, total, phase, morph, shuffle, parallax, width, height);
+  const stageWidth = inputs[4];
+  const stageHeight = inputs[5];
 
   const targetX = useTransform<number, number>(inputs, (values) => compute(values).x);
   const targetY = useTransform<number, number>(inputs, (values) => compute(values).y);
@@ -210,6 +250,65 @@ function FlipCard({ card, index, total, inputs, detailsLabel, reducedMotion }: F
   const springScale = useSpring(targetScale, CARD_SPRING);
   const springOpacity = useSpring(targetOpacity, CARD_SPRING);
 
+  // Наведение живёт отдельным значением: от него зависят приближение, выпрямление и подтягивание к центру
+  const hover = useMotionValue(0);
+  useEffect(() => {
+    if (reducedMotion) {
+      hover.set(0);
+      return;
+    }
+    const controls = animate(hover, active ? 1 : 0, { duration: HOVER_DURATION, ease: HOVER_EASE });
+    return () => controls.stop();
+  }, [active, hover, reducedMotion]);
+
+  const baseX = reducedMotion ? targetX : springX;
+  const baseY = reducedMotion ? targetY : springY;
+  const baseRotate = reducedMotion ? targetRotate : springRotate;
+  const baseScale = reducedMotion ? targetScale : springScale;
+  const zoom = mobile ? HOVER_ZOOM_MOBILE : HOVER_ZOOM;
+
+  // Увеличенная карточка подтягивается к центру и в конце удерживается в пределах сцены с отступом от краёв
+  const x = useTransform<number, number>([baseX, baseScale, hover, stageWidth], ([value, base, lift, stage]) => {
+    const pulled = value * (1 - HOVER_PULL * lift);
+    if (lift === 0 || stage === 0) return pulled;
+    const half = (CARD_WIDTH * base * (1 + (zoom - 1) * lift)) / 2;
+    const limit = Math.max(stage / 2 - half - EDGE_MARGIN, 0);
+    return lerp(pulled, Math.min(Math.max(pulled, -limit), limit), lift);
+  });
+  const y = useTransform<number, number>([baseY, baseScale, hover, stageHeight], ([value, base, lift, stage]) => {
+    const pulled = value * (1 - HOVER_PULL * lift);
+    if (lift === 0 || stage === 0) return pulled;
+    const half = (CARD_HEIGHT * base * (1 + (zoom - 1) * lift)) / 2;
+    const top = -Math.max(stage / 2 - half - HEADER_MARGIN, 0);
+    const bottom = Math.max(stage / 2 - half - EDGE_MARGIN, 0);
+    return lerp(pulled, Math.min(Math.max(pulled, top), bottom), lift);
+  });
+  const rotate = useTransform<number, number>([baseRotate, hover], ([value, lift]) => value * (1 - lift));
+  const scale = useTransform<number, number>([baseScale, hover], ([value, lift]) => value * (1 + (zoom - 1) * lift));
+
+  function handlePointerEnter(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse") onActivate();
+  }
+
+  function handlePointerLeave(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse") onRelease();
+  }
+
+  // Первый тап на тач-устройстве переворачивает карточку, кнопки на обороте работают как обычно
+  function handleClick(event: ReactMouseEvent<HTMLDivElement>) {
+    if ((event.target as Element | null)?.closest("a, button")) return;
+    if (!active) onActivate();
+  }
+
+  function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Enter" && event.target === event.currentTarget) {
+      event.preventDefault();
+      router.push(card.href);
+    } else if (event.key === "Escape") {
+      onClose();
+    }
+  }
+
   return (
     <motion.div
       className="absolute left-1/2 top-1/2"
@@ -218,48 +317,74 @@ function FlipCard({ card, index, total, inputs, detailsLabel, reducedMotion }: F
         height: CARD_HEIGHT,
         marginLeft: -CARD_WIDTH / 2,
         marginTop: -CARD_HEIGHT / 2,
-        x: reducedMotion ? targetX : springX,
-        y: reducedMotion ? targetY : springY,
-        rotate: reducedMotion ? targetRotate : springRotate,
-        scale: reducedMotion ? targetScale : springScale,
+        zIndex: active ? 20 : undefined,
+        x,
+        y,
+        rotate,
+        scale,
         opacity: reducedMotion ? targetOpacity : springOpacity,
       }}
     >
-      <Link
-        href={card.href}
-        tabIndex={-1}
-        draggable={false}
-        className="group block h-full w-full [perspective:1000px]"
+      {/* Обёртка ловит наведение и фокус и сама не вращается: иначе на повороте в 90° карточка встаёт ребром и ховер мигает */}
+      <div
+        data-tour-card="true"
+        role="group"
+        tabIndex={0}
+        aria-label={`${card.title}, ${card.priceLabel}`}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onFocus={onActivate}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
+        }}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        className={cn(
+          "h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]",
+          active
+            ? "drop-shadow-[0_26px_40px_rgb(var(--color-shade)/0.6)]"
+            : "drop-shadow-[0_10px_18px_rgb(var(--color-shade)/0.45)]",
+        )}
       >
         <motion.div
           className="relative h-full w-full [transform-style:preserve-3d]"
-          whileHover={{ rotateY: 180 }}
+          animate={{ rotateY: active ? 180 : 0 }}
           transition={FLIP_TRANSITION}
         >
           {/* Лицевая сторона: полароид с фото тура */}
-          <div className="absolute inset-0 bg-paper p-[3px] pb-[12px] shadow-postcard [backface-visibility:hidden]">
-            <Photo image={card.image} sizes="136px" className="h-full w-full" />
-            <span className="absolute inset-0 bg-deep/10 transition-colors duration-300 group-hover:bg-transparent" />
+          <div
+            className={cn(
+              "absolute inset-0 bg-paper p-1.5 pb-6 [backface-visibility:hidden]",
+              "motion-reduce:transition-opacity motion-reduce:duration-300",
+              active && "motion-reduce:opacity-0",
+            )}
+          >
+            <Photo image={card.image} sizes="150px" className="h-full w-full" />
+            <span
+              className={cn("absolute inset-0 bg-deep/10 transition-colors duration-300", active && "bg-transparent")}
+            />
           </div>
 
-          {/* Оборот: категория, название и цена */}
-          <div className="absolute inset-0 flex flex-col justify-between border border-on-dark/15 bg-deep p-[6px] text-left [backface-visibility:hidden] [transform:rotateY(180deg)]">
-            <span className="kicker truncate text-[5px] text-mist">{card.kicker}</span>
-            <span className="display line-clamp-3 text-[10px] leading-tight text-on-dark">{card.title}</span>
-            <span className="flex items-center justify-between gap-1 font-condensed text-[6px] font-semibold uppercase tracking-caps">
-              <span className="truncate text-accent">{card.priceLabel}</span>
-              <span className="shrink-0 text-on-dark">{detailsLabel}</span>
-            </span>
-          </div>
+          {/* Оборот: общий компонент с секцией туров */}
+          <TourCardBack
+            card={card}
+            labels={labels}
+            onClose={onClose}
+            className={cn(
+              "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+              "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
+              active && "motion-reduce:opacity-100",
+            )}
+          />
         </motion.div>
-      </Link>
+      </div>
     </motion.div>
   );
 }
 
 interface ScrollMorphHeroProps {
   /** Карточки колоды: по одной на опубликованный тур */
-  cards: MorphCard[];
+  cards: TourCardData[];
   /** Фон сцены */
   backdrop?: ReactNode;
   /** Центр круга: главный заголовок. Кегль и ширину задаёт компонент по радиусу круга */
@@ -271,8 +396,8 @@ interface ScrollMorphHeroProps {
   /** Главная кнопка и вторичная ссылка: компонент ставит их у круга и под текстом дуги */
   primaryAction?: ReactNode;
   secondaryAction?: ReactNode;
-  /** Подпись на обороте карточки */
-  detailsLabel: string;
+  /** Подписи на обороте карточки */
+  cardLabels: TourCardBackLabels;
   labelledBy?: string;
   className?: string;
 }
@@ -280,8 +405,8 @@ interface ScrollMorphHeroProps {
 /**
  * Hero с колодой туров: карточки слетаются в линию, затем в круг вокруг заголовка,
  * а при прокрутке страницы круг превращается в дугу внизу экрана, и дуга проезжает через все туры.
- * Наведение переворачивает карточку, клик ведёт на страницу тура. Колода дублирует каталог ниже,
- * поэтому для скринридеров и клавиатуры она скрыта, а заголовок и кнопки доступны.
+ * Наведение, фокус или тап приближает карточку, выпрямляет её и переворачивает оборотом открытки
+ * с ценой, включениями и кнопками. Карточки доступны с клавиатуры, Escape возвращает карточку.
  * При prefers-reduced-motion вступление пропускается, пружины и параллакс отключаются.
  */
 export function ScrollMorphHero({
@@ -292,7 +417,7 @@ export function ScrollMorphHero({
   content,
   primaryAction,
   secondaryAction,
-  detailsLabel,
+  cardLabels,
   labelledBy,
   className,
 }: ScrollMorphHeroProps) {
@@ -304,6 +429,9 @@ export function ScrollMorphHero({
   const [placement, setPlacement] = useState<ActionsPlacement>("corner");
   const [introAway, setIntroAway] = useState(false);
   const [arcReady, setArcReady] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
+  const leaveTimer = useRef<number | null>(null);
 
   const phase = useMotionValue<number>(PHASE_INDEX.scatter);
   const width = useMotionValue(0);
@@ -318,6 +446,7 @@ export function ScrollMorphHero({
       const stageHeight = stage.clientHeight;
       width.set(stageWidth);
       height.set(stageHeight);
+      setMobile(stageWidth < 768);
       stage.style.setProperty("--ring", `${ringRadius(stageWidth, stageHeight)}px`);
       const items = actionsRef.current
         ? Array.from(actionsRef.current.children).filter((child): child is HTMLElement => child instanceof HTMLElement)
@@ -375,6 +504,53 @@ export function ScrollMorphHero({
     phase.set(PHASE_INDEX[introPhase]);
   }, [phase, introPhase]);
 
+  const activateCard = useCallback((slug: string) => {
+    if (leaveTimer.current !== null) {
+      window.clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
+    setActiveCard(slug);
+  }, []);
+
+  /** Возврат с задержкой: курсор успевает перейти на соседнюю карточку без дёрганья */
+  const releaseCard = useCallback(() => {
+    if (leaveTimer.current !== null) window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = window.setTimeout(() => setActiveCard(null), LEAVE_DELAY_MS);
+  }, []);
+
+  const closeCard = useCallback(() => {
+    if (leaveTimer.current !== null) {
+      window.clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
+    setActiveCard(null);
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (leaveTimer.current !== null) window.clearTimeout(leaveTimer.current);
+    },
+    [],
+  );
+
+  // Тап мимо карточки и Escape возвращают перевёрнутую карточку на место
+  useEffect(() => {
+    if (!activeCard) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Element | null;
+      if (!target?.closest?.("[data-tour-card]")) closeCard();
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeCard();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeCard, closeCard]);
+
   // Кнопки активны только в том блоке, который сейчас виден
   useMotionValueEvent(morph, "change", (value) => {
     setIntroAway(value >= 0.5);
@@ -402,7 +578,7 @@ export function ScrollMorphHero({
         <div className="absolute inset-0 -z-10">{backdrop}</div>
 
         {/* Колода */}
-        <div aria-hidden="true" className="absolute inset-0">
+        <div className="absolute inset-0">
           {cards.map((card, index) => (
             <FlipCard
               key={card.slug}
@@ -410,8 +586,13 @@ export function ScrollMorphHero({
               index={index}
               total={cards.length}
               inputs={inputs}
-              detailsLabel={detailsLabel}
+              labels={cardLabels}
               reducedMotion={reducedMotion}
+              mobile={mobile}
+              active={card.slug === activeCard}
+              onActivate={() => activateCard(card.slug)}
+              onRelease={releaseCard}
+              onClose={closeCard}
             />
           ))}
         </div>

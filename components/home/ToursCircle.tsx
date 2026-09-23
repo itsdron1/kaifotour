@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, WhatsappLogo, X } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { Photo } from "@/components/ui/Photo";
+import { TourCardBack } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
 import type { TourCardData } from "@/lib/tour-view";
 
@@ -113,7 +114,6 @@ function CircleCard({
   const y = Math.sin(angle) * radius;
   const tilt = tiltOf(index);
   const height = Math.round(size * CARD_RATIO);
-  const includes = card.includes.slice(0, size >= 140 ? 3 : 2);
 
   const target = revealed
     ? {
@@ -204,67 +204,18 @@ function CircleCard({
             <p className="display mt-0.5 line-clamp-2 text-[0.8125rem] leading-tight">{card.title}</p>
           </div>
 
-          {/* Оборот открытки: категория, цена, включения, штамп и кнопки */}
-          <div
+          {/* Оборот открытки: общий компонент с секцией туров и колодой hero */}
+          <TourCardBack
+            card={card}
+            labels={labels}
+            includes={size >= 140 ? 3 : 2}
+            onClose={onClose}
             className={cn(
-              "absolute inset-0 flex flex-col border border-divider bg-paper p-2.5 text-ink [backface-visibility:hidden] [transform:rotateY(180deg)]",
+              "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
               "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
               active && "motion-reduce:opacity-100",
             )}
-          >
-            <div className="flex items-start justify-between gap-2">
-              <p className="kicker text-[0.5625rem] text-secondary">{card.kicker}</p>
-              <span
-                aria-hidden="true"
-                className="flex h-6 w-6 shrink-0 items-center justify-center border border-accent font-condensed text-[0.625rem] font-semibold text-accent-ink"
-              >
-                {card.number}
-              </span>
-            </div>
-
-            <p className="display mt-1 line-clamp-2 text-[0.9375rem] leading-tight">{card.title}</p>
-            <p className="mt-1 truncate text-[0.8125rem] leading-snug text-label">{card.durationLabel}</p>
-            <p className="font-condensed text-[0.875rem] font-semibold uppercase tracking-caps text-accent-ink">
-              {card.priceLabel}
-            </p>
-
-            <ul className="mt-2 space-y-0.5 border-t border-dashed border-divider pt-2 text-[0.8125rem] leading-snug text-ink/85">
-              {includes.map((item) => (
-                <li key={item} className="line-clamp-1">
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-auto flex flex-col gap-1 pt-2">
-              <a
-                href={card.bookHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 bg-accent px-2 py-1.5 text-center font-condensed text-[0.8125rem] font-semibold uppercase leading-tight tracking-caps text-ink"
-              >
-                <WhatsappLogo size={14} aria-hidden="true" />
-                {labels.book}
-                <span className="sr-only">({labels.newTab})</span>
-              </a>
-              <Link
-                href={card.href}
-                className="flex items-center justify-center gap-1 font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-ink"
-              >
-                {labels.details}
-                <ArrowRight size={12} aria-hidden="true" />
-              </Link>
-            </div>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center text-ink/60 transition-colors hover:text-ink"
-            >
-              <X size={12} aria-hidden="true" />
-              <span className="sr-only">{labels.close}</span>
-            </button>
-          </div>
+          />
         </motion.div>
       </div>
     </motion.div>
