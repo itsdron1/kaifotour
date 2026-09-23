@@ -20,8 +20,9 @@ npm run typecheck
 
 | Путь | Что внутри |
 |---|---|
-| `app/(ru)/` | Русская версия в корне: `/`, `/tours`, `/tours/[slug]`, `/legal/[doc]` |
-| `app/(en)/en/` | Английская версия под `/en` |
+| `app/(en)/` | Английская версия в корне: `/`, `/tours`, `/tours/[slug]`, `/legal/[doc]` |
+| `app/(ru)/ru/` | Русская версия под `/ru` |
+| `middleware.ts` | Корень отдаёт язык из cookie `NEXT_LOCALE`, по умолчанию английский |
 | `app/sitemap.ts`, `app/robots.ts` | sitemap.xml и robots.txt |
 | `data/tours.ts` | Каталог туров: 17 опубликованных и 2 скрытых (`published: false`) |
 | `data/media.ts` | Реестр фотографий с alt-текстами RU/EN |

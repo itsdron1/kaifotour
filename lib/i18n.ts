@@ -1,11 +1,19 @@
-export const locales = ["ru", "en"] as const;
+export const locales = ["en", "ru"] as const;
 
 export type Locale = (typeof locales)[number];
 
-/** Русская версия живёт в корне (/, /tours/...), английская под префиксом /en */
-export const defaultLocale: Locale = "ru";
+/** Английская версия живёт в корне (/, /tours/...), русская под префиксом /ru */
+export const defaultLocale: Locale = "en";
+
+/** Выбор языка помнится год: cookie ставит переключатель, читает middleware */
+export const localeCookie = "NEXT_LOCALE";
+export const localeCookieMaxAge = 60 * 60 * 24 * 365;
 
 export type Localized<T = string> = Record<Locale, T>;
+
+export function isLocale(value: string | undefined): value is Locale {
+  return value !== undefined && (locales as readonly string[]).includes(value);
+}
 
 export function localePrefix(locale: Locale): string {
   return locale === defaultLocale ? "" : `/${locale}`;
@@ -19,9 +27,9 @@ export function localizedPath(locale: Locale, path: string): string {
   return `${prefix}${path}`;
 }
 
-/** Тот же адрес на другом языке, для переключателя RU / EN */
+/** Тот же адрес на другом языке, для переключателя EN / RU */
 export function switchLocalePath(pathname: string, target: Locale): string {
-  const bare = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  const bare = pathname.replace(/^\/ru(?=\/|$)/, "") || "/";
   return localizedPath(target, bare);
 }
 

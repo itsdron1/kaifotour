@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 import { cn } from "@/lib/cn";
-import { locales, switchLocalePath, type Locale } from "@/lib/i18n";
+import { localeCookie, localeCookieMaxAge, locales, switchLocalePath, type Locale } from "@/lib/i18n";
 
 interface LanguageSwitchProps {
   locale: Locale;
@@ -12,6 +12,11 @@ interface LanguageSwitchProps {
   /** dark: на тёмном фоне (активный язык акцентом), light: на песочном фоне */
   tone?: "dark" | "light";
   className?: string;
+}
+
+/** Выбор языка помнится год: middleware читает эту cookie и отдаёт корень на выбранном языке */
+function rememberLocale(code: Locale) {
+  document.cookie = `${localeCookie}=${code}; path=/; max-age=${localeCookieMaxAge}; samesite=lax`;
 }
 
 export function LanguageSwitch({ locale, label, tone = "dark", className }: LanguageSwitchProps) {
@@ -33,11 +38,12 @@ export function LanguageSwitch({ locale, label, tone = "dark", className }: Lang
               hrefLang={code}
               lang={code}
               prefetch={false}
+              onClick={() => rememberLocale(code)}
               aria-current={active ? "true" : undefined}
               className={cn(
                 "kicker px-1.5 py-2 transition-colors duration-300",
                 tone === "dark" && (active ? "text-accent" : "text-mist hover:text-on-dark"),
-                tone === "light" && (active ? "text-ink underline underline-offset-4" : "text-ink/70 hover:text-ink"),
+                tone === "light" && (active ? "text-accent-ink underline underline-offset-4" : "text-ink/70 hover:text-ink"),
               )}
             >
               {code.toUpperCase()}
