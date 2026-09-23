@@ -1,3 +1,4 @@
+import { About } from "@/components/home/About";
 import { BeyondTheBooking } from "@/components/home/BeyondTheBooking";
 import { Faq } from "@/components/home/Faq";
 import { Hero } from "@/components/home/Hero";
@@ -35,6 +36,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <Hero locale={locale} />
       <HowWeRide locale={locale} />
       <ToursWorthRiding locale={locale} />
+      <About locale={locale} />
       <BeyondTheBooking locale={locale} />
       <Faq locale={locale} />
       <PlanYourTrip locale={locale} />

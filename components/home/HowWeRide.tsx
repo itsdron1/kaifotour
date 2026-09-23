@@ -45,7 +45,7 @@ export function HowWeRide({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
 
   return (
-    <section id="about" aria-labelledby="ride-title" className="bg-paper py-20 lg:py-28">
+    <section id="routes" aria-labelledby="ride-title" className="bg-paper py-20 lg:py-28">
       <div className="mx-auto max-w-page px-5 sm:px-8 lg:px-12">
         <Reveal>
           <h2 id="ride-title" className="display max-w-3xl text-display-xl">

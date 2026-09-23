@@ -143,6 +143,32 @@ const ru = {
     consultTitle: "Не знаете, что выбрать?",
     consultText: "Расскажем, какой тур подойдёт именно вам, подберём даты и соберём программу под ваши пожелания.",
   },
+  about: {
+    kicker: "О нас",
+    lead: "Мы — команда экспатов и индонезийцев, для которых Бали — не просто туристическое направление, а дом.",
+    paragraphs: [
+      "Мы живём здесь больше пяти лет, много путешествуем по острову и сами пробуем разные маршруты, активности и места. За это время мы поняли простую вещь: популярное — не всегда лучшее, а самые яркие впечатления часто находятся совсем не там, куда ведут стандартные путеводители.",
+      "Так появился KAIFO — желание делиться тем Бали, который любим мы сами. Мы отбираем то, куда с удовольствием поехали бы сами и что без сомнений посоветовали бы своим друзьям.",
+    ],
+    quote: "Наша идея простая: меньше туристических шаблонов — больше настоящего Бали, эмоций и кайфа от путешествия.",
+    why: {
+      title: "Почему KAIFO?",
+      intro:
+        "KAIFO родилось от слова «кайф» — того самого ощущения, когда всё сложилось и тебе просто хорошо. Для нас в этих пяти буквах — вся философия проекта:",
+      letters: [
+        { letter: "K", word: "Знание", original: "Knowledge", text: "Знать Бали глубже туристических маршрутов." },
+        { letter: "A", word: "Приключение", original: "Adventure", text: "Искать впечатления, которые хочется запомнить." },
+        { letter: "I", word: "Остров", original: "Island", text: "Любить и открывать остров, который стал нашим домом." },
+        { letter: "F", word: "Свобода", original: "Freedom", text: "Путешествовать по-своему и в своём ритме." },
+        {
+          letter: "O",
+          word: "Оригинальность",
+          original: "Original",
+          text: "Выбирать настоящее и интересное, а не просто хорошо разрекламированное.",
+        },
+      ],
+    },
+  },
   stories: {
     title: "Мы создаём маршруты ради моментов, которые хочется запомнить",
     intro: "Мы собираем маршруты ради момента, который остаётся с вами после поездки.",
@@ -393,6 +419,27 @@ const en: Dictionary = {
     badgeNew: "New",
     consultTitle: "Not sure what to choose?",
     consultText: "We will tell you which tour suits you, help with dates and put together a plan around your wishes.",
+  },
+  about: {
+    kicker: "About us",
+    lead: "We're a team of expats and Indonesians for whom Bali isn't just a travel destination — it's home.",
+    paragraphs: [
+      "We've lived here for more than five years, travel around the island a lot and try different routes, activities and places ourselves. Along the way we learned a simple thing: popular isn't always best, and the most vivid experiences are often far from where standard guidebooks lead.",
+      "That's how KAIFO was born — a wish to share the Bali we love ourselves. We only pick what we'd happily go to ourselves and would recommend to our friends without a second thought.",
+    ],
+    quote: "Our idea is simple: fewer tourist clichés — more real Bali, emotions and pure “kaif” from travelling.",
+    why: {
+      title: "Why KAIFO?",
+      intro:
+        "KAIFO comes from the Russian word “kaif” — that very feeling when everything falls into place and you simply feel good. For us, these five letters hold the whole philosophy of the project:",
+      letters: [
+        { letter: "K", word: "Knowledge", original: "", text: "Knowing Bali deeper than the tourist routes." },
+        { letter: "A", word: "Adventure", original: "", text: "Seeking experiences worth remembering." },
+        { letter: "I", word: "Island", original: "", text: "Loving and discovering the island that became our home." },
+        { letter: "F", word: "Freedom", original: "", text: "Travelling your own way, at your own pace." },
+        { letter: "O", word: "Original", original: "", text: "Choosing what's real and interesting, not just well-advertised." },
+      ],
+    },
   },
   stories: {
     title: "We create routes for the moments you'll want to remember",
