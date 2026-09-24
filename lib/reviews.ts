@@ -1,5 +1,9 @@
+import type { PhotoSource } from "@/data/media";
 import { reviews } from "@/data/reviews";
+import { getGoogleReviews, type GoogleRating, type ReviewFromGoogle } from "@/lib/google-reviews";
+import type { Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
+import { getTourCards } from "@/lib/tour-view";
 
 /** Раздел «Отзывы» появляется, когда есть карта или хотя бы один отзыв */
 export const showReviewsSection = reviews.length > 0 || site.googleMaps.embedSrc.length > 0;
@@ -28,4 +32,42 @@ export function reviewDateLabel(date: string, locale: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+/** Карточка отзыва на одном языке: всё, что нужно клиентскому компоненту */
+export interface ReviewCardData extends ReviewFromGoogle {
+  /** Тур, о котором отзыв: фото на карточке и ссылка на страницу тура */
+  tour?: { slug: string; title: string; href: string; image: PhotoSource };
+  /** «Сентябрь 2026» / «September 2026» */
+  dateLabel: string;
+}
+
+/**
+ * Все отзывы вместе, от новых к старым: вручную собранные из data/reviews.ts
+ * и, если подключён Google, отзывы из профиля компании. Отзывы Google нигде не сохраняются.
+ */
+export async function getReviewCards(
+  locale: Locale,
+): Promise<{ cards: ReviewCardData[]; rating: GoogleRating | null }> {
+  const fromGoogle = await getGoogleReviews(locale);
+  const tours = getTourCards(locale);
+
+  const cards = [...reviews, ...fromGoogle.reviews]
+    .map((review) => {
+      const tour = review.tourSlug ? tours.find((item) => item.slug === review.tourSlug) : undefined;
+      return {
+        ...review,
+        dateLabel: reviewDateLabel(review.date, locale),
+        tour: tour ? { slug: tour.slug, title: tour.title, href: tour.href, image: tour.image } : undefined,
+      };
+    })
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const rating =
+    fromGoogle.rating ??
+    (site.googleRating
+      ? { ...site.googleRating, url: site.googleMaps.placeUrl || undefined }
+      : null);
+
+  return { cards, rating };
 }

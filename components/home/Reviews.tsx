@@ -1,30 +1,27 @@
 import { MapPin, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import { ReviewsCarousel, type ReviewCardData } from "@/components/home/ReviewsCarousel";
+import { ReviewsGrid } from "@/components/home/ReviewsGrid";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Reveal } from "@/components/ui/Reveal";
-import { reviews } from "@/data/reviews";
 import { getDictionary } from "@/lib/dictionaries";
+import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
-import { directionsUrl } from "@/lib/reviews";
+import { directionsUrl, getReviewCards } from "@/lib/reviews";
 import { site } from "@/lib/site";
-import { getTourCards } from "@/lib/tour-view";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 /**
- * Раздел «Отзывы»: карусель отзывов гостей и карта точки KAIFO.
- * Отзывы берутся из data/reviews.ts как есть; пока их нет, слева стоит приглашение оставить отзыв.
+ * Раздел «Отзывы»: сетка маленьких карточек и карта точки KAIFO.
+ * Карточки собираются из data/reviews.ts и, если подключён Google, из профиля компании.
+ * Пока отзывов нет ни там, ни там, слева стоит короткое приглашение оставить отзыв.
  */
-export function Reviews({ locale }: { locale: Locale }) {
+export async function Reviews({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
-  const tours = getTourCards(locale);
-  const cards: ReviewCardData[] = reviews.map((review) => {
-    const tour = review.tourSlug ? tours.find((item) => item.slug === review.tourSlug) : undefined;
-    return { ...review, tourHref: tour?.href, tourTitle: tour?.title };
-  });
+  const { cards, rating } = await getReviewCards(locale);
   const address = site.address[locale];
-  const rating = site.googleRating;
   const reviewUrl = site.googleMaps.reviewUrl;
+  const hasMap = site.googleMaps.embedSrc.length > 0;
+  const fromGoogle = cards.some((card) => card.source === "google");
 
   return (
     <section id="reviews" aria-labelledby="reviews-title" className="bg-paper py-20 lg:py-28">
@@ -40,7 +37,14 @@ export function Reviews({ locale }: { locale: Locale }) {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             {rating ? (
               <p className="flex items-center gap-2 border border-divider px-4 py-2.5 font-condensed text-sm font-semibold uppercase tracking-caps text-ink">
-                {fill(t.reviews.ratingBadge, { value: rating.value, count: rating.count })}
+                {rating.url ? (
+                  <a href={rating.url} target="_blank" rel="noopener noreferrer" className="link-underline">
+                    {fill(t.reviews.ratingBadge, { value: rating.value, count: rating.count })}
+                    <span className="sr-only">({t.a11y.newTab})</span>
+                  </a>
+                ) : (
+                  fill(t.reviews.ratingBadge, { value: rating.value, count: rating.count })
+                )}
               </p>
             ) : null}
             {reviewUrl ? (
@@ -57,28 +61,31 @@ export function Reviews({ locale }: { locale: Locale }) {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-7">
+        <div className={cn("mt-12 grid gap-10 lg:gap-12", hasMap && "lg:grid-cols-12")}>
+          <div className={cn(hasMap && "lg:col-span-7")}>
             {cards.length > 0 ? (
-              <ReviewsCarousel
-                reviews={cards}
-                locale={locale}
-                labels={{
-                  carousel: t.reviews.carousel,
-                  prev: t.reviews.prev,
-                  next: t.reviews.next,
-                  readMore: t.reviews.readMore,
-                  readLess: t.reviews.readLess,
-                  rated: t.reviews.rated,
-                  newTab: t.a11y.newTab,
-                }}
-              />
+              <>
+                <ReviewsGrid
+                  reviews={cards}
+                  labels={{
+                    rated: t.reviews.rated,
+                    openReview: t.reviews.openReview,
+                    translated: t.reviews.translated,
+                    newTab: t.a11y.newTab,
+                    showAll: t.reviews.showAll,
+                    close: t.reviews.close,
+                    viewTour: t.reviews.viewTour,
+                    original: t.reviews.original,
+                  }}
+                />
+                {fromGoogle ? <p className="mt-6 text-xs text-label">{t.reviews.fromGoogle}</p> : null}
+              </>
             ) : (
-              <Reveal className="flex h-full flex-col justify-center border border-divider bg-paper p-8 lg:p-10">
-                <p className="display text-balance text-[clamp(1.5rem,1.2rem+0.9vw,2rem)] leading-snug">
+              <Reveal className="flex max-h-[260px] flex-col justify-center border border-divider bg-paper p-6 sm:p-8">
+                <p className="display text-balance text-[clamp(1.375rem,1.1rem+0.8vw,1.75rem)] leading-snug">
                   {t.reviews.emptyText}
                 </p>
-                <div className="mt-8">
+                <div className="mt-6">
                   {reviewUrl ? (
                     <ButtonLink href={reviewUrl} external newTabLabel={t.a11y.newTab}>
                       {t.reviews.leaveReview}
@@ -99,43 +106,45 @@ export function Reviews({ locale }: { locale: Locale }) {
           </div>
 
           {/* Карта не обёрнута в Reveal: трансформация обёртки ломает sticky */}
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-28">
-              <figure className="border border-divider bg-paper p-3 pb-5 shadow-postcard">
-                <iframe
-                  src={site.googleMaps.embedSrc}
-                  title={t.reviews.mapTitle}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                  className="h-[320px] w-full border-0 grayscale-[.35] sepia-[.2] saturate-[.9] transition-[filter] duration-300 hover:grayscale-0 hover:sepia-0 hover:saturate-100 focus-visible:grayscale-0 focus-visible:sepia-0 focus-visible:saturate-100 motion-reduce:transition-none lg:h-[440px]"
-                />
-                <figcaption className="flex items-start gap-2 px-1 pt-4">
-                  <MapPin size={16} weight="fill" aria-hidden="true" className="mt-0.5 shrink-0 text-accent" />
-                  <span>
-                    <span className="block font-condensed text-sm font-semibold uppercase tracking-caps text-ink">
-                      {t.reviews.place}
+          {hasMap ? (
+            <div className="lg:col-span-5">
+              <div className="lg:sticky lg:top-28">
+                <figure className="border border-divider bg-paper p-3 pb-5 shadow-postcard">
+                  <iframe
+                    src={site.googleMaps.embedSrc}
+                    title={t.reviews.mapTitle}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                    className="h-[320px] w-full border-0 grayscale-[.35] sepia-[.2] saturate-[.9] transition-[filter] duration-300 hover:grayscale-0 hover:sepia-0 hover:saturate-100 focus-visible:grayscale-0 focus-visible:sepia-0 focus-visible:saturate-100 motion-reduce:transition-none lg:h-[440px]"
+                  />
+                  <figcaption className="flex items-start gap-2 px-1 pt-4">
+                    <MapPin size={16} weight="fill" aria-hidden="true" className="mt-0.5 shrink-0 text-accent" />
+                    <span>
+                      <span className="block font-condensed text-sm font-semibold uppercase tracking-caps text-ink">
+                        {t.reviews.place}
+                      </span>
+                      {address ? <span className="mt-1 block text-sm leading-snug text-label">{address}</span> : null}
                     </span>
-                    {address ? <span className="mt-1 block text-sm leading-snug text-label">{address}</span> : null}
-                  </span>
-                </figcaption>
-              </figure>
+                  </figcaption>
+                </figure>
 
-              <div className="mt-5 flex flex-wrap gap-3">
-                <ButtonLink
-                  href={site.googleMaps.placeUrl}
-                  external
-                  newTabLabel={t.a11y.newTab}
-                  variant="outline-light"
-                >
-                  {t.reviews.openMap}
-                </ButtonLink>
-                <ButtonLink href={directionsUrl()} external newTabLabel={t.a11y.newTab} variant="outline-light">
-                  {t.reviews.directions}
-                </ButtonLink>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <ButtonLink
+                    href={site.googleMaps.placeUrl}
+                    external
+                    newTabLabel={t.a11y.newTab}
+                    variant="outline-light"
+                  >
+                    {t.reviews.openMap}
+                  </ButtonLink>
+                  <ButtonLink href={directionsUrl()} external newTabLabel={t.a11y.newTab} variant="outline-light">
+                    {t.reviews.directions}
+                  </ButtonLink>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </section>
