@@ -80,6 +80,8 @@ const config = {
         grain: "70",
       },
       boxShadow: {
+        polaroid: "0 10px 18px rgb(var(--color-shade) / 0.45)",
+        "polaroid-lift": "0 26px 40px rgb(var(--color-shade) / 0.6)",
         postcard: "0 22px 44px -22px rgb(var(--color-shade) / 0.7)",
         "postcard-lift": "0 34px 64px -24px rgb(var(--color-shade) / 0.75)",
       },

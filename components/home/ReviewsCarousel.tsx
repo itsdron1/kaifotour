@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRef, useState, type ComponentType } from "react";
 import type { Review, ReviewSource } from "@/data/reviews";
 import { cn } from "@/lib/cn";
+import { DURATION_REVEAL, EASE_REVEAL, STAGGER_STEP } from "@/lib/motion";
 import { fill } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
 import { initialsOf, reviewDateLabel } from "@/lib/reviews";
@@ -71,10 +72,10 @@ function ReviewCard({
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: DURATION_REVEAL, delay: index * STAGGER_STEP, ease: EASE_REVEAL }}
       className="flex h-full flex-col border border-divider bg-paper p-6"
     >
       <span aria-hidden="true" className="display text-4xl leading-none text-accent">

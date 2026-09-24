@@ -17,6 +17,7 @@ import {
 import { Photo } from "@/components/ui/Photo";
 import { TourCardBack } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
+import { DURATION_HOVER, EASE_SOFT, STAGGER_STEP } from "@/lib/motion";
 import type { TourCardData } from "@/lib/tour-view";
 
 export interface ToursCircleLabels {
@@ -49,12 +50,16 @@ const RING_MIN_WIDTH = 690;
 /** Активная карточка приближается и подтягивается к центру, чтобы не уехать за край */
 const ZOOM = 1.6;
 const PULL = 0.3;
-const EASE = [0.2, 0.7, 0.2, 1] as const;
-const DURATION = 0.6;
+const EASE = EASE_SOFT;
+const DURATION = DURATION_HOVER;
+/** Тень на гранях вместо filter: он пересчитывается каждый кадр на каждой карточке */
+const CARD_FACE = "transition-shadow duration-500";
+const CARD_SHADOW = "shadow-polaroid";
+const CARD_SHADOW_LIFTED = "shadow-polaroid-lift";
 const FLIP_DELAY = 0.08;
 /** Пауза перед возвратом: курсор успевает перейти на соседнюю карточку без дёрганья */
 const LEAVE_DELAY_MS = 150;
-const ENTRANCE_STEP = 0.04;
+const ENTRANCE_STEP = STAGGER_STEP;
 
 type CardVariant = "ring" | "carousel";
 
@@ -179,10 +184,7 @@ function CircleCard({
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className={cn(
-          "h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]",
-          active ? "drop-shadow-[0_30px_45px_rgb(var(--color-shade)/0.55)]" : "drop-shadow-[0_14px_22px_rgb(var(--color-shade)/0.45)]",
-        )}
+        className="h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]"
       >
         <motion.div
           className="relative h-full w-full [transform-style:preserve-3d]"
@@ -193,6 +195,8 @@ function CircleCard({
           <div
             className={cn(
               "absolute inset-0 flex flex-col bg-paper p-2 pb-2.5 text-ink [backface-visibility:hidden]",
+              CARD_FACE,
+              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
               "motion-reduce:transition-opacity motion-reduce:duration-300",
               active && "motion-reduce:opacity-0",
             )}
@@ -212,6 +216,8 @@ function CircleCard({
             onClose={onClose}
             className={cn(
               "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+              CARD_FACE,
+              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
               "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
               active && "motion-reduce:opacity-100",
             )}

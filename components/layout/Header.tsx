@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { cn } from "@/lib/cn";
+import { EASE_REVEAL, STAGGER_STEP } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n";
 import type { NavItem } from "@/lib/nav";
 
@@ -128,7 +129,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.4, ease: EASE_REVEAL }}
           >
             <div className="flex h-16 items-center justify-between px-5 sm:px-8">
               <Link href={homeHref} onClick={() => setMenuOpen(false)} className="flex items-baseline gap-2">
@@ -152,7 +153,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
                     key={item.href}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: 0.05 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.4, delay: 0.05 + index * STAGGER_STEP, ease: EASE_REVEAL }}
                   >
                     <Link
                       href={item.href}

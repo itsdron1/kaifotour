@@ -25,6 +25,7 @@ import {
 import { Photo } from "@/components/ui/Photo";
 import { TourCardBack, type TourCardBackLabels } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
+import { DURATION_HOVER, EASE_SOFT } from "@/lib/motion";
 import type { TourCardData } from "@/lib/tour-view";
 
 /*
@@ -67,8 +68,12 @@ const VISIBLE_HEIGHT = CARD_HEIGHT * BASE_SCALE;
  * У краёв сцены рост подрезается ровно настолько, чтобы карточка осталась в кадре.
  */
 const HOVER_SCALE = 0.96;
-const HOVER_DURATION = 0.6;
-const HOVER_EASE = [0.2, 0.7, 0.2, 1] as const;
+const HOVER_DURATION = DURATION_HOVER;
+const HOVER_EASE = EASE_SOFT;
+/** Тень лежит на гранях карточки: box-shadow дешевле, чем filter, который перерисовывается каждый кадр */
+const CARD_FACE = "transition-shadow duration-500";
+const CARD_SHADOW = "shadow-polaroid";
+const CARD_SHADOW_LIFTED = "shadow-polaroid-lift";
 /** Пауза перед возвратом, чтобы карточка не мигала на краю курсора */
 const LEAVE_DELAY_MS = 150;
 /** Насколько близко к краю сцены разрешено подойти увеличенной карточке */
@@ -233,16 +238,18 @@ function FlipCard({
   onClose,
 }: FlipCardProps) {
   const router = useRouter();
-  const compute = ([phase, morph, shuffle, parallax, width, height]: number[]) =>
-    cardTarget(index, total, phase, morph, shuffle, parallax, width, height);
   const stageWidth = inputs[4];
   const stageHeight = inputs[5];
 
-  const targetX = useTransform<number, number>(inputs, (values) => compute(values).x);
-  const targetY = useTransform<number, number>(inputs, (values) => compute(values).y);
-  const targetRotate = useTransform<number, number>(inputs, (values) => compute(values).rotation);
-  const targetScale = useTransform<number, number>(inputs, (values) => compute(values).scale);
-  const targetOpacity = useTransform<number, number>(inputs, (values) => compute(values).opacity);
+  // Место карточки считается один раз за кадр, а не заново для каждой из пяти величин
+  const target = useTransform<number, CardTarget>(inputs, ([phase, morph, shuffle, parallax, width, height]) =>
+    cardTarget(index, total, phase, morph, shuffle, parallax, width, height),
+  );
+  const targetX = useTransform(target, (value) => value.x);
+  const targetY = useTransform(target, (value) => value.y);
+  const targetRotate = useTransform(target, (value) => value.rotation);
+  const targetScale = useTransform(target, (value) => value.scale);
+  const targetOpacity = useTransform(target, (value) => value.opacity);
 
   // Пружина на каждой карточке даёт мягкое «плавание» между фазами, как в исходном компоненте
   const springX = useSpring(targetX, CARD_SPRING);
@@ -332,12 +339,7 @@ function FlipCard({
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className={cn(
-          "h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]",
-          active
-            ? "drop-shadow-[0_26px_40px_rgb(var(--color-shade)/0.6)]"
-            : "drop-shadow-[0_10px_18px_rgb(var(--color-shade)/0.45)]",
-        )}
+        className="h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]"
       >
         {/* Невидимый запас по краям: ловит наведение чуть раньше самой карточки */}
         <span aria-hidden="true" className="absolute -inset-[10px]" />
@@ -350,6 +352,8 @@ function FlipCard({
           <div
             className={cn(
               "absolute inset-0 bg-paper p-1.5 pb-6 [backface-visibility:hidden]",
+              CARD_FACE,
+              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
               "motion-reduce:transition-opacity motion-reduce:duration-300",
               active && "motion-reduce:opacity-0",
             )}
@@ -367,6 +371,8 @@ function FlipCard({
             onClose={onClose}
             className={cn(
               "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+              CARD_FACE,
+              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
               "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
               active && "motion-reduce:opacity-100",
             )}
