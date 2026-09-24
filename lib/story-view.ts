@@ -1,4 +1,4 @@
-import type { PhotoSource } from "@/data/media";
+import { resolveMedia, type PhotoSource } from "@/data/media";
 import { stories, type StoryKind } from "@/data/stories";
 import type { Locale } from "@/lib/i18n";
 import { getTourCards } from "@/lib/tour-view";
@@ -17,6 +17,8 @@ export interface StoryCardData {
   id: string;
   kind: StoryKind;
   text: string;
+  /** Кадр на открытке: фото тура, а у истории гостя без тура — общий кадр секции */
+  image: PhotoSource;
   author?: string;
   location?: string;
   sourceUrl?: string;
@@ -39,6 +41,7 @@ export function getStoryCards(locale: Locale): StoryCardData[] {
         id: story.id,
         kind: story.kind,
         text: story.text[locale],
+        image: tour ? tour.image : resolveMedia("story", locale),
         author: story.author?.[locale],
         location: story.location,
         sourceUrl: story.sourceUrl,

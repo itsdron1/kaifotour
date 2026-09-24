@@ -10,7 +10,6 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { StoryCard, type StoryCardLabels } from "@/components/home/StoryCard";
-import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
 import type { StoryCardData } from "@/lib/story-view";
 import { useAutoCycle } from "@/lib/use-auto-cycle";
@@ -67,6 +66,8 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
   const swipeStart = useRef<number | null>(null);
 
   const total = stories.length;
+  // Карточка «с маршрута» самая высокая: у неё в подписи тур, цена и ссылка
+  const spacer = stories.find((story) => story.kind === "moment") ?? stories[0];
   const paused = hovered || focused || held || manualPause;
   const { index, cycle, running, go } = useAutoCycle(total, DELAY_MS, { enabled: !reducedMotion, paused });
   const lifted = hovered || held;
@@ -153,7 +154,7 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
     "flex h-9 w-9 items-center justify-center border border-divider text-ink transition-colors duration-300 hover:border-accent hover:text-accent-ink";
 
   return (
-    <div className="mx-auto w-full max-w-[420px] lg:ml-auto lg:mr-0">
+    <div className="mx-auto w-full max-w-md lg:ml-auto lg:mr-0">
       <div className="flex items-center justify-between gap-4">
         <p className="kicker text-secondary">{labels.title}</p>
 
@@ -199,8 +200,13 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
         }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
-        className="relative mt-5 h-[312px] outline-offset-8 sm:h-[336px]"
+        className="relative mt-5 outline-offset-8"
       >
+        {/* Распорка: высота стопки равна карточке, поэтому соседние блоки не дёргаются при смене */}
+        <div aria-hidden="true" className="invisible">
+          <StoryCard story={spacer} labels={labels} expanded={false} />
+        </div>
+
         {stories.map((story, cardIndex) => {
           const position = (cardIndex - index + total) % total;
           const visible = position < VISIBLE;
@@ -237,7 +243,7 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
           return (
             <motion.div
               key={story.id}
-              className={cn("absolute inset-x-0 top-0 h-[300px]")}
+              className="absolute inset-0"
               style={{ zIndex: isLeaving ? (leaving.behind ? 0 : 40) : visible ? Z_LAYERS[position] : 0 }}
               initial={false}
               animate={isLeaving ? leaveTarget : target}

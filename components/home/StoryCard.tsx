@@ -17,64 +17,47 @@ interface StoryCardProps {
 }
 
 /**
- * Карточка стопки историй. Два вида с одинаковым размером, чтобы стопка не прыгала:
- * «история гостя» — настоящие слова гостя, «с маршрута» — сцена от лица KAIFO.
+ * Почтовая открытка секции: песочная подложка, фото 4:5 сверху, подпись снизу.
+ * Вид тот же, что был у одиночной карточки истории гостя; меняется только содержание подписи —
+ * у истории гостя это его слова и подпись, у сцены с маршрута — тур, цена и ссылка.
  */
 export function StoryCard({ story, labels, expanded }: StoryCardProps) {
-  const base = "flex h-full w-full flex-col border border-divider bg-paper shadow-polaroid";
-
-  if (story.kind === "guest") {
-    return (
-      <article className={cn(base, "p-6 sm:p-7")}>
-        <p className="kicker text-[0.7rem] text-accent-ink">{labels.guestBadge}</p>
-        <span aria-hidden="true" className="display mt-2 text-5xl leading-none text-accent">
-          «
-        </span>
-        <p
-          className={cn(
-            "mt-1 text-[17px] leading-relaxed text-ink/85",
-            !expanded && "line-clamp-5 [mask-image:linear-gradient(to_bottom,black_72%,transparent)]",
-          )}
-        >
-          {story.text}
-        </p>
-        <div className="mt-auto pt-5">
-          {story.author ? <p className="kicker text-[0.7rem] text-ink/70">{story.author}</p> : null}
-          {story.tour ? (
-            <Link href={story.tour.href} className="kicker mt-3 inline-block text-secondary">
-              <span className="link-underline">{story.tour.title}</span>
-            </Link>
-          ) : null}
-        </div>
-      </article>
-    );
-  }
+  const guest = story.kind === "guest";
+  const text = cn("display mt-3 text-lg leading-snug text-ink", !expanded && "line-clamp-3");
 
   return (
-    <article className={cn(base, "flex-row gap-4 p-5 sm:gap-5 sm:p-6")}>
-      {story.tour ? (
-        <div className="hidden w-[104px] shrink-0 self-start bg-sand p-1.5 pb-4 shadow-polaroid sm:block">
-          <Photo image={story.tour.image} sizes="110px" className="aspect-[3/4] w-full" />
+    <figure
+      className={cn("flex w-full flex-col bg-sand p-4 pb-6 shadow-postcard", expanded ? "h-auto min-h-full" : "h-full")}
+    >
+      <Photo image={story.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
+
+      <figcaption className="flex flex-1 flex-col px-2 pt-5">
+        <p className="kicker text-[0.75rem] text-ink/75">{guest ? labels.guestBadge : labels.momentBadge}</p>
+
+        {guest ? <blockquote className={text}>{story.text}</blockquote> : <p className={text}>{story.text}</p>}
+
+        <div className="mt-auto pt-4">
+          {guest ? (
+            story.author ? (
+              <p className="kicker text-[0.75rem] text-ink/70">{story.author}</p>
+            ) : null
+          ) : story.tour ? (
+            <>
+              <p className="kicker flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-[0.75rem] text-ink/70">
+                <span>{story.tour.title}</span>
+                <span className="text-accent-ink">{story.tour.priceLabel}</span>
+              </p>
+              <Link
+                href={story.tour.href}
+                className="kicker mt-3 inline-flex items-center gap-1.5 text-[0.75rem] text-secondary"
+              >
+                <span className="link-underline">{labels.viewTour}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </>
+          ) : null}
         </div>
-      ) : null}
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <p className="kicker text-[0.7rem] text-secondary">{labels.momentBadge}</p>
-        <p className="display mt-3 text-[21px] leading-snug text-ink">{story.text}</p>
-
-        {story.tour ? (
-          <div className="mt-auto pt-5">
-            <p className="font-condensed text-sm font-semibold uppercase tracking-caps text-ink">{story.tour.title}</p>
-            <p className="mt-1 font-condensed text-sm font-semibold uppercase tracking-caps text-accent-ink">
-              {story.tour.priceLabel}
-            </p>
-            <Link href={story.tour.href} className="kicker mt-3 inline-flex items-center gap-1.5 text-secondary">
-              <span className="link-underline">{labels.viewTour}</span>
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        ) : null}
-      </div>
-    </article>
+      </figcaption>
+    </figure>
   );
 }
