@@ -59,13 +59,13 @@ export function About({ locale }: { locale: Locale }) {
           {/* Пять колонок на десктопе, чтобы буквы читались как слово KAIFO; на мобильном — строки */}
           <ul className="mt-14 grid divide-y divide-on-dark/15 md:mt-16 md:grid-cols-5 md:divide-x md:divide-y-0">
             {t.about.why.letters.map((item, index) => (
-              <li key={item.letter} className="group py-7 md:px-6 md:py-0 md:first:pl-0 md:last:pr-0">
+              <li key={item.letter} className="group py-7 md:px-4 md:py-0 md:first:pl-0 md:last:pr-0">
                 <Reveal delay={index * 0.12} className="flex items-center gap-6 md:flex-col md:items-start md:gap-4">
                   <span className="display shrink-0 text-[5rem] leading-[0.9] text-accent transition-colors duration-300 group-hover:text-[#D8AE60] md:text-[clamp(7.5rem,9vw,10rem)]">
                     {item.letter}
                   </span>
                   <div>
-                    <p className="font-condensed text-base font-semibold uppercase leading-none tracking-[0.15em]">
+                    <p className="break-words font-condensed text-base font-semibold uppercase leading-tight tracking-[0.15em]">
                       {item.word}
                     </p>
                     {item.original ? <p className="kicker mt-2 text-[0.625rem] text-mist">{item.original}</p> : null}
