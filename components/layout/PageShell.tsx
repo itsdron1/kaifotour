@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { getDictionary } from "@/lib/dictionaries";
 import { localizedPath, type Locale } from "@/lib/i18n";
 import { mainNav } from "@/lib/nav";
@@ -19,6 +20,7 @@ export function PageShell({ locale, children, headerVariant = "overlay", after }
 
   return (
     <>
+      <ScrollToTop />
       <a
         href="#main"
         className="kicker sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-menu focus:bg-accent focus:px-5 focus:py-3 focus:text-ink"
