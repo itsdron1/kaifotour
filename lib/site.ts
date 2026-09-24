@@ -20,11 +20,19 @@ const googleMaps: GoogleMapsConfig = {
   destination: "-8.8018513,115.2129072",
 };
 
-/** Адрес точки: заполнится, когда заказчик пришлёт строку адреса. Пустой — в подписи только название */
-const address: Localized = { en: "", ru: "" };
+/** Адрес точки из профиля компании в Google. Пустой — в подписи под картой только название */
+const address: Localized = {
+  en: "Ithon Mart Kuruksetra, Jl. Kuruksetra, Benoa, Kuta Selatan, Badung Regency, Bali 80361, Indonesia",
+  ru: "Ithon Mart Kuruksetra, Jl. Kuruksetra, Беноа, Кута-Селатан, Бадунг, Бали 80361, Индонезия",
+};
 
-/** Рейтинг Google: бейдж показываем только с реальными цифрами */
-const googleRating = null as { value: number; count: number } | null;
+/**
+ * Рейтинг Google: бейдж показываем только с реальными цифрами.
+ * Снято с профиля вручную 24.09.2026 и вручную же обновляется.
+ * Как только в окружении появятся GOOGLE_PLACE_ID и GOOGLE_PLACES_API_KEY,
+ * lib/google-reviews.ts начнёт присылать свежие цифры и эти перекроет.
+ */
+const googleRating = { value: 5, count: 11 } as { value: number; count: number } | null;
 
 /** Подтверждённые контакты и бренд (docs/tz-main.md, раздел 2) */
 export const site = {

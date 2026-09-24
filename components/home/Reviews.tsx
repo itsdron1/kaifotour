@@ -22,6 +22,12 @@ export async function Reviews({ locale }: { locale: Locale }) {
   const reviewUrl = site.googleMaps.reviewUrl;
   const hasMap = site.googleMaps.embedSrc.length > 0;
   const fromGoogle = cards.some((card) => card.source === "google");
+  const ratingValue = rating
+    ? rating.value.toLocaleString(locale === "ru" ? "ru-RU" : "en-US", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      })
+    : null;
 
   return (
     <section id="reviews" aria-labelledby="reviews-title" className="bg-paper py-20 lg:py-28">
@@ -39,11 +45,11 @@ export async function Reviews({ locale }: { locale: Locale }) {
               <p className="flex items-center gap-2 border border-divider px-4 py-2.5 font-condensed text-sm font-semibold uppercase tracking-caps text-ink">
                 {rating.url ? (
                   <a href={rating.url} target="_blank" rel="noopener noreferrer" className="link-underline">
-                    {fill(t.reviews.ratingBadge, { value: rating.value, count: rating.count })}
+                    {fill(t.reviews.ratingBadge, { value: ratingValue ?? rating.value, count: rating.count })}
                     <span className="sr-only">({t.a11y.newTab})</span>
                   </a>
                 ) : (
-                  fill(t.reviews.ratingBadge, { value: rating.value, count: rating.count })
+                  fill(t.reviews.ratingBadge, { value: ratingValue ?? rating.value, count: rating.count })
                 )}
               </p>
             ) : null}
