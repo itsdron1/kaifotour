@@ -1,5 +1,5 @@
 import { MapPin, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
-import { ReviewsGrid } from "@/components/home/ReviewsGrid";
+import { ReviewStack } from "@/components/home/ReviewStack";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Reveal } from "@/components/ui/Reveal";
 import { getDictionary } from "@/lib/dictionaries";
@@ -71,17 +71,20 @@ export async function Reviews({ locale }: { locale: Locale }) {
           <div className={cn(hasMap && "lg:col-span-7")}>
             {cards.length > 0 ? (
               <>
-                <ReviewsGrid
+                <ReviewStack
                   reviews={cards}
                   labels={{
+                    badge: t.reviews.badge,
                     rated: t.reviews.rated,
-                    openReview: t.reviews.openReview,
                     translated: t.reviews.translated,
-                    newTab: t.a11y.newTab,
-                    showAll: t.reviews.showAll,
-                    close: t.reviews.close,
-                    viewTour: t.reviews.viewTour,
                     original: t.reviews.original,
+                    newTab: t.a11y.newTab,
+                    title: t.reviews.stackTitle,
+                    pause: t.reviews.pause,
+                    play: t.reviews.play,
+                    prev: t.reviews.prev,
+                    next: t.reviews.next,
+                    position: t.reviews.position,
                   }}
                 />
                 {fromGoogle ? <p className="mt-6 text-xs text-label">{t.reviews.fromGoogle}</p> : null}

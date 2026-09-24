@@ -1,4 +1,5 @@
 import type { PhotoSource } from "@/data/media";
+import { resolveMedia } from "@/data/media";
 import { reviews } from "@/data/reviews";
 import { getGoogleReviews, type GoogleRating, type ReviewFromGoogle } from "@/lib/google-reviews";
 import type { Locale } from "@/lib/i18n";
@@ -36,6 +37,8 @@ export function reviewDateLabel(date: string, locale: string): string {
 
 /** Карточка отзыва на одном языке: всё, что нужно клиентскому компоненту */
 export interface ReviewCardData extends ReviewFromGoogle {
+  /** Кадр на открытке: фото тура, а без тура — общий кадр секции */
+  image: PhotoSource;
   /** Тур, о котором отзыв: фото на карточке и ссылка на страницу тура */
   tour?: { slug: string; title: string; href: string; image: PhotoSource };
   /** «Сентябрь 2026» / «September 2026» */
@@ -57,6 +60,7 @@ export async function getReviewCards(
       const tour = review.tourSlug ? tours.find((item) => item.slug === review.tourSlug) : undefined;
       return {
         ...review,
+        image: tour ? tour.image : resolveMedia("story", locale),
         dateLabel: reviewDateLabel(review.date, locale),
         tour: tour ? { slug: tour.slug, title: tour.title, href: tour.href, image: tour.image } : undefined,
       };
