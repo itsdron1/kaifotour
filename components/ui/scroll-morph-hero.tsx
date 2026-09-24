@@ -59,17 +59,19 @@ const CARD_HEIGHT = 200;
 const BASE_SCALE = 0.48;
 const VISIBLE_WIDTH = CARD_WIDTH * BASE_SCALE;
 const VISIBLE_HEIGHT = CARD_HEIGHT * BASE_SCALE;
-/** Наведение: карточка выпрямляется, приближается и подтягивается к центру сцены, чтобы не уехать за край */
+/**
+ * Наведение: карточка выпрямляется и увеличивается на месте.
+ * Двигать её нельзя: карточка уедет из-под курсора, ховер сорвётся и всё замигает.
+ * У краёв сцены увеличение уменьшается ровно настолько, чтобы карточка осталась в кадре.
+ */
 const HOVER_ZOOM = 1.3;
 const HOVER_ZOOM_MOBILE = 1.15;
-const HOVER_PULL = 0.2;
 const HOVER_DURATION = 0.6;
 const HOVER_EASE = [0.2, 0.7, 0.2, 1] as const;
 /** Пауза перед возвратом, чтобы карточка не мигала на краю курсора */
 const LEAVE_DELAY_MS = 150;
-/** Отступы увеличенной карточки от краёв сцены и от шапки сайта */
-const EDGE_MARGIN = 24;
-const HEADER_MARGIN = 88;
+/** Насколько близко к краю сцены разрешено подойти увеличенной карточке */
+const HOVER_MARGIN = 12;
 /** Виртуальная прокрутка исходного компонента: 0–600 круг превращается в дугу, 600–3000 дуга сдвигается */
 const MAX_SCROLL = 3000;
 const MORPH_END = 600;
@@ -267,24 +269,18 @@ function FlipCard({
   const baseScale = reducedMotion ? targetScale : springScale;
   const zoom = mobile ? HOVER_ZOOM_MOBILE : HOVER_ZOOM;
 
-  // Увеличенная карточка подтягивается к центру и в конце удерживается в пределах сцены с отступом от краёв
-  const x = useTransform<number, number>([baseX, baseScale, hover, stageWidth], ([value, base, lift, stage]) => {
-    const pulled = value * (1 - HOVER_PULL * lift);
-    if (lift === 0 || stage === 0) return pulled;
-    const half = (CARD_WIDTH * base * (1 + (zoom - 1) * lift)) / 2;
-    const limit = Math.max(stage / 2 - half - EDGE_MARGIN, 0);
-    return lerp(pulled, Math.min(Math.max(pulled, -limit), limit), lift);
-  });
-  const y = useTransform<number, number>([baseY, baseScale, hover, stageHeight], ([value, base, lift, stage]) => {
-    const pulled = value * (1 - HOVER_PULL * lift);
-    if (lift === 0 || stage === 0) return pulled;
-    const half = (CARD_HEIGHT * base * (1 + (zoom - 1) * lift)) / 2;
-    const top = -Math.max(stage / 2 - half - HEADER_MARGIN, 0);
-    const bottom = Math.max(stage / 2 - half - EDGE_MARGIN, 0);
-    return lerp(pulled, Math.min(Math.max(pulled, top), bottom), lift);
-  });
   const rotate = useTransform<number, number>([baseRotate, hover], ([value, lift]) => value * (1 - lift));
-  const scale = useTransform<number, number>([baseScale, hover], ([value, lift]) => value * (1 + (zoom - 1) * lift));
+  // Увеличение подрезается по месту вокруг карточки: у края сцены она растёт меньше, но не сдвигается
+  const scale = useTransform<number, number>(
+    [baseX, baseY, baseScale, hover, stageWidth, stageHeight],
+    ([offsetX, offsetY, base, lift, width, height]) => {
+      if (lift === 0 || width === 0 || height === 0) return base;
+      const roomX = (width / 2 - HOVER_MARGIN - Math.abs(offsetX)) / ((CARD_WIDTH * base) / 2);
+      const roomY = (height / 2 - HOVER_MARGIN - Math.abs(offsetY)) / ((CARD_HEIGHT * base) / 2);
+      const allowed = Math.max(1, Math.min(zoom, roomX, roomY));
+      return base * (1 + (allowed - 1) * lift);
+    },
+  );
 
   function handlePointerEnter(event: ReactPointerEvent<HTMLDivElement>) {
     if (event.pointerType === "mouse") onActivate();
@@ -318,8 +314,8 @@ function FlipCard({
         marginLeft: -CARD_WIDTH / 2,
         marginTop: -CARD_HEIGHT / 2,
         zIndex: active ? 20 : undefined,
-        x,
-        y,
+        x: baseX,
+        y: baseY,
         rotate,
         scale,
         opacity: reducedMotion ? targetOpacity : springOpacity,
@@ -346,6 +342,8 @@ function FlipCard({
             : "drop-shadow-[0_10px_18px_rgb(var(--color-shade)/0.45)]",
         )}
       >
+        {/* Невидимый запас по краям: ловит наведение чуть раньше самой карточки */}
+        <span aria-hidden="true" className="absolute -inset-[10px]" />
         <motion.div
           className="relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: active ? 180 : 0 }}
