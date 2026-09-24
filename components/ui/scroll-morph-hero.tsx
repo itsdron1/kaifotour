@@ -60,7 +60,7 @@ const BASE_SCALE = 0.48;
 const VISIBLE_WIDTH = CARD_WIDTH * BASE_SCALE;
 const VISIBLE_HEIGHT = CARD_HEIGHT * BASE_SCALE;
 /** Наведение: карточка выпрямляется, приближается и подтягивается к центру сцены, чтобы не уехать за край */
-const HOVER_ZOOM = 1.35;
+const HOVER_ZOOM = 1.3;
 const HOVER_ZOOM_MOBILE = 1.15;
 const HOVER_PULL = 0.2;
 const HOVER_DURATION = 0.6;
