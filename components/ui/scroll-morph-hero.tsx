@@ -62,10 +62,11 @@ const VISIBLE_HEIGHT = CARD_HEIGHT * BASE_SCALE;
 /**
  * Наведение: карточка выпрямляется и увеличивается на месте.
  * Двигать её нельзя: карточка уедет из-под курсора, ховер сорвётся и всё замигает.
- * У краёв сцены увеличение уменьшается ровно настолько, чтобы карточка осталась в кадре.
+ * Растёт до размера макета, чтобы текст на обороте читался: из круга это примерно двойное
+ * увеличение, из дуги — небольшое, зато карточка везде одного размера.
+ * У краёв сцены рост подрезается ровно настолько, чтобы карточка осталась в кадре.
  */
-const HOVER_ZOOM = 1.3;
-const HOVER_ZOOM_MOBILE = 1.15;
+const HOVER_SCALE = 0.96;
 const HOVER_DURATION = 0.6;
 const HOVER_EASE = [0.2, 0.7, 0.2, 1] as const;
 /** Пауза перед возвратом, чтобы карточка не мигала на краю курсора */
@@ -213,7 +214,6 @@ interface FlipCardProps {
   inputs: MotionValue<number>[];
   labels: TourCardBackLabels;
   reducedMotion: boolean;
-  mobile: boolean;
   active: boolean;
   onActivate: () => void;
   onRelease: () => void;
@@ -227,7 +227,6 @@ function FlipCard({
   inputs,
   labels,
   reducedMotion,
-  mobile,
   active,
   onActivate,
   onRelease,
@@ -267,18 +266,16 @@ function FlipCard({
   const baseY = reducedMotion ? targetY : springY;
   const baseRotate = reducedMotion ? targetRotate : springRotate;
   const baseScale = reducedMotion ? targetScale : springScale;
-  const zoom = mobile ? HOVER_ZOOM_MOBILE : HOVER_ZOOM;
 
   const rotate = useTransform<number, number>([baseRotate, hover], ([value, lift]) => value * (1 - lift));
-  // Увеличение подрезается по месту вокруг карточки: у края сцены она растёт меньше, но не сдвигается
+  // Рост подрезается по месту вокруг карточки: у края сцены она вырастет меньше, но не сдвинется
   const scale = useTransform<number, number>(
     [baseX, baseY, baseScale, hover, stageWidth, stageHeight],
     ([offsetX, offsetY, base, lift, width, height]) => {
       if (lift === 0 || width === 0 || height === 0) return base;
-      const roomX = (width / 2 - HOVER_MARGIN - Math.abs(offsetX)) / ((CARD_WIDTH * base) / 2);
-      const roomY = (height / 2 - HOVER_MARGIN - Math.abs(offsetY)) / ((CARD_HEIGHT * base) / 2);
-      const allowed = Math.max(1, Math.min(zoom, roomX, roomY));
-      return base * (1 + (allowed - 1) * lift);
+      const roomX = (width / 2 - HOVER_MARGIN - Math.abs(offsetX)) / (CARD_WIDTH / 2);
+      const roomY = (height / 2 - HOVER_MARGIN - Math.abs(offsetY)) / (CARD_HEIGHT / 2);
+      return lerp(base, Math.max(base, Math.min(HOVER_SCALE, roomX, roomY)), lift);
     },
   );
 
@@ -427,7 +424,6 @@ export function ScrollMorphHero({
   const [placement, setPlacement] = useState<ActionsPlacement>("corner");
   const [introAway, setIntroAway] = useState(false);
   const [arcReady, setArcReady] = useState(false);
-  const [mobile, setMobile] = useState(false);
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const leaveTimer = useRef<number | null>(null);
 
@@ -444,7 +440,6 @@ export function ScrollMorphHero({
       const stageHeight = stage.clientHeight;
       width.set(stageWidth);
       height.set(stageHeight);
-      setMobile(stageWidth < 768);
       stage.style.setProperty("--ring", `${ringRadius(stageWidth, stageHeight)}px`);
       const items = actionsRef.current
         ? Array.from(actionsRef.current.children).filter((child): child is HTMLElement => child instanceof HTMLElement)
@@ -586,7 +581,6 @@ export function ScrollMorphHero({
               inputs={inputs}
               labels={cardLabels}
               reducedMotion={reducedMotion}
-              mobile={mobile}
               active={card.slug === activeCard}
               onActivate={() => activateCard(card.slug)}
               onRelease={releaseCard}
