@@ -79,6 +79,17 @@ const config = {
         cursor: "60",
         grain: "70",
       },
+      keyframes: {
+        /** Индикатор стопки историй: линия заполняется слева направо */
+        "story-progress": {
+          from: { transform: "scaleX(0)" },
+          to: { transform: "scaleX(1)" },
+        },
+      },
+      animation: {
+        /** 3000ms — столько же ждёт таймер в components/home/StoryStack.tsx */
+        "story-progress": "story-progress 3000ms linear forwards",
+      },
       boxShadow: {
         polaroid: "0 10px 18px rgb(var(--color-shade) / 0.45)",
         "polaroid-lift": "0 26px 40px rgb(var(--color-shade) / 0.6)",

@@ -1,10 +1,10 @@
-import { Photo } from "@/components/ui/Photo";
+import { StoryStack } from "@/components/home/StoryStack";
 import { Reveal } from "@/components/ui/Reveal";
-import { resolveMedia } from "@/data/media";
 import { publishedTours } from "@/data/tours";
 import { getDictionary } from "@/lib/dictionaries";
 import { plural } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
+import { getStoryCards } from "@/lib/story-view";
 
 /**
  * Секция о моментах поездки (docs/editorial-style.md, раздел 4).
@@ -42,18 +42,7 @@ export function BeyondTheBooking({ locale }: { locale: Locale }) {
         </div>
 
         <Reveal className="lg:col-span-5 lg:pt-4" delay={0.1}>
-          <figure className="relative mx-auto max-w-md rotate-[1.5deg] bg-sand p-4 pb-6 shadow-postcard lg:mr-0">
-            <Photo
-              image={resolveMedia("story", locale)}
-              sizes="(min-width: 1024px) 28rem, 90vw"
-              className="aspect-[4/5] w-full"
-            />
-            <figcaption className="px-2 pt-5">
-              <p className="kicker text-[0.75rem] text-ink/75">{t.stories.storyLabel}</p>
-              <blockquote className="display mt-3 text-lg leading-snug text-ink">{t.stories.storyQuote}</blockquote>
-              <p className="kicker mt-4 text-[0.75rem] text-ink/70">{t.stories.storyAuthor}</p>
-            </figcaption>
-          </figure>
+          <StoryStack stories={getStoryCards(locale)} labels={t.stories.stack} />
         </Reveal>
       </div>
     </section>

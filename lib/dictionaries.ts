@@ -187,10 +187,17 @@ const ru = {
       many: "маршрутов и активностей",
       other: "маршрута и активности",
     }),
-    storyLabel: "История гостя",
-    storyQuote:
-      "Мы планировали просто съездить на Бали на неделю, но в итоге каждый день получался совершенно разным. Снорклинг, поездка к вулкану, ATV, закат на лодке — и всё без ощущения, что мы куда-то спешим. Наверное, именно таким Бали и запомнится больше всего.",
-    storyAuthor: "— Гость KAIFO",
+    stack: {
+      title: "Моменты с маршрутов",
+      guestBadge: "История гостя",
+      momentBadge: "С маршрута",
+      viewTour: "Смотреть тур",
+      pause: "Остановить показ историй",
+      play: "Продолжить показ историй",
+      prev: "Предыдущая история",
+      next: "Следующая история",
+      position: "История {index} из {total}",
+    },
   },
   reviews: {
     kicker: "Отзывы",
@@ -474,10 +481,17 @@ const en: Dictionary = {
       guests: { value: "1 200+", label: "happy guests" },
     },
     catalogStat: pf({ one: "route and activity", other: "routes and activities" }),
-    storyLabel: "Guest story",
-    storyQuote:
-      "We planned just a week in Bali, but every day turned out completely different. Snorkeling, a trip to the volcano, ATVs, a sunset on a boat — and never the feeling that we were rushing anywhere. That's probably how we'll remember Bali most.",
-    storyAuthor: "— KAIFO guest",
+    stack: {
+      title: "Moments from our routes",
+      guestBadge: "Guest story",
+      momentBadge: "From the route",
+      viewTour: "View tour",
+      pause: "Pause stories",
+      play: "Play stories",
+      prev: "Previous story",
+      next: "Next story",
+      position: "Story {index} of {total}",
+    },
   },
   reviews: {
     kicker: "Reviews",
