@@ -4,7 +4,10 @@
 
 - **Название: KAIFO** (раньше KAIFOTOUR BALI). В видимом тексте, `<title>`, meta description, Open Graph, JSON-LD и alt-текстах — только KAIFO.
 - **Не переименовывать:** домен `kaifotour-bali.com`, почтовый адрес, имя пакета `kaifotour-bali` в package.json, имя проекта в Vercel, имя dev-сервера `kaifotour-dev` в `.claude/launch.json`.
-- **Логотип:** ожидается в `public/brand/kaifo-logo.svg`, светлая версия для тёмной шапки — `public/brand/kaifo-logo-light.svg`. Файлов пока нет, поэтому в шапке и футере стоит текстовый вордмарк «KAIFO» (Playfair Display italic). Когда файл появится: next/image, `alt="KAIFO"`, ссылка на `/`, высота 30px на десктопе и 24px на мобильном, без приписки «BALI» рядом; SVG скопировать в `app/icon.svg` как favicon.
+- **Логотип:** файлы в `public/brand/` — `kaifo-logo.svg` (тёмные буквы, для светлого фона), `kaifo-logo-light.svg` (светлые буквы и волны посветлее, для тёмного #0F2230), те же логотипы в PNG 2400px, `kaifo-icon.svg` (значок вкладки, сам подстраивается под тёмную тему браузера), `kaifo-icon-512.png`, `apple-icon.png` 180×180.
+- **Правило фона:** на тёмном — `kaifo-logo-light.svg`, на светлом — `kaifo-logo.svg`. Пропорции 4352 × 1228 (ширина ≈ 3.54 × высоты). Размеры: шапка 36×128 на десктопе и 28×99 на мобильном, футер 44×156. Вставляем через next/image с `unoptimized`, всегда с `width`/`height`, `alt="KAIFO"`, ссылка на главную текущего языка.
+- **Логотип не перерисовываем и не перекрашиваем** через CSS (`filter`, `fill`) — только эти файлы. Иконки вкладки и iPhone подключены один раз в `rootMetadata` (`lib/seo.ts`), общий для `app/(en)` и `app/(ru)`.
+- **KAIFO в обычном тексте** (заголовки, «Почему KAIFO?», буквы K-A-I-F-O в разделе «О нас», title и описания) остаётся текстом: это смысл и SEO, а не логотип.
 
 ## Контакты
 

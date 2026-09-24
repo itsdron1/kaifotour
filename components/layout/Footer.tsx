@@ -1,4 +1,5 @@
 import { EnvelopeSimple, InstagramLogo, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -42,9 +43,9 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="border-t border-ink/15 bg-sand text-ink">
       <div className="mx-auto max-w-page px-5 pb-10 pt-16 sm:px-8 lg:px-12 lg:pt-20">
-        <p className="font-condensed text-[clamp(3rem,1.6rem+6.4vw,8.75rem)] font-semibold uppercase leading-[0.88] tracking-[0.005em]">
-          KAIFO
-        </p>
+        <Link href={localizedPath(locale, "/")} className="inline-flex items-center">
+          <Image src="/brand/kaifo-logo.svg" alt="KAIFO" width={156} height={44} unoptimized className="h-11 w-[156px]" />
+        </Link>
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/80">{t.footer.tagline}</p>
 
         <div className="mt-14 grid gap-12 md:grid-cols-2 lg:grid-cols-12">

@@ -2,6 +2,7 @@
 
 import { List, WhatsappLogo, X } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
@@ -29,9 +30,21 @@ export interface HeaderProps {
   };
 }
 
-function Wordmark() {
+/**
+ * Логотип шапки и меню: и прозрачная шапка поверх hero, и тёмная после скролла, и меню — тёмный фон,
+ * поэтому везде светлый вариант. Размеры заданы явно, чтобы при загрузке ничего не прыгало.
+ */
+function Logo() {
   return (
-    <span className="font-display text-[1.375rem] font-semibold italic leading-none tracking-[0.02em]">KAIFO</span>
+    <Image
+      src="/brand/kaifo-logo-light.svg"
+      alt="KAIFO"
+      width={128}
+      height={36}
+      unoptimized
+      priority
+      className="h-7 w-[99px] lg:h-9 lg:w-32"
+    />
   );
 }
 
@@ -76,8 +89,8 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
           )}
         />
         <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-6 px-5 sm:px-8 lg:h-[72px] lg:px-12">
-          <Link href={homeHref} aria-label={labels.home} className="flex items-baseline gap-2">
-            <Wordmark />
+          <Link href={homeHref} aria-label={labels.home} className="inline-flex items-center">
+            <Logo />
           </Link>
 
           <nav aria-label={labels.mainNav} className="hidden lg:block">
@@ -132,8 +145,8 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
             transition={{ duration: 0.4, ease: EASE_REVEAL }}
           >
             <div className="flex h-16 items-center justify-between px-5 sm:px-8">
-              <Link href={homeHref} onClick={() => setMenuOpen(false)} className="flex items-baseline gap-2">
-                <Wordmark />
+              <Link href={homeHref} onClick={() => setMenuOpen(false)} className="inline-flex items-center">
+                <Logo />
               </Link>
               <button
                 ref={closeButtonRef}

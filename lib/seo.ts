@@ -7,7 +7,10 @@ export const rootMetadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.name, template: `%s | ${site.name}` },
   applicationName: site.name,
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: "/brand/kaifo-icon.svg",
+    apple: { url: "/brand/apple-icon.png", sizes: "180x180" },
+  },
   formatDetection: { telephone: false, email: false, address: false },
 };
 
