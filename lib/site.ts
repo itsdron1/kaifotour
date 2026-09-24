@@ -1,3 +1,31 @@
+import type { Localized } from "@/lib/i18n";
+
+interface GoogleMapsConfig {
+  /** src для iframe: подходит и код из «Встраивание карт», и форма maps.google.com/maps?...&output=embed */
+  embedSrc: string;
+  /** Обычная ссылка на точку для кнопки «Открыть в Google Картах» */
+  placeUrl: string;
+  /** Ссылка «Оставить отзыв» из профиля компании. Пустая — ссылку не показываем */
+  reviewUrl: string;
+  /** Координаты точки «широта,долгота» для маршрута и JSON-LD */
+  destination: string;
+}
+
+/** Точка KAIFO на карте: координаты из ссылки профиля компании в Google */
+const googleMaps: GoogleMapsConfig = {
+  embedSrc:
+    "https://maps.google.com/maps?q=KAIFO%20Bali%20%7C%20Tours%20%26%20Activities&ll=-8.8018513,115.2129072&z=16&output=embed",
+  placeUrl: "https://maps.app.goo.gl/HK4zf7YeTPh8icdv6",
+  reviewUrl: "",
+  destination: "-8.8018513,115.2129072",
+};
+
+/** Адрес точки: заполнится, когда заказчик пришлёт строку адреса. Пустой — в подписи только название */
+const address: Localized = { en: "", ru: "" };
+
+/** Рейтинг Google: бейдж показываем только с реальными цифрами */
+const googleRating = null as { value: number; count: number } | null;
+
 /** Подтверждённые контакты и бренд (docs/tz-main.md, раздел 2) */
 export const site = {
   name: "KAIFO",
@@ -15,4 +43,7 @@ export const site = {
     url: "https://instagram.com/kaifo.bali",
   },
   email: "kaifotourbali@gmail.com",
+  googleMaps,
+  address,
+  googleRating,
 } as const;
