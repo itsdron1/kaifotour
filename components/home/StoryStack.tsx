@@ -64,6 +64,7 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
   const [announcement, setAnnouncement] = useState("");
   const previousIndex = useRef(0);
   const swipeStart = useRef<number | null>(null);
+  const suppressClick = useRef(false);
 
   const total = stories.length;
   // Карточка «с маршрута» самая высокая: у неё в подписи тур, цена и ссылка
@@ -142,11 +143,13 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
 
     const delta = event.clientX - start;
     if (Math.abs(delta) >= SWIPE_MIN) {
+      suppressClick.current = true;
       setHeld(false);
       navigate(delta < 0 ? 1 : -1);
       return;
     }
-    if ((event.target as Element | null)?.closest("a, button")) return;
+    if ((event.target as Element | null)?.closest("a[target], button")) return;
+    suppressClick.current = true;
     setHeld((value) => !value);
   }
 
@@ -200,6 +203,12 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
         }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
+        onClickCapture={(event) => {
+          // Тап и свайп по стопке не должны открывать тур: ссылку открывает только клик мышью
+          if (!suppressClick.current) return;
+          suppressClick.current = false;
+          event.preventDefault();
+        }}
         className="relative mt-5 outline-offset-8"
       >
         {/* Распорка: высота стопки равна карточке, поэтому соседние блоки не дёргаются при смене */}

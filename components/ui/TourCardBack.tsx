@@ -1,5 +1,4 @@
 import { ArrowRight, WhatsappLogo, X } from "@phosphor-icons/react";
-import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { TourCardData } from "@/lib/tour-view";
 
@@ -53,30 +52,29 @@ export function TourCardBack({ card, labels, includes = 3, onClose, className }:
       </ul>
 
       <div className="mt-auto flex flex-col gap-1 pt-2">
+        {/* Кнопка живёт над растянутой ссылкой карточки, иначе тап по ней открыл бы страницу тура */}
         <a
           href={card.bookHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 bg-accent px-2 py-1.5 text-center font-condensed text-[0.8125rem] font-semibold uppercase leading-tight tracking-caps text-ink"
+          className="pointer-events-auto relative z-10 flex items-center justify-center gap-1.5 bg-accent px-2 py-1.5 text-center font-condensed text-[0.8125rem] font-semibold uppercase leading-tight tracking-caps text-ink"
         >
           <WhatsappLogo size={14} aria-hidden="true" />
           {labels.book}
           <span className="sr-only">({labels.newTab})</span>
         </a>
-        <Link
-          href={card.href}
-          className="flex items-center justify-center gap-1 font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-ink"
-        >
+        {/* Не ссылка: на страницу тура ведёт вся карточка, вложенные ссылки недопустимы */}
+        <span className="flex items-center justify-center gap-1 font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-ink">
           {labels.details}
           <ArrowRight size={12} aria-hidden="true" />
-        </Link>
+        </span>
       </div>
 
       {onClose ? (
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center text-ink/60 transition-colors hover:text-ink"
+          className="pointer-events-auto absolute right-1 top-1 z-10 flex h-6 w-6 items-center justify-center text-ink/60 transition-colors hover:text-ink"
         >
           <X size={12} aria-hidden="true" />
           <span className="sr-only">{labels.close}</span>

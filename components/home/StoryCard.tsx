@@ -27,7 +27,10 @@ export function StoryCard({ story, labels, expanded }: StoryCardProps) {
 
   return (
     <figure
-      className={cn("flex w-full flex-col bg-sand p-4 pb-6 shadow-postcard", expanded ? "h-auto min-h-full" : "h-full")}
+      className={cn(
+        "relative flex w-full flex-col bg-sand p-4 pb-6 shadow-postcard",
+        expanded ? "h-auto min-h-full" : "h-full",
+      )}
     >
       <Photo image={story.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
 
@@ -47,9 +50,10 @@ export function StoryCard({ story, labels, expanded }: StoryCardProps) {
                 <span>{story.tour.title}</span>
                 <span className="text-accent-ink">{story.tour.priceLabel}</span>
               </p>
+              {/* Растянутая ссылка: клик по всей открытке открывает тур */}
               <Link
                 href={story.tour.href}
-                className="kicker mt-3 inline-flex items-center gap-1.5 text-[0.75rem] text-secondary"
+                className="kicker mt-3 inline-flex items-center gap-1.5 text-[0.75rem] text-secondary after:absolute after:inset-0 after:content-['']"
               >
                 <span className="link-underline">{labels.viewTour}</span>
                 <span aria-hidden="true">→</span>

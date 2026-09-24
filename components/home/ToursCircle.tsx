@@ -3,7 +3,6 @@
 import { ArrowRight } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -59,6 +58,8 @@ const CARD_SHADOW_LIFTED = "shadow-polaroid-lift";
 const FLIP_DELAY = 0.08;
 /** Пауза перед возвратом: курсор успевает перейти на соседнюю карточку без дёрганья */
 const LEAVE_DELAY_MS = 150;
+/** Дальше этого расстояния движение указателя считается свайпом, а не кликом */
+const DRAG_SLOP = 6;
 const ENTRANCE_STEP = STAGGER_STEP;
 
 type CardVariant = "ring" | "carousel";
@@ -112,7 +113,7 @@ function CircleCard({
   onRelease,
   onClose,
 }: CircleCardProps) {
-  const router = useRouter();
+  const press = useRef<{ x: number; y: number; touch: boolean } | null>(null);
   const ring = variant === "ring";
   const angle = ((index * 360) / count - 90) * (Math.PI / 180);
   const x = Math.cos(angle) * radius;
@@ -138,19 +139,32 @@ function CircleCard({
     if (event.pointerType === "mouse") onRelease();
   }
 
-  // Первый тап на тач-устройстве переворачивает карточку, кнопки на обороте работают как обычно
+  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    press.current = { x: event.clientX, y: event.clientY, touch: event.pointerType !== "mouse" };
+  }
+
+  /**
+   * Клик по карточке открывает тур настоящей ссылкой. Два исключения:
+   * указатель протащили дальше DRAG_SLOP — это свайп, а не клик;
+   * первый тап на тач-устройстве переворачивает карточку, тур откроет второй.
+   */
   function handleClick(event: ReactMouseEvent<HTMLDivElement>) {
-    if ((event.target as Element | null)?.closest("a, button")) return;
-    if (!active) onActivate();
+    const start = press.current;
+    press.current = null;
+    if ((event.target as Element | null)?.closest("a[target], button")) return;
+
+    if (start && Math.hypot(event.clientX - start.x, event.clientY - start.y) > DRAG_SLOP) {
+      event.preventDefault();
+      return;
+    }
+    if (start?.touch && !active) {
+      event.preventDefault();
+      onActivate();
+    }
   }
 
   function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Enter" && event.target === event.currentTarget) {
-      event.preventDefault();
-      router.push(card.href);
-    } else if (event.key === "Escape") {
-      onClose();
-    }
+    if (event.key === "Escape") onClose();
   }
 
   return (
@@ -173,21 +187,26 @@ function CircleCard({
       transition={{ duration: DURATION, ease: EASE, delay: settled ? 0 : index * ENTRANCE_STEP }}
     >
       <div
-        role="group"
-        tabIndex={0}
-        aria-label={`${card.title}, ${card.priceLabel}`}
+        data-tour-card="true"
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
         onFocus={onActivate}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className="h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]"
+        className="h-full w-full [perspective:1200px]"
       >
+        {/* Ссылка на тур на всю карточку: содержимое открытки кликов не ловит */}
+        <Link
+          href={card.href}
+          aria-label={`${card.title}, ${card.priceLabel}`}
+          className="absolute inset-0 cursor-pointer outline-offset-4"
+        />
         <motion.div
-          className="relative h-full w-full [transform-style:preserve-3d]"
+          className="pointer-events-none relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: active ? 180 : 0 }}
           transition={{ duration: DURATION, ease: EASE, delay: active ? FLIP_DELAY : 0 }}
         >

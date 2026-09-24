@@ -22,7 +22,7 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
   const Heading = headingLevel;
 
   return (
-    <article className="group flex h-full flex-col">
+    <article className="group relative flex h-full flex-col">
       <Link href={card.href} tabIndex={-1} aria-hidden="true" className="block overflow-hidden">
         <Photo
           image={card.image}
@@ -41,7 +41,11 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
         </div>
 
         <Heading className="display mt-2.5 text-[1.875rem] leading-[1.15] text-ink">
-          <Link href={card.href} className="transition-colors duration-300 hover:text-secondary">
+          {/* Растянутая ссылка: её ::after накрывает карточку целиком */}
+          <Link
+            href={card.href}
+            className="transition-colors duration-300 after:absolute after:inset-0 after:content-[''] hover:text-secondary"
+          >
             {card.title}
           </Link>
         </Heading>
@@ -70,10 +74,11 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
               external
               newTabLabel={labels.newTab}
               icon={<WhatsappLogo size={18} aria-hidden="true" />}
+              className="relative z-10"
             >
               {labels.book}
             </ButtonLink>
-            <Link href={card.href} className="kicker inline-flex items-center gap-2 py-3 text-ink">
+            <Link href={card.href} className="kicker relative z-10 inline-flex items-center gap-2 py-3 text-ink">
               <span className="link-underline">{labels.details}</span>
               <ArrowRight size={14} aria-hidden="true" />
             </Link>

@@ -11,7 +11,7 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -76,6 +76,8 @@ const CARD_SHADOW = "shadow-polaroid";
 const CARD_SHADOW_LIFTED = "shadow-polaroid-lift";
 /** Пауза перед возвратом, чтобы карточка не мигала на краю курсора */
 const LEAVE_DELAY_MS = 150;
+/** Дальше этого расстояния движение указателя считается свайпом, а не кликом */
+const DRAG_SLOP = 6;
 /** Насколько близко к краю сцены разрешено подойти увеличенной карточке */
 const HOVER_MARGIN = 12;
 /** Виртуальная прокрутка исходного компонента: 0–600 круг превращается в дугу, 600–3000 дуга сдвигается */
@@ -237,7 +239,7 @@ function FlipCard({
   onRelease,
   onClose,
 }: FlipCardProps) {
-  const router = useRouter();
+  const press = useRef<{ x: number; y: number; touch: boolean } | null>(null);
   const stageWidth = inputs[4];
   const stageHeight = inputs[5];
 
@@ -294,19 +296,32 @@ function FlipCard({
     if (event.pointerType === "mouse") onRelease();
   }
 
-  // Первый тап на тач-устройстве переворачивает карточку, кнопки на обороте работают как обычно
+  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    press.current = { x: event.clientX, y: event.clientY, touch: event.pointerType !== "mouse" };
+  }
+
+  /**
+   * Клик по карточке открывает тур настоящей ссылкой. Два исключения:
+   * указатель протащили дальше DRAG_SLOP — это свайп, а не клик;
+   * первый тап на тач-устройстве переворачивает карточку, тур откроет второй.
+   */
   function handleClick(event: ReactMouseEvent<HTMLDivElement>) {
-    if ((event.target as Element | null)?.closest("a, button")) return;
-    if (!active) onActivate();
+    const start = press.current;
+    press.current = null;
+    if ((event.target as Element | null)?.closest("a[target], button")) return;
+
+    if (start && Math.hypot(event.clientX - start.x, event.clientY - start.y) > DRAG_SLOP) {
+      event.preventDefault();
+      return;
+    }
+    if (start?.touch && !active) {
+      event.preventDefault();
+      onActivate();
+    }
   }
 
   function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Enter" && event.target === event.currentTarget) {
-      event.preventDefault();
-      router.push(card.href);
-    } else if (event.key === "Escape") {
-      onClose();
-    }
+    if (event.key === "Escape") onClose();
   }
 
   return (
@@ -328,23 +343,26 @@ function FlipCard({
       {/* Обёртка ловит наведение и фокус и сама не вращается: иначе на повороте в 90° карточка встаёт ребром и ховер мигает */}
       <div
         data-tour-card="true"
-        role="group"
-        tabIndex={0}
-        aria-label={`${card.title}, ${card.priceLabel}`}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
         onFocus={onActivate}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
         }}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className="h-full w-full cursor-pointer outline-offset-4 [perspective:1200px]"
+        className="h-full w-full [perspective:1200px]"
       >
-        {/* Невидимый запас по краям: ловит наведение чуть раньше самой карточки */}
-        <span aria-hidden="true" className="absolute -inset-[10px]" />
+        {/* Ссылка на тур перекрывает карточку с запасом: за этот же запас цепляется наведение */}
+        <Link
+          href={card.href}
+          aria-label={`${card.title}, ${card.priceLabel}`}
+          className="absolute -inset-[10px] cursor-pointer outline-offset-4"
+        />
+        {/* Сама открытка кликов не ловит: они достаются ссылке под ней */}
         <motion.div
-          className="relative h-full w-full [transform-style:preserve-3d]"
+          className="pointer-events-none relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: active ? 180 : 0 }}
           transition={FLIP_TRANSITION}
         >
