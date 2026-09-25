@@ -6,8 +6,12 @@ function groupDigits(value: number, separator: string): string {
   return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
-/** 1600000 → "1 600 000 IDR" (ru) или "1,600,000 IDR" (en). Без Intl, чтобы сервер и браузер совпадали. */
+/**
+ * Полная цена: 1600000 → "1 600 000 IDR" (ru), "1,600,000 IDR" (en), "Rp1.600.000" (id).
+ * Без Intl, чтобы сервер и браузер совпадали.
+ */
 export function formatIDR(value: number, locale: Locale): string {
+  if (locale === "id") return `Rp${groupDigits(value, ".")}`;
   return `${groupDigits(value, locale === "ru" ? NBSP : ",")}${NBSP}IDR`;
 }
 
