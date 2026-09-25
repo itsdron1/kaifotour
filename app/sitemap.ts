@@ -3,7 +3,7 @@ import { publishedTours } from "@/data/tours";
 import { localizedPath, locales } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
-/** sitemap.xml: главная, каталог и опубликованные туры на RU и EN с hreflang-альтернативами */
+/** sitemap.xml: главная, каталог и опубликованные туры на всех языках с hreflang-альтернативами */
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = ["/", "/tours", ...publishedTours.map((tour) => `/tours/${tour.slug}`)];
   const lastModified = new Date();

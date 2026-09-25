@@ -49,7 +49,7 @@ export function getPriceBucket(price: number | null): PriceBucket {
 export function formatPriceFrom(price: number | null, locale: Locale, compact = true): string {
   const t = getDictionary(locale);
   if (price === null) return t.price.onRequest;
-  return `${t.price.from} ${compact ? formatIDRCompact(price) : formatIDR(price, locale)}`;
+  return `${t.price.from} ${compact ? formatIDRCompact(price, locale) : formatIDR(price, locale)}`;
 }
 
 export function tourHref(slug: string, locale: Locale): string {

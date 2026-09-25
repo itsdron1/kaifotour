@@ -10,7 +10,311 @@ const pf = (forms: PluralForms): PluralForms => forms;
  * русские варианты там, где они даны, оттуда же; остальное переведено
  * и требует редактуры заказчика (см. раздел 4 editorial-style.md).
  */
-const ru = {
+/** Английский — основной словарь: по нему выводится тип, поэтому пропущенный ключ в другом языке ломает сборку */
+const en = {
+  meta: {
+    homeTitle: "KAIFO: boat trips, surfing, ATV, jeep tours and day tours in Bali",
+    homeDescription:
+      "Boat trips, surfing, snorkeling, ATV, jeep and Harley tours, plus day tours across the island. Scenic, safe and real Bali experiences.",
+    toursTitle: "Bali Tours: the Full Catalog",
+    toursDescription:
+      "Ocean trips, off-road rides, day tours and guided rentals in Bali. Filter by activity, price and duration.",
+    tourSuffix: "Book via WhatsApp.",
+    legalDescription: "This KAIFO document is being prepared.",
+  },
+  a11y: {
+    skip: "Skip to content",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    mainNav: "Main navigation",
+    footerNav: "Site sections",
+    language: "Site language",
+    breadcrumbs: "Breadcrumbs",
+    newTab: "opens in a new tab",
+    toursList: "Tour list",
+    categories: "Tour categories",
+    gallery: "Tour photos",
+    closeCard: "Close card",
+  },
+  nav: {
+    stories: "Stories",
+    tours: "Tours",
+    reviews: "Reviews",
+    about: "About",
+    contact: "Contact",
+    faq: "FAQ",
+    home: "Home",
+  },
+  cta: {
+    book: "Book via WhatsApp",
+    bookShort: "Book",
+    message: "Message on WhatsApp",
+    explore: "Explore tours",
+    exploreAll: "Explore all tours",
+    details: "Details",
+    instagram: "Message on Instagram",
+    consult: "Get advice",
+  },
+  whatsapp: {
+    general: "Hello! I'd like to choose a tour in Bali",
+    question: "Hello! I have a question about your Bali tours",
+    consult: "Hello! Could you help me choose a tour in Bali?",
+    review: "Hello! I'd like to leave a review about my trip with KAIFO",
+  },
+  price: {
+    from: "from",
+    onRequest: "Price on request",
+    disclaimer: "Prices are for reference only",
+  },
+  hero: {
+    title: "All of Bali in one place",
+    subtitle: "Tours, activities, rentals and adventures",
+    captionLeft: "We plan each route so you remember it years later",
+    captionRight: "The sunrise you almost slept through. The reef only locals know.",
+    scrollHint: "Scroll to explore",
+  },
+  ride: {
+    title: "One island, hundreds of routes",
+    intro: "Boats, jeeps, bikes and hiking trails. Choose how you want to see the island.",
+    sectors: {
+      ocean: {
+        title: "Ocean Trips",
+        caption: "Wooden boats, quiet coves, water you can see through",
+      },
+      offroad: {
+        title: "Off-Road Rides",
+        caption: "Volcanic trails, jungle roads, dust and viewpoints",
+      },
+      sunset: {
+        title: "Sunset Cruises",
+        caption: "Dinner on deck, fire show, the sky doing its thing",
+      },
+      rentals: {
+        title: "Guided Rentals",
+        caption: "Your own machine, a guide who knows the roads",
+      },
+    },
+  },
+  catalog: {
+    homeTitle: "Tours Worth Riding",
+    pageTitle: "Every Tour, Thought Through",
+    pageIntro: "{count} across Bali: ocean trips, off-road rides, day tours and guided rentals.",
+    all: "All",
+    routes: pf({ one: "{n} route", other: "{n} routes" }),
+    found: pf({ one: "{n} tour found", other: "{n} tours found" }),
+    filters: {
+      environment: "Setting",
+      environmentAny: "Any",
+      water: "Water",
+      land: "Land",
+      price: "Price",
+      priceAny: "Any",
+      priceUnder500: "Under 500K IDR",
+      price500to1500: "500K-1.5M IDR",
+      priceOver1500: "1.5M IDR and up",
+      priceOnRequest: "On request",
+      duration: "Duration",
+      durationAny: "Any",
+      hours: "A few hours",
+      fullDay: "Full day",
+      extended: "More than a day",
+      sort: "Sort",
+      popular: "Popular",
+      priceAsc: "Price: low to high",
+      priceDesc: "Price: high to low",
+      reset: "Reset filters",
+    },
+    clearCollection: "Clear collection",
+    emptyTitle: "No tours match these filters",
+    emptyText: "Try different filters or message us and we will put a route together for you.",
+  },
+  tour: {
+    duration: "Duration",
+    difficulty: "Difficulty",
+    price: "Price",
+    category: "Category",
+    difficultyLevels: {
+      easy: "Easy",
+      medium: "Moderate",
+      hard: "Challenging",
+      unknown: "Ask our manager",
+    },
+    includes: "What's included",
+    variants: "Another route in this tour",
+    gallery: "What it looks like",
+    related: "More tours like this",
+    badgeNew: "New",
+    consultTitle: "Not sure what to choose?",
+    consultText: "We will tell you which tour suits you, help with dates and put together a plan around your wishes.",
+  },
+  about: {
+    kicker: "About us",
+    lead: "We're a team of expats and Indonesians for whom Bali isn't just a travel destination — it's home.",
+    paragraphs: [
+      "We've lived here for more than five years, travel around the island a lot and try different routes, activities and places ourselves. Along the way we learned a simple thing: popular isn't always best, and the most vivid experiences are often far from where standard guidebooks lead.",
+      "That's how KAIFO was born — a wish to share the Bali we love ourselves. We only pick what we'd happily go to ourselves and would recommend to our friends without a second thought.",
+    ],
+    quote: "Our idea is simple: fewer tourist clichés — more real Bali, emotions and pure “kaif” from travelling.",
+    why: {
+      title: "Why KAIFO?",
+      intro:
+        "KAIFO comes from the word “kaif” — that very feeling when everything falls into place and you simply feel good.",
+      letters: [
+        { letter: "K", word: "Knowledge", original: "", text: "Knowing Bali deeper than the tourist routes." },
+        { letter: "A", word: "Adventure", original: "", text: "Seeking experiences worth remembering." },
+        { letter: "I", word: "Island", original: "", text: "Loving and discovering the island that became our home." },
+        { letter: "F", word: "Freedom", original: "", text: "Travelling your own way, at your own pace." },
+        { letter: "O", word: "Original", original: "", text: "Choosing what's real and interesting, not just well-advertised." },
+      ],
+    },
+  },
+  stories: {
+    title: "We create routes for the moments you'll want to remember",
+    intro: "We build every route around the moment that stays with you after the trip.",
+    stats: {
+      years: { value: "5+", label: "years living in Bali" },
+      activities: { value: "10+", label: "types of activities" },
+      // TODO: заменить на реальное число гостей
+      guests: { value: "1 200+", label: "happy guests" },
+    },
+    catalogStat: pf({ one: "route and activity", other: "routes and activities" }),
+    stack: {
+      title: "Moments from our routes",
+      guestBadge: "Guest story",
+      momentBadge: "From the route",
+      viewTour: "View tour",
+      pause: "Pause stories",
+      play: "Play stories",
+      prev: "Previous story",
+      next: "Next story",
+      position: "Story {index} of {total}",
+    },
+  },
+  reviews: {
+    kicker: "Reviews",
+    title: "What our guests say",
+    ratingBadge: "★ {value} on Google · {count} reviews",
+    leaveReview: "Leave a review",
+    emptyText: "Been on a trip with us? Tell others how it went.",
+    rated: "Rated {rating} out of 5",
+    badge: "Guest review",
+    translatedFrom: "Translated from the original",
+    showOriginal: "Show original",
+    showTranslation: "Show translation",
+    stackTitle: "Guest reviews",
+    pause: "Pause reviews",
+    play: "Play reviews",
+    prev: "Previous review",
+    next: "Next review",
+    position: "Review {index} of {total}",
+    viewTour: "View tour",
+    original: "Original",
+    translated: "Translated by Google",
+    fromGoogle: "Reviews from Google",
+    mapTitle: "KAIFO on Google Maps",
+    place: "KAIFO · Bali",
+    openMap: "Open in Google Maps",
+    directions: "Get directions",
+  },
+  faq: {
+    title: "Questions Before You Go",
+    stillQuestions: "Still have questions? We're here.",
+    items: [
+      {
+        q: "Do I need experience for surfing, ATV or enduro?",
+        a: "It depends on the route. Surfing is done in small groups with a guide, and ATV tours come with a guide too. For enduro and motorcycle tours, talk your riding experience through with our manager first so they can match the route to your level.",
+      },
+      {
+        q: "What is included in the price?",
+        a: "Every tour page has a “What's included” list, such as gear, a guide, transfer or food. Prices on the site are for reference only, and our manager confirms the exact price before you book.",
+      },
+      {
+        q: "How do I pay: prepayment or on the day?",
+        a: "Payment terms depend on the tour. Our manager will share them on WhatsApp before you confirm your booking.",
+      },
+      {
+        q: "Can I bring my children?",
+        a: "Age requirements depend on the tour: ATV, enduro and volcano climbs ask more of you than boat trips and day tours. Tell us your children's ages and our manager will suggest suitable options.",
+      },
+      {
+        q: "What happens if the weather is bad?",
+        a: "Safety comes first. If the weather makes a route unsafe, our manager will contact you with options: another date or another route.",
+      },
+      {
+        q: "How do you pick me up from my hotel?",
+        a: "Transfer is included in many tours, as noted on each tour page. When you book, send us your hotel or villa address and our manager will agree on the pickup time and place.",
+      },
+      {
+        q: "What should I bring?",
+        a: "The main gear for each activity is included, for example fishing gear or climbing gear for Mount Agung. Bring sunscreen, water and comfortable clothes, plus a warm layer for sunrise climbs: it gets cool at the summit.",
+      },
+      {
+        q: "How do I reach my guide on the day of the tour?",
+        a: "Message us on WhatsApp at +62 851-9010-1270. Our manager will send you the guide's contact and meeting details before the trip.",
+      },
+    ],
+  },
+  plan: {
+    title: "Plan Your Bali Trip",
+    subtitle: "Tell us what you're dreaming of, and we'll shape the route around you",
+    name: "Name",
+    namePlaceholder: "How should we call you",
+    dates: "Travel dates",
+    dateFrom: "From",
+    dateTo: "To",
+    tourType: "Which tour are you interested in",
+    tourTypes: {
+      ocean: "Ocean",
+      offroad: "Off-Road",
+      sunset: "Sunset Cruise",
+      dayTours: "Day Tours",
+      rides: "Guided Rentals",
+      unsure: "Not sure yet",
+    },
+    submit: "Send via WhatsApp",
+    helper: "WhatsApp will open with a ready-made message. Sending it doesn't commit you to anything.",
+    replyTime: "We usually reply within 10-15 minutes",
+    errorName: "Please tell us your name",
+    errorDates: "The end date can't be earlier than the start date",
+    datesRange: "{from} - {to}",
+    dateFromOnly: "from {from}",
+    dateToOnly: "until {to}",
+    sent: "Your message is ready. If WhatsApp didn't open,",
+    openWhatsapp: "use this link",
+    message: {
+      greeting: "Hello! My name is {name}.",
+      dates: "Travel dates: {dates}.",
+      type: "Interested in: {type}.",
+    },
+  },
+  footer: {
+    tagline: "Scenic, safe and real Bali experiences, from ocean trips to off-road adventures",
+    navTitle: "Sections",
+    contactsTitle: "Contacts",
+    legalTitle: "Documents",
+    disclaimer:
+      "Information on this site is for reference only and does not constitute a public offer. Prices are for reference only and are confirmed by our manager before booking.",
+    rights: "All rights reserved",
+  },
+  legal: {
+    documents: {
+      privacy: "Privacy Policy",
+      offer: "Public Offer",
+      cookies: "Cookie Policy",
+    },
+    pending: "This document is being prepared and will be published on this page.",
+    contact: "For questions, email",
+  },
+  notFound: {
+    title: "Page not found",
+    text: "The link may be out of date, or the tour has moved to another section.",
+    home: "Back to home",
+  },
+};
+
+export type Dictionary = typeof en;
+
+const ru: Dictionary = {
   meta: {
     homeTitle: "KAIFO: лодки, серфинг, ATV, джип-туры и экскурсии на Бали",
     homeDescription:
@@ -321,9 +625,8 @@ const ru = {
   },
 };
 
-export type Dictionary = typeof ru;
-
-const en: Dictionary = {
+/** Индонезийский: перевод с английского */
+const id: Dictionary = {
   meta: {
     homeTitle: "KAIFO: boat trips, surfing, ATV, jeep tours and day tours in Bali",
     homeDescription:
@@ -624,7 +927,7 @@ const en: Dictionary = {
   },
 };
 
-export const dictionaries: Record<Locale, Dictionary> = { ru, en };
+export const dictionaries: Record<Locale, Dictionary> = { en, ru, id };
 
 export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale];

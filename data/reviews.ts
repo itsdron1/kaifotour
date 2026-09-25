@@ -38,11 +38,12 @@ export interface Review {
 export const reviews: Review[] = [
   {
     id: "google-lilia-golubina",
-    author: { ru: "Lilia Golubina", en: "Lilia Golubina" },
+    author: { ru: "Lilia Golubina", en: "Lilia Golubina" , id: "Lilia Golubina" },
     rating: 5,
     text: {
       ru: "Отличная прогулка на лодке - всё было организовано идеально. Друзьям очень понравилось, впечатлений масса. Спасибо 😻",
       en: "A great boat trip - everything was organized perfectly. My friends really liked it, so many impressions. Thank you 😻",
+      id: "A great boat trip - everything was organized perfectly. My friends really liked it, so many impressions. Thank you 😻",
     },
     originalLang: "ru",
     date: "2026-09",
@@ -51,12 +52,13 @@ export const reviews: Review[] = [
   },
   {
     id: "google-andrey-antonov",
-    author: { ru: "Андрей Антонов", en: "Andrey Antonov" },
+    author: { ru: "Андрей Антонов", en: "Andrey Antonov" , id: "Andrey Antonov" },
     tourSlug: "batur-sunrise-trekking",
     rating: 5,
     text: {
       ru: "Поход на рассвете в Батур — обязательное мероприятие на Бали! 🌋 Мы начали до рассвета, шли около двух часов с налобными фонарями — проще, чем кажется, тропа хорошо размечена, а гид поддерживал мотивацию всех. На вершине: невероятный рассвет над облаками с кратером прямо перед вами. Стоило каждой минуты этого подъема в 2 часа ночи. На завтрак даже подают яйца, сваренные на вулканическом пару — забавная мелочь. В целом отличная организация, гиды, которые явно знают маршрут, трансфер из отеля и обратно включен. Настоятельно рекомендую, если вы хотите увидеть один незабываемый рассвет за всю свою поездку 🌅",
       en: "The sunrise hike up Batur is a must-do in Bali! 🌋 We started before dawn and walked for about two hours with headlamps — easier than it sounds, the trail is well marked and the guide kept everyone motivated. At the top: an incredible sunrise above the clouds with the crater right in front of you. Worth every minute of that 2 a.m. climb. For breakfast they even serve eggs cooked in volcanic steam — a fun little detail. Overall great organization, guides who clearly know the route, hotel transfer both ways included. Strongly recommend it if you want to see one unforgettable sunrise on your whole trip 🌅",
+      id: "The sunrise hike up Batur is a must-do in Bali! 🌋 We started before dawn and walked for about two hours with headlamps — easier than it sounds, the trail is well marked and the guide kept everyone motivated. At the top: an incredible sunrise above the clouds with the crater right in front of you. Worth every minute of that 2 a.m. climb. For breakfast they even serve eggs cooked in volcanic steam — a fun little detail. Overall great organization, guides who clearly know the route, hotel transfer both ways included. Strongly recommend it if you want to see one unforgettable sunrise on your whole trip 🌅",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -65,12 +67,13 @@ export const reviews: Review[] = [
   },
   {
     id: "google-stanislav-morozov",
-    author: { ru: "Stanislav Morozov", en: "Stanislav Morozov" },
+    author: { ru: "Stanislav Morozov", en: "Stanislav Morozov" , id: "Stanislav Morozov" },
     tourSlug: "fishing",
     rating: 5,
     text: {
       ru: "Привет, рыбалка огонь, доволен так как слоны не бывают довольны, огромное спасибо, благоденствия и процветания, ждите скоро ещё приеду!!!",
       en: "Hi, the fishing was fire, I'm happier than elephants ever get, huge thanks, wishing you well-being and prosperity, expect me back soon!!!",
+      id: "Hi, the fishing was fire, I'm happier than elephants ever get, huge thanks, wishing you well-being and prosperity, expect me back soon!!!",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -79,12 +82,13 @@ export const reviews: Review[] = [
   },
   {
     id: "google-alexandr-gridin",
-    author: { ru: "Александр Гридин", en: "Alexandr Gridin" },
+    author: { ru: "Александр Гридин", en: "Alexandr Gridin" , id: "Alexandr Gridin" },
     tourSlug: "fishing",
     rating: 5,
     text: {
       ru: "Отличный опыт, с семьёй ездили на рыбалку, всё было очень Круто!!! Спасибо большое организаторам.",
       en: "A great experience, we went fishing with the family, everything was very Cool!!! Big thanks to the organizers.",
+      id: "A great experience, we went fishing with the family, everything was very Cool!!! Big thanks to the organizers.",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -93,12 +97,13 @@ export const reviews: Review[] = [
   },
   {
     id: "google-johnny-lullaby",
-    author: { ru: "johnny lullaby", en: "johnny lullaby" },
+    author: { ru: "johnny lullaby", en: "johnny lullaby" , id: "johnny lullaby" },
     tourSlug: "fishing",
     rating: 5,
     text: {
       ru: "Заезжал к ребятам на рыбалку, шикарно нарыбачились! Спасибо большое KAIFO Bali!!",
       en: "Stopped by the guys for a fishing trip, the fishing was superb! Big thanks to KAIFO Bali!!",
+      id: "Stopped by the guys for a fishing trip, the fishing was superb! Big thanks to KAIFO Bali!!",
     },
     originalLang: "ru",
     date: "2026-08",

@@ -23,6 +23,7 @@ const googleMaps: GoogleMapsConfig = {
 /** Адрес точки из профиля компании в Google. Пустой — в подписи под картой только название */
 const address: Localized = {
   en: "Ithon Mart Kuruksetra, Jl. Kuruksetra, Benoa, Kuta Selatan, Badung Regency, Bali 80361, Indonesia",
+  id: "Ithon Mart Kuruksetra, Jl. Kuruksetra, Benoa, Kuta Selatan, Badung Regency, Bali 80361, Indonesia",
   ru: "Ithon Mart Kuruksetra, Jl. Kuruksetra, Беноа, Кута-Селатан, Бадунг, Бали 80361, Индонезия",
 };
 

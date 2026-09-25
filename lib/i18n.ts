@@ -1,8 +1,8 @@
-export const locales = ["en", "ru"] as const;
+export const locales = ["en", "ru", "id"] as const;
 
 export type Locale = (typeof locales)[number];
 
-/** Английская версия живёт в корне (/, /tours/...), русская под префиксом /ru */
+/** Английская версия живёт в корне (/, /tours/...), русская под /ru, индонезийская под /id */
 export const defaultLocale: Locale = "en";
 
 /** Выбор языка помнится год: cookie ставит переключатель, читает middleware */
@@ -27,13 +27,15 @@ export function localizedPath(locale: Locale, path: string): string {
   return `${prefix}${path}`;
 }
 
-/** Тот же адрес на другом языке, для переключателя EN / RU */
+/** Тот же адрес на другом языке, для переключателя EN / RU / ID */
 export function switchLocalePath(pathname: string, target: Locale): string {
-  const bare = pathname.replace(/^\/ru(?=\/|$)/, "") || "/";
+  const prefixes = locales.filter((code) => code !== defaultLocale).join("|");
+  const bare = pathname.replace(new RegExp(`^/(?:${prefixes})(?=/|$)`), "") || "/";
   return localizedPath(target, bare);
 }
 
 export const openGraphLocale: Localized = {
   ru: "ru_RU",
   en: "en_US",
+  id: "id_ID",
 };

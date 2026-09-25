@@ -15,8 +15,16 @@ function trimDecimals(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
 }
 
-/** 850000 → "850K IDR", 1250000 → "1.25M IDR" (формат из docs/tz-main.md) */
-export function formatIDRCompact(value: number): string {
+/**
+ * Короткая цена на языке страницы: "850K IDR" и "1.25M IDR" (en, ru, формат из docs/tz-main.md),
+ * "Rp850 ribu" и "Rp1,3 juta" (id). Единственное место, где цена превращается в текст.
+ */
+export function formatIDRCompact(value: number, locale: Locale): string {
+  if (locale === "id") {
+    if (value >= 1_000_000) return `Rp${trimDecimals(value / 1_000_000).replace(".", ",")}${NBSP}juta`;
+    if (value >= 1_000) return `Rp${trimDecimals(value / 1_000).replace(".", ",")}${NBSP}ribu`;
+    return `Rp${value}`;
+  }
   if (value >= 1_000_000) return `${trimDecimals(value / 1_000_000)}M${NBSP}IDR`;
   if (value >= 1_000) return `${trimDecimals(value / 1_000)}K${NBSP}IDR`;
   return `${value}${NBSP}IDR`;
