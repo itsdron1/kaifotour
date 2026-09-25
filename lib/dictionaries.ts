@@ -157,7 +157,7 @@ const ru = {
     why: {
       title: "Почему KAIFO?",
       intro:
-        "KAIFO родилось от слова «кайф» — того самого ощущения, когда всё сложилось и тебе просто хорошо. Для нас в этих пяти буквах — вся философия проекта:",
+        "KAIFO родилось от слова «кайф» — того самого ощущения, когда всё сложилось и тебе просто хорошо.",
       letters: [
         { letter: "K", word: "Знание", original: "Knowledge", text: "Знать Бали глубже туристических маршрутов." },
         { letter: "A", word: "Приключение", original: "Adventure", text: "Искать впечатления, которые хочется запомнить." },
@@ -207,6 +207,10 @@ const ru = {
     emptyText: "Были с нами в поездке? Расскажите, как всё прошло.",
     rated: "Оценка {rating} из 5",
     badge: "Отзыв гостя",
+    translatedFrom: "Переведено с {language}",
+    languageNames: { ru: "русского", en: "английского" },
+    showOriginal: "Показать оригинал",
+    showTranslation: "Показать перевод",
     stackTitle: "Отзывы гостей",
     pause: "Остановить показ отзывов",
     play: "Продолжить показ отзывов",
@@ -467,7 +471,7 @@ const en: Dictionary = {
     why: {
       title: "Why KAIFO?",
       intro:
-        "KAIFO comes from the Russian word “kaif” — that very feeling when everything falls into place and you simply feel good. For us, these five letters hold the whole philosophy of the project:",
+        "KAIFO comes from the Russian word “kaif” — that very feeling when everything falls into place and you simply feel good.",
       letters: [
         { letter: "K", word: "Knowledge", original: "", text: "Knowing Bali deeper than the tourist routes." },
         { letter: "A", word: "Adventure", original: "", text: "Seeking experiences worth remembering." },
@@ -507,6 +511,10 @@ const en: Dictionary = {
     emptyText: "Been on a trip with us? Tell others how it went.",
     rated: "Rated {rating} out of 5",
     badge: "Guest review",
+    translatedFrom: "Translated from {language}",
+    languageNames: { ru: "Russian", en: "English" },
+    showOriginal: "Show original",
+    showTranslation: "Show translation",
     stackTitle: "Guest reviews",
     pause: "Pause reviews",
     play: "Play reviews",

@@ -76,6 +76,10 @@ export async function Reviews({ locale }: { locale: Locale }) {
                   labels={{
                     badge: t.reviews.badge,
                     rated: t.reviews.rated,
+                    translatedFrom: t.reviews.translatedFrom,
+                    languageNames: t.reviews.languageNames,
+                    showOriginal: t.reviews.showOriginal,
+                    showTranslation: t.reviews.showTranslation,
                     translated: t.reviews.translated,
                     original: t.reviews.original,
                     newTab: t.a11y.newTab,

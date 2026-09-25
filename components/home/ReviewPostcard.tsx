@@ -2,16 +2,23 @@
 
 import { ArrowUpRight, GlobeSimple, GoogleLogo, InstagramLogo, Star, WhatsappLogo } from "@phosphor-icons/react";
 import Link from "next/link";
-import type { ComponentType } from "react";
+import { useState, type ComponentType } from "react";
 import { Photo } from "@/components/ui/Photo";
 import type { ReviewSource } from "@/data/reviews";
 import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
+import type { Locale } from "@/lib/i18n";
 import type { ReviewCardData } from "@/lib/reviews";
 
 export interface ReviewPostcardLabels {
   badge: string;
   rated: string;
+  /** «Переведено с {language}» — язык берётся из languageNames */
+  translatedFrom: string;
+  languageNames: Record<Locale, string>;
+  showOriginal: string;
+  showTranslation: string;
+  /** Перевод сделал сам Google */
   translated: string;
   original: string;
   newTab: string;
@@ -58,9 +65,15 @@ interface ReviewPostcardProps {
  * Отзыв гостя почтовой открыткой: тот же вид, что у карточек историй —
  * песочная подложка, фото 4:5 сверху, подпись снизу. Если отзыв о конкретном туре,
  * на карточке его фото, а вся открытка ведёт на страницу тура.
+ *
+ * Текст показывается на языке страницы. Если это перевод, под ним стоит пометка
+ * и кнопка, которая показывает слова гостя на языке оригинала.
  */
 export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps) {
+  const [showOriginal, setShowOriginal] = useState(false);
   const SourceIcon = SOURCE_ICON[review.source];
+  const original = review.original;
+  const shown = original && showOriginal ? original : { text: review.text, lang: review.lang };
 
   return (
     <figure
@@ -78,15 +91,49 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
         </div>
 
         <blockquote
-          lang={review.lang}
+          lang={shown.lang}
           className={cn("display mt-3 text-lg leading-snug text-ink", !expanded && "line-clamp-3")}
         >
-          {review.text}
+          {shown.text}
         </blockquote>
+
+        {original ? (
+          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.6875rem] leading-snug text-ink/55">
+            <span>
+              {review.googleTranslated
+                ? labels.translated
+                : fill(labels.translatedFrom, { language: labels.languageNames[original.lang] })}
+            </span>
+            {/* Кнопка живёт над растянутой ссылкой карточки, иначе тап открыл бы страницу тура */}
+            <button
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setShowOriginal((value) => !value);
+              }}
+              className="relative z-10 font-condensed text-[0.6875rem] font-semibold uppercase tracking-caps text-secondary"
+            >
+              <span className="link-underline">{showOriginal ? labels.showTranslation : labels.showOriginal}</span>
+            </button>
+          </p>
+        ) : null}
 
         <div className="mt-auto pt-4">
           <p className="kicker text-[0.75rem] text-ink/70">
-            {review.author}
+            {review.authorUri ? (
+              <a
+                href={review.authorUri}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-10 link-underline"
+              >
+                {review.author}
+              </a>
+            ) : (
+              review.author
+            )}
+            {review.location ? <span className="text-ink/50">, {review.location}</span> : null}
             <span className="text-ink/50"> · {review.dateLabel}</span>
           </p>
 
@@ -107,7 +154,6 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
                 <span className="sr-only">({labels.newTab})</span>
               </a>
             ) : null}
-            {review.translated ? <span className="normal-case tracking-normal">{labels.translated}</span> : null}
           </p>
 
           {review.tour ? (

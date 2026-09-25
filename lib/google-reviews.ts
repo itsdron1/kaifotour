@@ -1,6 +1,7 @@
 import type { Review } from "@/data/reviews";
 import type { Locale } from "@/lib/i18n";
 
+
 /**
  * Отзывы из профиля KAIFO в Google. Работает, только если заданы обе переменные окружения:
  * GOOGLE_PLACE_ID и GOOGLE_PLACES_API_KEY. Ключ серверный, без префикса NEXT_PUBLIC,
@@ -18,11 +19,25 @@ export interface GoogleRating {
   url?: string;
 }
 
-export interface ReviewFromGoogle extends Review {
+/**
+ * Отзыв из Google приходит уже на языке страницы, поэтому у него один текст, а не пара языков,
+ * как у отзывов из data/reviews.ts. Если Google перевёл отзыв сам, рядом лежит оригинал.
+ */
+export interface ReviewFromGoogle {
+  id: string;
+  author: string;
   /** Профиль автора в Google: показывать имя ссылкой требуют правила Google */
   authorUri?: string;
-  /** Текст перевёл Google: язык оригинала отличается от языка страницы */
-  translated?: boolean;
+  rating: Review["rating"];
+  text: string;
+  /** Язык показываемого текста */
+  lang: Locale;
+  /** Оригинал, если показан перевод Google */
+  original?: { text: string; lang: Locale };
+  googleTranslated: boolean;
+  /** ГГГГ-ММ */
+  date: string;
+  sourceUrl?: string;
 }
 
 export interface GoogleReviewsResult {
@@ -64,8 +79,10 @@ function toReview(review: PlacesReview, locale: Locale, placeUrl?: string): Revi
   const author = review.authorAttribution?.displayName?.trim();
   if (!text || !author || !review.rating || !review.publishTime) return null;
 
-  const originalLanguage = review.originalText?.languageCode;
   const shownLanguage = review.text?.languageCode ?? locale;
+  const originalLanguage = review.originalText?.languageCode;
+  const originalText = review.originalText?.text?.trim();
+  const googleTranslated = Boolean(originalLanguage && originalLanguage !== shownLanguage);
 
   return {
     id: review.name ?? `${author}-${review.publishTime}`,
@@ -73,11 +90,14 @@ function toReview(review: PlacesReview, locale: Locale, placeUrl?: string): Revi
     rating: clampRating(review.rating),
     text,
     lang: shownLanguage.startsWith("ru") ? "ru" : "en",
+    original:
+      googleTranslated && originalText
+        ? { text: originalText, lang: originalLanguage?.startsWith("ru") ? "ru" : "en" }
+        : undefined,
+    googleTranslated,
     date: review.publishTime.slice(0, 7),
-    source: "google",
     sourceUrl: review.googleMapsUri ?? placeUrl,
     authorUri: review.authorAttribution?.uri,
-    translated: Boolean(originalLanguage && originalLanguage !== shownLanguage),
   };
 }
 
