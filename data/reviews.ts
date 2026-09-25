@@ -43,7 +43,7 @@ export const reviews: Review[] = [
     text: {
       ru: "Отличная прогулка на лодке - всё было организовано идеально. Друзьям очень понравилось, впечатлений масса. Спасибо 😻",
       en: "A great boat trip - everything was organized perfectly. My friends really liked it, so many impressions. Thank you 😻",
-      id: "A great boat trip - everything was organized perfectly. My friends really liked it, so many impressions. Thank you 😻",
+      id: "Trip kapal yang luar biasa - semuanya diatur dengan sempurna. Teman-teman saya sangat suka, banyak sekali kesannya. Terima kasih 😻",
     },
     originalLang: "ru",
     date: "2026-09",
@@ -58,7 +58,7 @@ export const reviews: Review[] = [
     text: {
       ru: "Поход на рассвете в Батур — обязательное мероприятие на Бали! 🌋 Мы начали до рассвета, шли около двух часов с налобными фонарями — проще, чем кажется, тропа хорошо размечена, а гид поддерживал мотивацию всех. На вершине: невероятный рассвет над облаками с кратером прямо перед вами. Стоило каждой минуты этого подъема в 2 часа ночи. На завтрак даже подают яйца, сваренные на вулканическом пару — забавная мелочь. В целом отличная организация, гиды, которые явно знают маршрут, трансфер из отеля и обратно включен. Настоятельно рекомендую, если вы хотите увидеть один незабываемый рассвет за всю свою поездку 🌅",
       en: "The sunrise hike up Batur is a must-do in Bali! 🌋 We started before dawn and walked for about two hours with headlamps — easier than it sounds, the trail is well marked and the guide kept everyone motivated. At the top: an incredible sunrise above the clouds with the crater right in front of you. Worth every minute of that 2 a.m. climb. For breakfast they even serve eggs cooked in volcanic steam — a fun little detail. Overall great organization, guides who clearly know the route, hotel transfer both ways included. Strongly recommend it if you want to see one unforgettable sunrise on your whole trip 🌅",
-      id: "The sunrise hike up Batur is a must-do in Bali! 🌋 We started before dawn and walked for about two hours with headlamps — easier than it sounds, the trail is well marked and the guide kept everyone motivated. At the top: an incredible sunrise above the clouds with the crater right in front of you. Worth every minute of that 2 a.m. climb. For breakfast they even serve eggs cooked in volcanic steam — a fun little detail. Overall great organization, guides who clearly know the route, hotel transfer both ways included. Strongly recommend it if you want to see one unforgettable sunrise on your whole trip 🌅",
+      id: "Pendakian matahari terbit ke Batur wajib dilakukan di Bali! 🌋 Kami berangkat sebelum fajar dan berjalan sekitar dua jam dengan lampu kepala — lebih mudah daripada yang dibayangkan, jalurnya jelas dan pemandu terus menyemangati semua orang. Di puncak: matahari terbit yang luar biasa di atas awan dengan kawah tepat di depan mata. Setiap menit pendakian pukul dua pagi itu sepadan. Saat sarapan bahkan disajikan telur yang direbus dengan uap vulkanik — detail kecil yang menyenangkan. Secara keseluruhan pengaturannya bagus, pemandunya jelas hafal rute, dan transfer dari hotel pulang pergi sudah termasuk. Sangat direkomendasikan kalau Anda ingin melihat satu matahari terbit yang tak terlupakan sepanjang perjalanan Anda 🌅",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -73,7 +73,7 @@ export const reviews: Review[] = [
     text: {
       ru: "Привет, рыбалка огонь, доволен так как слоны не бывают довольны, огромное спасибо, благоденствия и процветания, ждите скоро ещё приеду!!!",
       en: "Hi, the fishing was fire, I'm happier than elephants ever get, huge thanks, wishing you well-being and prosperity, expect me back soon!!!",
-      id: "Hi, the fishing was fire, I'm happier than elephants ever get, huge thanks, wishing you well-being and prosperity, expect me back soon!!!",
+      id: "Halo, mancingnya mantap, saya puas sampai gajah pun tidak sepuas itu, terima kasih banyak, semoga sejahtera dan makmur, tunggu saya, saya akan datang lagi!!!",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -88,7 +88,7 @@ export const reviews: Review[] = [
     text: {
       ru: "Отличный опыт, с семьёй ездили на рыбалку, всё было очень Круто!!! Спасибо большое организаторам.",
       en: "A great experience, we went fishing with the family, everything was very Cool!!! Big thanks to the organizers.",
-      id: "A great experience, we went fishing with the family, everything was very Cool!!! Big thanks to the organizers.",
+      id: "Pengalaman yang luar biasa, kami sekeluarga pergi memancing, semuanya sangat Keren!!! Terima kasih banyak kepada penyelenggaranya.",
     },
     originalLang: "ru",
     date: "2026-08",
@@ -103,7 +103,7 @@ export const reviews: Review[] = [
     text: {
       ru: "Заезжал к ребятам на рыбалку, шикарно нарыбачились! Спасибо большое KAIFO Bali!!",
       en: "Stopped by the guys for a fishing trip, the fishing was superb! Big thanks to KAIFO Bali!!",
-      id: "Stopped by the guys for a fishing trip, the fishing was superb! Big thanks to KAIFO Bali!!",
+      id: "Mampir ke teman-teman untuk memancing, hasil mancingnya luar biasa! Terima kasih banyak KAIFO Bali!!",
     },
     originalLang: "ru",
     date: "2026-08",
