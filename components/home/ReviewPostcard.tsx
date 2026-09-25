@@ -7,15 +7,13 @@ import { Photo } from "@/components/ui/Photo";
 import type { ReviewSource } from "@/data/reviews";
 import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
-import type { Locale } from "@/lib/i18n";
 import type { ReviewCardData } from "@/lib/reviews";
 
 export interface ReviewPostcardLabels {
   badge: string;
   rated: string;
-  /** «Переведено с {language}» — язык берётся из languageNames */
+  /** Пометка, что на карточке наш перевод, а не слова гостя */
   translatedFrom: string;
-  languageNames: Record<Locale, string>;
   showOriginal: string;
   showTranslation: string;
   /** Перевод сделал сам Google */
@@ -100,9 +98,7 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
         {original ? (
           <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.6875rem] leading-snug text-ink/55">
             <span>
-              {review.googleTranslated
-                ? labels.translated
-                : fill(labels.translatedFrom, { language: labels.languageNames[original.lang] })}
+              {review.googleTranslated ? labels.translated : labels.translatedFrom}
             </span>
             {/* Кнопка живёт над растянутой ссылкой карточки, иначе тап открыл бы страницу тура */}
             <button

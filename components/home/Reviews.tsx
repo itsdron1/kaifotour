@@ -77,7 +77,6 @@ export async function Reviews({ locale }: { locale: Locale }) {
                     badge: t.reviews.badge,
                     rated: t.reviews.rated,
                     translatedFrom: t.reviews.translatedFrom,
-                    languageNames: t.reviews.languageNames,
                     showOriginal: t.reviews.showOriginal,
                     showTranslation: t.reviews.showTranslation,
                     translated: t.reviews.translated,
