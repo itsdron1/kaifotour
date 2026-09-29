@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "../globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { cyrillicFontVariables } from "@/lib/fonts-cyrillic";
@@ -17,6 +18,7 @@ export default function RussianRootLayout({ children }: Readonly<{ children: Rea
     <html lang="ru" data-palette={site.palette} className={`${fontVariables} ${cyrillicFontVariables}`}>
       <body>
         <MotionProvider>{children}</MotionProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "../globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { rootMetadata } from "@/lib/seo";
@@ -16,6 +17,7 @@ export default function EnglishRootLayout({ children }: Readonly<{ children: Rea
     <html lang="en" data-palette={site.palette} className={fontVariables}>
       <body>
         <MotionProvider>{children}</MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
