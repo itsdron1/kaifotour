@@ -4,6 +4,7 @@ import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { rootMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = rootMetadata;
 
@@ -16,6 +17,7 @@ export default function IndonesianRootLayout({ children }: Readonly<{ children: 
     <html lang="id" data-palette={site.palette} className={fontVariables}>
       <body>
         <MotionProvider>{children}</MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
