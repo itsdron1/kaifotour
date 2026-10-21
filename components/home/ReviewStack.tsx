@@ -14,8 +14,6 @@ export function ReviewStack({ reviews, labels }: { reviews: ReviewCardData[]; la
   return (
     <CardStack
       items={reviews}
-      // Высоту стопки задаёт самый длинный отзыв: тогда короткие не прыгают
-      spacerItem={reviews.reduce((longest, review) => (review.text.length > longest.text.length ? review : longest), reviews[0])}
       labels={labels}
       showTitle={false}
       className="mx-auto max-w-md lg:mx-0"

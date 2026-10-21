@@ -52,8 +52,6 @@ interface CardStackProps<T extends { id: string }> {
   items: T[];
   /** Вид карточки: expanded — карточка наверху стопки и раскрыта наведением или тапом */
   renderCard: (item: T, state: { expanded: boolean }) => ReactNode;
-  /** По этой карточке считается высота стопки: берите самую высокую по содержанию */
-  spacerItem?: T;
   labels: CardStackLabels;
   /** Подпись над стопкой: рядом с собственным заголовком раздела она лишняя */
   showTitle?: boolean;
@@ -69,7 +67,6 @@ interface CardStackProps<T extends { id: string }> {
 export function CardStack<T extends { id: string }>({
   items,
   renderCard,
-  spacerItem,
   labels,
   showTitle = true,
   className,
@@ -87,7 +84,6 @@ export function CardStack<T extends { id: string }>({
   const suppressClick = useRef(false);
 
   const total = items.length;
-  const spacer = spacerItem ?? items[0];
   const paused = hovered || focused || held || manualPause;
   const { index, cycle, running, go } = useAutoCycle(total, DELAY_MS, { enabled: !reducedMotion, paused });
   const lifted = hovered || held;
@@ -228,13 +224,10 @@ export function CardStack<T extends { id: string }>({
           suppressClick.current = false;
           event.preventDefault();
         }}
-        className="relative mt-5 outline-offset-8"
+        // Карточки лежат в одной ячейке сетки: высота стопки равна самой высокой из них,
+        // без невидимой копии карточки — иначе её текст попадал в страницу дважды
+        className="relative mt-5 grid outline-offset-8"
       >
-        {/* Распорка: высота стопки равна карточке, поэтому соседние блоки не дёргаются при смене */}
-        <div aria-hidden="true" className="invisible">
-          {renderCard(spacer, { expanded: false })}
-        </div>
-
         {items.map((item, cardIndex) => {
           const position = (cardIndex - index + total) % total;
           const visible = position < VISIBLE;
@@ -268,17 +261,22 @@ export function CardStack<T extends { id: string }>({
                 ? { duration: lifted ? 0.3 : 0.45, ease: SHUFFLE_EASE }
                 : { duration: SHUFFLE_S, ease: SHUFFLE_EASE, delay: Math.min(position, VISIBLE) * STEP_S };
 
+          const expanded = isTop && lifted;
+
           return (
             <motion.div
               key={item.id}
-              className="absolute inset-0"
+              className="relative col-start-1 row-start-1"
               style={{ zIndex: isLeaving ? (leaving.behind ? 0 : 40) : visible ? Z_LAYERS[position] : 0 }}
               initial={false}
               animate={isLeaving ? leaveTarget : target}
               transition={transition}
               inert={!isTop}
             >
-              {renderCard(item, { expanded: isTop && lifted })}
+              {/* Раскрытая карточка выходит из потока и растёт поверх, высота стопки не меняется */}
+              <div className={expanded && total > 1 ? "absolute inset-x-0 top-0" : "h-full"}>
+                {renderCard(item, { expanded })}
+              </div>
 
               {/* Индикатор: латунная линия заполняется за 3 секунды и замирает на паузе */}
               {isTop && !reducedMotion ? (

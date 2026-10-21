@@ -260,6 +260,17 @@ function FlipCard({
   const springScale = useSpring(targetScale, CARD_SPRING);
   const springOpacity = useSpring(targetOpacity, CARD_SPRING);
 
+  /**
+   * Оборот с текстом тура появляется в DOM, только когда карточку впервые перевернули.
+   * До этого на странице 17 одинаковых по смыслу блоков текста дублировали каталог,
+   * а поисковик и скринридер читали их подряд. Раз появившись, оборот остаётся, чтобы переворот назад не мигал.
+   */
+  const [backShown, setBackShown] = useState(false);
+  const activate = () => {
+    setBackShown(true);
+    onActivate();
+  };
+
   // Наведение живёт отдельным значением: от него зависят приближение, выпрямление и подтягивание к центру
   const hover = useMotionValue(0);
   useEffect(() => {
@@ -289,7 +300,7 @@ function FlipCard({
   );
 
   function handlePointerEnter(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType === "mouse") onActivate();
+    if (event.pointerType === "mouse") activate();
   }
 
   function handlePointerLeave(event: ReactPointerEvent<HTMLDivElement>) {
@@ -316,7 +327,7 @@ function FlipCard({
     }
     if (start?.touch && !active) {
       event.preventDefault();
-      onActivate();
+      activate();
     }
   }
 
@@ -346,7 +357,7 @@ function FlipCard({
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
         onPointerDown={handlePointerDown}
-        onFocus={onActivate}
+        onFocus={activate}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
         }}
@@ -383,18 +394,20 @@ function FlipCard({
           </div>
 
           {/* Оборот: общий компонент с секцией туров */}
-          <TourCardBack
-            card={card}
-            labels={labels}
-            onClose={onClose}
-            className={cn(
-              "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
-              CARD_FACE,
-              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
-              "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
-              active && "motion-reduce:opacity-100",
-            )}
-          />
+          {backShown ? (
+            <TourCardBack
+              card={card}
+              labels={labels}
+              onClose={onClose}
+              className={cn(
+                "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+                CARD_FACE,
+                active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
+                "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
+                active && "motion-reduce:opacity-100",
+              )}
+            />
+          ) : null}
         </motion.div>
       </div>
     </motion.div>

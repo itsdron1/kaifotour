@@ -36,6 +36,16 @@ const address: Localized = {
 const googleRating = { value: 5, count: 11 } as { value: number; count: number } | null;
 
 /**
+ * Цифры для секции «Мы создаём маршруты…».
+ * TODO: реальное число гостей от заказчика, например "800+".
+ * Пока null — показатель скрыт: непроверяемые цифры Google Ads может счесть недостоверными,
+ * а «1 200+» рядом с 11 отзывами в Google выглядело неправдоподобно.
+ */
+const stats = {
+  guests: null as string | null,
+};
+
+/**
  * Адрес сайта: рабочий — с www, адрес без www Vercel переадресует сюда (308).
  * От него считаются metadataBase, canonical, og:url, sitemap, robots и JSON-LD,
  * поэтому адрес без www в коде больше нигде писать не нужно.
@@ -62,4 +72,5 @@ export const site = {
   googleMaps,
   address,
   googleRating,
+  stats,
 } as const;

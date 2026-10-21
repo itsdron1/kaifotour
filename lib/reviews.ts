@@ -49,8 +49,12 @@ export interface ReviewCardData {
   dateLabel: string;
   source: ReviewSource;
   sourceUrl?: string;
-  /** Кадр на открытке: фото тура, а без тура — общий кадр секции */
-  image: PhotoSource;
+  /**
+   * Кадр на открытке: фото тура, о котором отзыв, или фото, заданное у самого отзыва.
+   * Общий кадр секции не подставляем — у отзыва о лодке оказывался рассвет на Батуре.
+   * Без фото открытка показывает тёмную подложку со знаком KAIFO.
+   */
+  image?: PhotoSource;
   tour?: { slug: string; title: string; href: string };
 }
 
@@ -80,7 +84,7 @@ export async function getReviewCards(
       dateLabel: reviewDateLabel(review.date, locale),
       source: review.source,
       sourceUrl: review.sourceUrl,
-      image: tour ? tour.image : resolveMedia("story", locale),
+      image: tour ? tour.image : review.image ? resolveMedia(review.image, locale) : undefined,
       tour: tour ? { slug: tour.slug, title: tour.title, href: tour.href } : undefined,
     };
   });
@@ -98,7 +102,8 @@ export async function getReviewCards(
     dateLabel: reviewDateLabel(review.date, locale),
     source: "google",
     sourceUrl: review.sourceUrl,
-    image: resolveMedia("story", locale),
+    // о каком туре отзыв из Google, неизвестно, поэтому без фото
+    image: undefined,
   }));
 
   const cards = [...manual, ...google].sort((a, b) => b.date.localeCompare(a.date));

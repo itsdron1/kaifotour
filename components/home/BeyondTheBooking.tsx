@@ -1,9 +1,11 @@
 import { StoryStack } from "@/components/home/StoryStack";
 import { Reveal } from "@/components/ui/Reveal";
 import { publishedTours } from "@/data/tours";
+import { cn } from "@/lib/cn";
 import { getDictionary } from "@/lib/dictionaries";
 import { plural } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
+import { site } from "@/lib/site";
 import { getStoryCards } from "@/lib/story-view";
 
 /**
@@ -17,7 +19,8 @@ export function BeyondTheBooking({ locale }: { locale: Locale }) {
     t.stories.stats.years,
     { value: String(routeCount), label: plural(locale, routeCount, t.stories.catalogStat) },
     t.stories.stats.activities,
-    t.stories.stats.guests,
+    // число гостей показываем, только когда заказчик его подтвердил (lib/site.ts)
+    ...(site.stats.guests ? [{ value: site.stats.guests, label: t.stories.stats.guests.label }] : []),
   ];
 
   return (
@@ -31,7 +34,12 @@ export function BeyondTheBooking({ locale }: { locale: Locale }) {
             <p className="mt-8 max-w-prose text-lg leading-relaxed text-label">{t.stories.intro}</p>
           </Reveal>
 
-          <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
+          <dl
+            className={cn(
+              "mt-14 grid grid-cols-2 gap-x-8 gap-y-10",
+              stats.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3",
+            )}
+          >
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col-reverse border-t border-divider pt-5">
                 <dt className="kicker mt-3 text-[0.75rem] leading-snug text-label">{stat.label}</dt>

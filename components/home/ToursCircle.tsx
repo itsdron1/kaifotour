@@ -114,6 +114,12 @@ function CircleCard({
   onClose,
 }: CircleCardProps) {
   const press = useRef<{ x: number; y: number; touch: boolean } | null>(null);
+  // Оборот с текстом тура появляется в DOM после первого переворота: иначе 17 оборотов дублируют каталог
+  const [backShown, setBackShown] = useState(false);
+  const activate = () => {
+    setBackShown(true);
+    onActivate();
+  };
   const ring = variant === "ring";
   const angle = ((index * 360) / count - 90) * (Math.PI / 180);
   const x = Math.cos(angle) * radius;
@@ -132,7 +138,7 @@ function CircleCard({
     : { x: 0, y: 0, rotate: 0, scale: 0.6, opacity: 0 };
 
   function handlePointerEnter(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType === "mouse") onActivate();
+    if (event.pointerType === "mouse") activate();
   }
 
   function handlePointerLeave(event: ReactPointerEvent<HTMLDivElement>) {
@@ -159,7 +165,7 @@ function CircleCard({
     }
     if (start?.touch && !active) {
       event.preventDefault();
-      onActivate();
+      activate();
     }
   }
 
@@ -191,7 +197,7 @@ function CircleCard({
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
         onPointerDown={handlePointerDown}
-        onFocus={onActivate}
+        onFocus={activate}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) onClose();
         }}
@@ -227,20 +233,22 @@ function CircleCard({
             <p className="display mt-0.5 line-clamp-2 text-[0.8125rem] leading-tight">{card.title}</p>
           </div>
 
-          {/* Оборот открытки: общий компонент с секцией туров и колодой hero */}
-          <TourCardBack
-            card={card}
-            labels={labels}
-            includes={size >= 140 ? 3 : 2}
-            onClose={onClose}
-            className={cn(
-              "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
-              CARD_FACE,
-              active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
-              "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
-              active && "motion-reduce:opacity-100",
-            )}
-          />
+          {/* Оборот открытки: общий компонент с колодой hero. В DOM — только после первого переворота */}
+          {backShown ? (
+            <TourCardBack
+              card={card}
+              labels={labels}
+              includes={size >= 140 ? 3 : 2}
+              onClose={onClose}
+              className={cn(
+                "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",
+                CARD_FACE,
+                active ? CARD_SHADOW_LIFTED : CARD_SHADOW,
+                "motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:[transform:none]",
+                active && "motion-reduce:opacity-100",
+              )}
+            />
+          ) : null}
         </motion.div>
       </div>
     </motion.div>

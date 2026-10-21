@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 
-/** «Plan Your Bali Trip» (docs/editorial-style.md, раздел 5): сдвоенный заголовок с тенью, форма и булавка */
+/** «Plan Your Bali Trip» (docs/editorial-style.md, раздел 5): заголовок с тенью, форма и булавка */
 export function PlanYourTrip({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const { plan } = t;
@@ -14,14 +14,14 @@ export function PlanYourTrip({ locale }: { locale: Locale }) {
       <div className="mx-auto grid max-w-page gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <Reveal className="lg:col-span-5">
           <MapPin size={48} weight="fill" aria-hidden="true" className="text-accent" />
-          <h2 id="plan-title" className="relative mt-8 text-display-xl">
+          <h2 id="plan-title" className="mt-8 text-display-xl">
+            {/* Тень рисует псевдоэлемент из data-shadow: в тексте страницы заголовок один раз, а не два */}
             <span
-              aria-hidden="true"
-              className="display pointer-events-none absolute inset-0 translate-x-[0.05em] translate-y-[0.09em] select-none text-ink/[0.12]"
+              data-shadow={plan.title}
+              className="display relative isolate block before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:translate-x-[0.05em] before:translate-y-[0.09em] before:select-none before:text-ink/[0.12] before:content-[attr(data-shadow)]"
             >
               {plan.title}
             </span>
-            <span className="display relative block">{plan.title}</span>
           </h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-ink/80">{plan.subtitle}</p>
         </Reveal>

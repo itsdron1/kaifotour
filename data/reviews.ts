@@ -1,3 +1,4 @@
+import type { MediaKey } from "@/data/media";
 import type { Locale, Localized } from "@/lib/i18n";
 
 export type ReviewSource = "google" | "instagram" | "whatsapp" | "tripadvisor";
@@ -18,7 +19,10 @@ export interface Review {
   /** ГГГГ-ММ */
   date: string;
   source: ReviewSource;
+  /** Ссылка именно на этот отзыв. Общую ссылку на профиль сюда не ставим: она есть одной кнопкой под стопкой */
   sourceUrl?: string;
+  /** Фото для отзыва без тура: должно совпадать с тем, о чём отзыв (о лодке — лодка) */
+  image?: MediaKey;
 }
 
 /**
@@ -38,6 +42,7 @@ export interface Review {
 export const reviews: Review[] = [
   {
     id: "google-lilia-golubina",
+    image: "boat-dusk",
     author: { ru: "Lilia Golubina", en: "Lilia Golubina" , id: "Lilia Golubina" },
     rating: 5,
     text: {
@@ -48,7 +53,6 @@ export const reviews: Review[] = [
     originalLang: "ru",
     date: "2026-09",
     source: "google",
-    sourceUrl: "https://maps.app.goo.gl/1shMasnjWcpmkR2b9",
   },
   {
     id: "google-andrey-antonov",
@@ -63,7 +67,6 @@ export const reviews: Review[] = [
     originalLang: "ru",
     date: "2026-08",
     source: "google",
-    sourceUrl: "https://maps.app.goo.gl/1shMasnjWcpmkR2b9",
   },
   {
     id: "google-stanislav-morozov",
@@ -78,7 +81,6 @@ export const reviews: Review[] = [
     originalLang: "ru",
     date: "2026-08",
     source: "google",
-    sourceUrl: "https://maps.app.goo.gl/1shMasnjWcpmkR2b9",
   },
   {
     id: "google-alexandr-gridin",
@@ -93,7 +95,6 @@ export const reviews: Review[] = [
     originalLang: "ru",
     date: "2026-08",
     source: "google",
-    sourceUrl: "https://maps.app.goo.gl/1shMasnjWcpmkR2b9",
   },
   {
     id: "google-johnny-lullaby",
@@ -108,6 +109,5 @@ export const reviews: Review[] = [
     originalLang: "ru",
     date: "2026-08",
     source: "google",
-    sourceUrl: "https://maps.app.goo.gl/1shMasnjWcpmkR2b9",
   },
 ];

@@ -173,8 +173,7 @@ const en = {
     stats: {
       years: { value: "5+", label: "years living in Bali" },
       activities: { value: "10+", label: "types of activities" },
-      // TODO: заменить на реальное число гостей
-      guests: { value: "1 200+", label: "happy guests" },
+      guests: { label: "happy guests" },
     },
     catalogStat: pf({ one: "route and activity", other: "routes and activities" }),
     stack: {
@@ -210,6 +209,7 @@ const en = {
     original: "Original",
     translated: "Translated by Google",
     fromGoogle: "Reviews from Google",
+    allOnGoogle: "All reviews on Google",
     mapTitle: "KAIFO on Google Maps",
     place: "KAIFO · Bali",
     openMap: "Open in Google Maps",
@@ -480,8 +480,7 @@ const ru: Dictionary = {
     stats: {
       years: { value: "5+", label: "лет живём на Бали" },
       activities: { value: "10+", label: "видов активностей" },
-      // TODO: заменить на реальное число гостей
-      guests: { value: "1 200+", label: "довольных гостей" },
+      guests: { label: "довольных гостей" },
     },
     catalogStat: pf({
       one: "маршрут и активность",
@@ -522,6 +521,7 @@ const ru: Dictionary = {
     original: "Оригинал",
     translated: "Переведено Google",
     fromGoogle: "Отзывы из Google",
+    allOnGoogle: "Все отзывы в Google",
     mapTitle: "KAIFO на Google Картах",
     place: "KAIFO · Бали",
     openMap: "Открыть в Google Картах",
@@ -787,8 +787,7 @@ const id: Dictionary = {
     stats: {
       years: { value: "5+", label: "tahun tinggal di Bali" },
       activities: { value: "10+", label: "jenis aktivitas" },
-      // TODO: заменить на реальное число гостей
-      guests: { value: "1 200+", label: "tamu yang puas" },
+      guests: { label: "tamu yang puas" },
     },
     catalogStat: pf({ one: "rute dan aktivitas", other: "rute dan aktivitas" }),
     stack: {
@@ -824,6 +823,7 @@ const id: Dictionary = {
     original: "Versi asli",
     translated: "Diterjemahkan oleh Google",
     fromGoogle: "Ulasan dari Google",
+    allOnGoogle: "Semua ulasan di Google",
     mapTitle: "KAIFO di Google Maps",
     place: "KAIFO · Bali",
     openMap: "Buka di Google Maps",

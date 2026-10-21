@@ -14,8 +14,6 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
   return (
     <CardStack
       items={stories}
-      // Карточка «с маршрута» самая высокая: у неё в подписи тур, цена и ссылка
-      spacerItem={stories.find((story) => story.kind === "moment") ?? stories[0]}
       labels={labels}
       className="mx-auto max-w-md lg:ml-auto lg:mr-0"
       renderCard={(story, { expanded }) => <StoryCard story={story} labels={labels} expanded={expanded} />}

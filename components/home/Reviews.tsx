@@ -90,7 +90,18 @@ export async function Reviews({ locale }: { locale: Locale }) {
                     position: t.reviews.position,
                   }}
                 />
-                {fromGoogle ? <p className="mt-6 text-xs text-label">{t.reviews.fromGoogle}</p> : null}
+                {/* Одна ссылка на все отзывы вместо одинаковых ссылок на каждой карточке */}
+                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <ButtonLink
+                    href={site.googleMaps.placeUrl}
+                    external
+                    newTabLabel={t.a11y.newTab}
+                    variant="outline-light"
+                  >
+                    {t.reviews.allOnGoogle}
+                  </ButtonLink>
+                  {fromGoogle ? <p className="text-xs text-label">{t.reviews.fromGoogle}</p> : null}
+                </div>
               </>
             ) : (
               <Reveal className="flex max-h-[260px] flex-col justify-center border border-divider bg-paper p-6 sm:p-8">

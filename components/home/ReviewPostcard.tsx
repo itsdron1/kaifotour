@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, GlobeSimple, GoogleLogo, InstagramLogo, Star, WhatsappLogo } from "@phosphor-icons/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState, type ComponentType } from "react";
 import { Photo } from "@/components/ui/Photo";
@@ -80,7 +81,24 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
         expanded ? "h-auto min-h-full" : "h-full",
       )}
     >
-      <Photo image={review.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
+      {review.image ? (
+        <Photo image={review.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
+      ) : (
+        // Фото, которое подходило бы к отзыву, нет: подложка со знаком вместо случайного кадра
+        <div className="relative flex aspect-[4/5] w-full items-center justify-center bg-deep">
+          <span aria-hidden="true" className="display text-[5rem] leading-none text-accent">
+            «
+          </span>
+          <Image
+            src="/brand/kaifo-icon.svg"
+            alt=""
+            width={28}
+            height={28}
+            unoptimized
+            className="absolute bottom-4 right-4 h-7 w-7 opacity-70"
+          />
+        </div>
+      )}
 
       <figcaption className="flex flex-1 flex-col px-2 pt-5">
         <div className="flex items-center justify-between gap-3">
