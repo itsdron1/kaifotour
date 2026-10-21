@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
     // Временные стоковые фото (Pexels) до получения собственных фото заказчика.
     remotePatterns: [{ protocol: "https", hostname: "images.pexels.com" }],
   },
+  // Технические адреса Vercel (kaifotour-bav1.vercel.app и превью) не индексируются:
+  // иначе Google видит в них копию основного сайта
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "(?<host>.*\\.vercel\\.app)" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

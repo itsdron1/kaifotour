@@ -35,10 +35,17 @@ const address: Localized = {
  */
 const googleRating = { value: 5, count: 11 } as { value: number; count: number } | null;
 
+/**
+ * Адрес сайта: рабочий — с www, адрес без www Vercel переадресует сюда (308).
+ * От него считаются metadataBase, canonical, og:url, sitemap, robots и JSON-LD,
+ * поэтому адрес без www в коде больше нигде писать не нужно.
+ */
+export const SITE_URL = "https://www.kaifotour-bali.com";
+
 /** Подтверждённые контакты и бренд (docs/tz-main.md, раздел 2) */
 export const site = {
   name: "KAIFO",
-  url: "https://kaifotour-bali.com",
+  url: SITE_URL,
   /** Палитра из docs/tz-main.md, раздел 4: "deep-ocean-brass" | "basalt-copper" | "jungle-gold" */
   palette: "deep-ocean-brass",
   /** Цвет интерфейса браузера на мобильных = тёмная база палитры */
