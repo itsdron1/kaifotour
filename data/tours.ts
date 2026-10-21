@@ -36,6 +36,18 @@ export interface TourVariant {
   image: MediaKey;
 }
 
+/** Шаг программы тура: время по-местному и что происходит */
+export interface ItineraryStep {
+  /** «02:00», «04:00–06:00» */
+  time: string;
+  text: Localized;
+}
+
+export interface TourFaqItem {
+  q: Localized;
+  a: Localized;
+}
+
 export interface Tour {
   slug: string;
   title: string;
@@ -52,6 +64,20 @@ export interface Tour {
   priceFromIDR: number | null;
   priceToIDR?: number;
   includes: Localized<string[]>;
+  /*
+   * Подробности тура для страницы и для рекламы. Заполняются только фактами от заказчика
+   * (вопросы — в docs/tour-content-questions.md); пустое поле — блок на странице не показывается.
+   */
+  /** Программа по времени */
+  itinerary?: ItineraryStep[];
+  /** Откуда и во сколько забираем, есть ли доплата за дальние районы */
+  pickup?: Localized;
+  /** Что не входит в цену */
+  notIncluded?: Localized<string[]>;
+  /** Что взять с собой */
+  whatToBring?: Localized<string[]>;
+  /** Частые вопросы именно по этому туру */
+  faq?: TourFaqItem[];
   /** null: сложность не указана в ТЗ */
   difficulty: Difficulty | null;
   difficultyNote?: Localized;
@@ -338,7 +364,7 @@ export const tours: Tour[] = [
     environment: "land",
     collections: [],
     image: "atv",
-    gallery: ["atv-river", "ubud-terraces"],
+    gallery: ["atv-river"],
     variants: [],
     isMultiDay: false,
     published: true,
@@ -467,7 +493,7 @@ export const tours: Tour[] = [
     environment: "water",
     collections: [],
     image: "jet-ski",
-    gallery: ["jet-ski-aerial", "uluwatu"],
+    gallery: ["jet-ski-aerial"],
     variants: [],
     isMultiDay: false,
     published: true,
@@ -502,7 +528,7 @@ export const tours: Tour[] = [
     environment: "land",
     collections: [],
     image: "harley",
-    gallery: ["coastal-ride", "ubud-terraces"],
+    gallery: ["coastal-ride"],
     variants: [],
     isMultiDay: false,
     published: true,
@@ -596,7 +622,7 @@ export const tours: Tour[] = [
     environment: "land",
     collections: [],
     image: "batur-sunrise",
-    gallery: ["batur-crater", "agung-sunrise"],
+    gallery: ["batur-crater"],
     variants: [],
     isMultiDay: false,
     published: true,
@@ -647,7 +673,7 @@ export const tours: Tour[] = [
     environment: "land",
     collections: [],
     image: "agung-sunrise",
-    gallery: ["agung-clouds", "agung-gates"],
+    gallery: ["agung-clouds"],
     variants: [],
     isMultiDay: false,
     published: true,

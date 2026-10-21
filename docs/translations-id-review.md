@@ -146,6 +146,11 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `tour.difficultyLevels.hard` | Challenging | Menantang |
 | `tour.difficultyLevels.unknown` | Ask our manager | Tanya manajer kami |
 | `tour.includes` | What's included | Termasuk dalam paket |
+| `tour.notIncluded` | Not included | Tidak termasuk |
+| `tour.itinerary` | Schedule | Jadwal |
+| `tour.pickup` | Pickup | Penjemputan |
+| `tour.whatToBring` | What to bring | Yang perlu dibawa |
+| `tour.tourFaq` | Questions about this tour | Pertanyaan tentang tur ini |
 | `tour.variants` | Another route in this tour | Rute lain dalam tur ini |
 | `tour.gallery` | What it looks like | Seperti ini suasananya |
 | `tour.related` | More tours like this | Tur serupa lainnya |
@@ -205,6 +210,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `reviews.original` | Original | Versi asli |
 | `reviews.translated` | Translated by Google | Diterjemahkan oleh Google |
 | `reviews.fromGoogle` | Reviews from Google | Ulasan dari Google |
+| `reviews.allOnGoogle` | All reviews on Google | Semua ulasan di Google |
 | `reviews.mapTitle` | KAIFO on Google Maps | KAIFO di Google Maps |
 | `reviews.place` | KAIFO · Bali | KAIFO · Bali |
 | `reviews.openMap` | Open in Google Maps | Buka di Google Maps |
@@ -272,6 +278,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `footer.tagline` | Scenic, safe and real Bali experiences, from ocean trips to off-road adventures | Pengalaman Bali yang indah, aman, dan apa adanya, dari trip laut sampai petualangan off-road |
 | `footer.navTitle` | Sections | Bagian |
 | `footer.contactsTitle` | Contacts | Kontak |
+| `footer.phone` | Phone | Telepon |
 | `footer.legalTitle` | Documents | Dokumen |
 | `footer.disclaimer` | Information on this site is for reference only and does not constitute a public offer. Prices are for reference only and are confirmed by our manager before booking. | Informasi di situs ini hanya bersifat perkiraan dan bukan penawaran resmi. Harga hanya perkiraan dan dipastikan oleh manajer kami sebelum pemesanan. |
 | `footer.rights` | All rights reserved | Hak cipta dilindungi |

@@ -1,4 +1,4 @@
-import { EnvelopeSimple, InstagramLogo, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { EnvelopeSimple, InstagramLogo, Phone, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
@@ -25,6 +25,13 @@ export function Footer({ locale }: { locale: Locale }) {
       value: site.whatsapp.display,
       href: whatsappUrl(),
       icon: <WhatsappLogo size={20} aria-hidden="true" />,
+    },
+    {
+      // тот же номер, но звонком: с телефона по нему можно сразу позвонить
+      label: t.footer.phone,
+      value: site.whatsapp.display,
+      href: `tel:+${site.whatsapp.number}`,
+      icon: <Phone size={20} aria-hidden="true" />,
     },
     {
       label: "Instagram",
@@ -57,8 +64,9 @@ export function Footer({ locale }: { locale: Locale }) {
                   <span className="kicker block text-[0.75rem] text-ink/70">{contact.label}</span>
                   <a
                     href={contact.href}
-                    target={contact.href.startsWith("mailto:") ? undefined : "_blank"}
-                    rel={contact.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                    // почта и звонок открываются приложением, а не новой вкладкой
+                    target={/^(mailto|tel):/.test(contact.href) ? undefined : "_blank"}
+                    rel={/^(mailto|tel):/.test(contact.href) ? undefined : "noopener noreferrer"}
                     className="mt-1 inline-flex items-center gap-3 text-xl font-medium sm:text-2xl"
                   >
                     {contact.icon}
