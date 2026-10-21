@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "check:en": "node scripts/check-en-cyrillic.mjs",
     "check:id": "node scripts/check-id-translations.mjs",
-    "docs:id": "node scripts/build-id-review-doc.mjs"
+    "docs:id": "node scripts/build-id-review-doc.mjs",
+    "check:ld": "node scripts/check-structured-data.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",

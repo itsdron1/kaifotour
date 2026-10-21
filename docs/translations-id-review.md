@@ -15,7 +15,6 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `meta.homeDescription` | Boat trips, surfing, snorkeling, ATV, jeep and Harley tours, plus day tours across the island. Scenic, safe and real Bali experiences. | Trip kapal, surfing, snorkeling, ATV, tur jeep dan Harley, serta wisata harian keliling pulau. Pengalaman Bali yang indah, aman, dan apa adanya. |
 | `meta.toursTitle` | Bali Tours: the Full Catalog | Tur Bali: katalog lengkap |
 | `meta.toursDescription` | Ocean trips, off-road rides, day tours and guided rentals in Bali. Filter by activity, price and duration. | Trip laut, perjalanan off-road, wisata harian, dan sewa dengan pemandu di Bali. Saring menurut aktivitas, harga, dan durasi. |
-| `meta.tourSuffix` | Book via WhatsApp. | Pesan via WhatsApp. |
 | `meta.legalDescription` | This KAIFO document is being prepared. | Dokumen KAIFO ini sedang disiapkan. |
 
 ## Подписи для скринридеров
@@ -307,6 +306,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `` | Rides | Sewa Kendaraan |
 | `kicker` | 01 / Ocean | 01 / Laut |
 | `lead` | Sunset and evening cruises on a traditional boat, with dinner on board, live music and a fire show. | Pelayaran senja dan malam dengan perahu tradisional, lengkap dengan makan malam di kapal, musik live, dan fire show. |
+| `seoDescription` | Sunset or evening cruise on a traditional boat in Bali: dinner on board, live music and a fire show under the first stars. Book on WhatsApp. | Pelayaran senja atau malam dengan perahu tradisional di Bali: makan malam di kapal, musik live, dan fire show di bawah bintang. Pesan via WhatsApp. |
 | `durationLabel` | Evening cruise | Pelayaran malam |
 | `includes[0]` | Sunset or evening cruise | Pelayaran senja atau malam |
 | `includes[1]` | Dinner on board | Makan malam di kapal |
@@ -314,6 +314,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `includes[3]` | Fire show | Fire show |
 | `kicker` | 02 / Ocean | 02 / Laut |
 | `lead` | A three-hour cruise with swim stops. On board: a bar, a DJ and a tower for jumping into the sea. | Pelayaran tiga jam dengan berhenti untuk berenang. Di kapal: bar, DJ, dan menara untuk melompat ke laut. |
+| `seoDescription` | A three-hour party cruise in Bali with swim stops, a bar, a DJ and a jumping tower over the sea. Day or evening departures. Book on WhatsApp. | Pelayaran pesta tiga jam di Bali dengan berhenti berenang, bar, DJ, dan menara lompat ke laut. Pilihan trip siang atau sore. Pesan via WhatsApp. |
 | `durationLabel` | 3 hours | 3 jam |
 | `includes[0]` | 3-hour cruise | Pelayaran 3 jam |
 | `includes[1]` | Swim stops | Berhenti untuk berenang |
@@ -322,17 +323,20 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `includes[4]` | Day trip 10:00-13:00 or evening trip 15:00-18:30 | Trip siang 10.00-13.00 atau trip sore 15.00-18.30 |
 | `kicker` | 03 / Ocean | 03 / Laut |
 | `lead` | Ocean fishing in two formats, local or professional. Gear and food are included in the price. | Memancing di laut dalam dua pilihan, lokal atau profesional. Perlengkapan dan makanan sudah termasuk dalam harga. |
+| `seoDescription` | Ocean fishing trip in Bali in two formats, local or professional. Fishing gear and food are already included in the price. Book on WhatsApp. | Memancing di laut Bali dengan dua pilihan, lokal atau profesional. Perlengkapan pancing dan makanan sudah termasuk dalam harga. Pesan via WhatsApp. |
 | `includes[0]` | Local fishing trip | Trip memancing lokal |
 | `includes[1]` | Professional fishing trip | Trip memancing profesional |
 | `includes[2]` | Fishing gear | Perlengkapan pancing |
 | `includes[3]` | Food | Makanan |
 | `kicker` | 04 / Ocean | 04 / Laut |
 | `lead` | Surfing on secret beaches, in small groups and with a guide. | Surfing di pantai-pantai rahasia, dalam grup kecil dan bersama pemandu. |
+| `seoDescription` | Surf Bali's secret beaches in small groups with a guide who reads the waves. A quiet spot away from the crowds for your first ride. Book on WhatsApp. | Surfing di pantai rahasia Bali dalam grup kecil bersama pemandu yang paham ombak. Spot tenang jauh dari keramaian untuk ombak pertama. Pesan via WhatsApp. |
 | `includes[0]` | Spots on secret beaches | Spot di pantai rahasia |
 | `includes[1]` | Small groups | Grup kecil |
 | `includes[2]` | Guide | Pemandu |
 | `kicker` | 05 / Ocean | 05 / Laut |
 | `lead` | Snorkeling at standard spots or a premium trip to see manta rays. The longest option is a full day on Nusa Penida. | Snorkeling di spot standar atau trip premium untuk melihat pari manta. Pilihan terpanjang: seharian penuh di Nusa Penida. |
+| `seoDescription` | Snorkeling in Bali at standard spots or on a premium trip to see manta rays, up to a full day on Nusa Penida with its viewpoints. Book on WhatsApp. | Snorkeling di Bali di spot standar atau trip premium untuk melihat pari manta, sampai seharian di Nusa Penida dengan titik pandangnya. Pesan via WhatsApp. |
 | `durationLabel` | Up to 9 hours | Sampai 9 jam |
 | `includes[0]` | Standard spots | Spot standar |
 | `includes[1]` | Premium trip with manta rays | Trip premium dengan pari manta |
@@ -346,6 +350,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `includes[4]` | Guide | Pemandu |
 | `kicker` | 01 / Off-road | 01 / Off-Road |
 | `lead` | ATV routes from 1 to 4 hours, with new vehicles, a guide and transfer. | Rute ATV dari 1 sampai 4 jam, dengan kendaraan baru, pemandu, dan transfer. |
+| `seoDescription` | ATV quad bike routes in Bali from 1 to 4 hours, with new vehicles, a guide and transfer included. Mud, open trails and views. Book on WhatsApp. | Rute ATV di Bali dari 1 sampai 4 jam dengan kendaraan baru, pemandu, dan transfer termasuk. Lumpur, jalur terbuka, dan pemandangan. Pesan via WhatsApp. |
 | `durationLabel` | 1-4 hours | 1-4 jam |
 | `includes[0]` | Routes from 1 to 4 hours | Rute dari 1 sampai 4 jam |
 | `includes[1]` | New vehicles | Kendaraan baru |
@@ -353,12 +358,14 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `includes[3]` | Transfer | Transfer |
 | `kicker` | 02 / Off-road | 02 / Off-Road |
 | `lead` | Enduro rides on the Kintamani, Tabanan and Secret Forest routes on Yamaha, Honda and KTM bikes. | Perjalanan enduro di rute Kintamani, Tabanan, dan Secret Forest dengan motor Yamaha, Honda, dan KTM. |
+| `seoDescription` | Enduro rides in Bali on the Kintamani, Tabanan and Secret Forest routes, on Yamaha, Honda and KTM bikes. Choose your route and book on WhatsApp. | Tur enduro di Bali lewat rute Kintamani, Tabanan, dan Secret Forest dengan motor Yamaha, Honda, dan KTM. Pilih rute Anda dan pesan via WhatsApp. |
 | `includes[0]` | Yamaha, Honda and KTM bikes | Motor Yamaha, Honda, dan KTM |
 | `includes[1]` | Kintamani route | Rute Kintamani |
 | `includes[2]` | Tabanan route | Rute Tabanan |
 | `includes[3]` | Secret Forest route | Rute Secret Forest |
 | `kicker` | 03 / Off-road | 03 / Off-Road |
 | `lead` | Jeep tours to sunrises and volcanoes. Routes: Batur and Kintamani, Ubud, Jatiluwih and Bedugul, Munduk. | Tur jeep ke matahari terbit dan gunung berapi. Rute: Batur dan Kintamani, Ubud, Jatiluwih dan Bedugul, Munduk. |
+| `seoDescription` | Jeep tours in Bali to sunrises and volcanoes: the Batur and Kintamani, Ubud, Jatiluwih and Bedugul or Munduk routes. Book your jeep on WhatsApp. | Tur jeep di Bali menuju matahari terbit dan gunung berapi: rute Batur dan Kintamani, Ubud, Jatiluwih dan Bedugul, atau Munduk. Pesan via WhatsApp. |
 | `includes[0]` | Sunrise by the volcano | Matahari terbit di dekat gunung berapi |
 | `includes[1]` | Batur / Kintamani route | Rute Batur / Kintamani |
 | `includes[2]` | Ubud route | Rute Ubud |
@@ -372,17 +379,20 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `note` | Unlike Batur Sunrise Trekking, there is no hike: the whole route is by jeep. A good fit if you are not up for trekking. | Berbeda dengan Batur Sunrise Trekking, di sini tidak ada pendakian: seluruh rute ditempuh dengan jeep. Cocok kalau Anda tidak ingin trekking. |
 | `kicker` | 01 / Rides | 01 / Sewa Kendaraan |
 | `lead` | Jet ski rides from 30 minutes to 6 hours. Locations: Sanur, Jimbaran, Nusa Dua and Uluwatu. | Jet ski dari 30 menit sampai 6 jam. Lokasi: Sanur, Jimbaran, Nusa Dua, dan Uluwatu. |
+| `seoDescription` | Jet ski rides in Bali from 30 minutes to 6 hours. Choose Sanur, Jimbaran, Nusa Dua or Uluwatu and ride the open water at full throttle. Book on WhatsApp. | Jet ski di Bali dari 30 menit sampai 6 jam. Pilih Sanur, Jimbaran, Nusa Dua, atau Uluwatu dan nikmati laut lepas dengan gas penuh. Pesan via WhatsApp. |
 | `durationLabel` | 30 min - 6 h | 30 menit - 6 jam |
 | `includes[0]` | Rides from 30 minutes to 6 hours | Sesi dari 30 menit sampai 6 jam |
 | `includes[1]` | Sanur or Jimbaran | Sanur atau Jimbaran |
 | `includes[2]` | Nusa Dua or Uluwatu | Nusa Dua atau Uluwatu |
 | `kicker` | 02 / Rides | 02 / Sewa Kendaraan |
 | `lead` | Harley-Davidson tours with five models to choose from, a guide on the route, and photos and video of the ride. | Tur Harley-Davidson dengan lima model pilihan, pemandu sepanjang rute, serta foto dan video perjalanan. |
+| `seoDescription` | Harley-Davidson tours in Bali with five models to choose from, a guide on the route, plus photos and video of your ride. Book your ride on WhatsApp. | Tur Harley-Davidson di Bali dengan lima model pilihan, pemandu sepanjang rute, serta foto dan video perjalanan Anda. Pesan perjalanan via WhatsApp. |
 | `includes[0]` | 5 models: Dyna, Sportster, Fat Bob, Heritage, Softail | 5 model: Dyna, Sportster, Fat Bob, Heritage, Softail |
 | `includes[1]` | Guide | Pemandu |
 | `includes[2]` | Photos and video | Foto dan video |
 | `kicker` | 01 / Day Tours | 01 / Wisata Harian |
 | `lead` | A one-day cultural route through the heart of Bali: rice terraces, temples and craft villages. The route is built around your interests, with several combinations of locations to choose from. | Rute budaya sehari melewati jantung Bali: terasering, pura, dan desa kerajinan. Rutenya disusun sesuai minat Anda, dengan beberapa kombinasi lokasi yang bisa dipilih. |
+| `seoDescription` | A one-day cultural route around Ubud: Tegallalang rice terraces, a temple and craft villages, with a private guide and transfer. Book on WhatsApp. | Rute budaya sehari di Ubud: terasering Tegallalang, pura, dan desa kerajinan, dengan pemandu pribadi dan transfer seharian. Pesan via WhatsApp. |
 | `includes[0]` | Private guide and transfer for the whole day | Pemandu pribadi dan transfer seharian |
 | `includes[1]` | Tegallalang rice terraces | Terasering Tegallalang |
 | `includes[2]` | A temple complex of your choice | Kompleks pura pilihan Anda |
@@ -390,6 +400,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `includes[4]` | 4 location combinations to choose from | 4 kombinasi lokasi yang bisa dipilih |
 | `kicker` | 02 / Day Tours | 02 / Wisata Harian |
 | `lead` | A hike to the summit of Mount Batur in the dark to watch the sunrise above the clouds, followed by the descent, breakfast and a swim in natural hot springs. | Pendakian ke puncak Gunung Batur dalam gelap untuk menyaksikan matahari terbit di atas awan, lalu turun, sarapan, dan berendam di sumber air panas alami. |
+| `seoDescription` | Hike Mount Batur in the dark and watch the sunrise above the clouds, then breakfast and a swim in natural hot springs. Book your trek on WhatsApp. | Mendaki Gunung Batur dalam gelap dan saksikan matahari terbit di atas awan, lalu sarapan dan berendam di air panas alami. Pesan trekking via WhatsApp. |
 | `durationLabel` | 1 day, night start | 1 hari, berangkat malam |
 | `includes[0]` | Trekking guide, flashlights, transfer | Pemandu trekking, lampu senter, transfer |
 | `includes[1]` | Sunrise ascent | Pendakian menuju matahari terbit |
@@ -398,6 +409,7 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `difficultyNote` | about 2 hours of uphill hiking | sekitar 2 jam pendakian menanjak |
 | `kicker` | 03 / Day Tours | 03 / Wisata Harian |
 | `lead` | A climb to Bali's highest point at 3,145 metres. For those who want a bigger challenge than Batur: a view over the whole island with sunrise at the summit. | Pendakian ke titik tertinggi di Bali, 3.145 meter. Untuk Anda yang ingin tantangan lebih besar daripada Batur: pemandangan seluruh pulau dengan matahari terbit di puncak. |
+| `seoDescription` | Climb Mount Agung, Bali's highest peak at 3,145 m, for a sunrise above the whole island. Experienced guide and climbing gear. Book on WhatsApp. | Mendaki Gunung Agung, puncak tertinggi Bali 3.145 m, untuk matahari terbit di atas seluruh pulau. Pemandu dan perlengkapan pendakian. Pesan via WhatsApp. |
 | `durationLabel` | 1.5 days, night departure | 1,5 hari, berangkat malam |
 | `includes[0]` | Experienced guide, climbing gear | Pemandu berpengalaman, perlengkapan pendakian |
 | `includes[1]` | Transfer and night-start logistics | Transfer dan pengaturan keberangkatan malam |
@@ -406,36 +418,42 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `difficultyNote` | requires good fitness | butuh kondisi fisik yang baik |
 | `kicker` | 04 / Day Tours | 04 / Wisata Harian |
 | `lead` | A journey into Bali's spiritual side: a Melukat purification ceremony at a holy spring and a visit to one of the island's main temples. | Perjalanan ke sisi spiritual Bali: upacara penyucian Melukat di mata air suci dan kunjungan ke salah satu pura utama pulau ini. |
+| `seoDescription` | A Melukat water purification ceremony at a holy spring and a visit to a major Balinese temple, with a guide and a traditional sarong. Book on WhatsApp. | Upacara penyucian Melukat di mata air suci dan kunjungan ke pura besar di Bali, dengan pemandu dan kain sarung tradisional. Pesan via WhatsApp. |
 | `includes[0]` | Melukat ceremony (ritual water purification) | Upacara Melukat (ritual penyucian dengan air) |
 | `includes[1]` | Visit to a major temple complex | Kunjungan ke kompleks pura besar |
 | `includes[2]` | Traditional sarong for entering the temple | Kain sarung tradisional untuk masuk pura |
 | `includes[3]` | A guide who knows the cultural context of the ceremonies | Pemandu yang memahami latar budaya upacaranya |
 | `kicker` | 05 / Day Tours | 05 / Wisata Harian |
 | `lead` | The most scenic spots of East Bali in one day: the famous Gates of Heaven, water palaces and a viewpoint facing Mount Agung. | Tempat-tempat terindah di Bali Timur dalam sehari: Gerbang Surga (Pura Lempuyang) yang terkenal, taman air, dan titik pandang menghadap Gunung Agung. |
+| `seoDescription` | East Bali in one day: the Gates of Heaven at Lempuyang, the Tirta Gangga water palace and a view of Mount Agung. Transfer and guide. Book on WhatsApp. | Bali Timur dalam sehari: Gerbang Surga (Pura Lempuyang), taman air Tirta Gangga, dan pemandangan Gunung Agung. Transfer dan pemandu. Pesan via WhatsApp. |
 | `includes[0]` | Gates of Heaven at Lempuyang | Gerbang Surga (Pura Lempuyang) |
 | `includes[1]` | Tirta Gangga water palace | Taman air Tirta Gangga |
 | `includes[2]` | Viewpoint facing Mount Agung | Titik pandang menghadap Gunung Agung |
 | `includes[3]` | Transfer and guide for the whole day | Transfer dan pemandu seharian |
 | `kicker` | 06 / Day Tours | 06 / Wisata Harian |
 | `lead` | A one-day route around the southern Bukit Peninsula: a dream beach, a beach club with a glass pool above the ocean, Indonesia's tallest statue and sunset at a clifftop temple. | Rute sehari keliling Semenanjung Bukit di selatan: pantai impian, beach club dengan kolam kaca di atas laut, patung tertinggi di Indonesia, dan matahari terbenam di pura di atas tebing. |
+| `seoDescription` | A day around the Bukit Peninsula: a dream beach, a beach club pool above the ocean, the GWK statue and sunset at Uluwatu temple. Book on WhatsApp. | Sehari di Semenanjung Bukit: pantai impian, kolam beach club di atas laut, patung GWK, dan matahari terbenam di Pura Uluwatu. Pesan via WhatsApp. |
 | `includes[0]` | One of the peninsula's best beaches | Salah satu pantai terbaik di semenanjung ini |
 | `includes[1]` | Beach club with an infinity or glass pool | Beach club dengan kolam infinity atau kolam kaca |
 | `includes[2]` | Garuda Wisnu Kencana statue | Patung Garuda Wisnu Kencana |
 | `includes[3]` | Sunset at the clifftop Uluwatu Temple | Matahari terbenam di Pura Uluwatu di atas tebing |
 | `kicker` | 07 / Day Tours | 07 / Wisata Harian |
 | `lead` | A trip to the north of the island: a morning boat ride to wild dolphins in the open sea and a swim at one of Bali's most scenic waterfalls. | Perjalanan ke utara pulau: naik perahu pagi-pagi menemui lumba-lumba liar di laut lepas dan berenang di salah satu air terjun terindah di Bali. |
+| `seoDescription` | North Bali in one day: a morning boat ride to see wild dolphins in the open sea, then a waterfall swim. Transfer and guide included. Book on WhatsApp. | Bali Utara dalam sehari: naik perahu pagi melihat lumba-lumba liar di laut lepas, lalu berenang di air terjun. Transfer dan pemandu. Pesan via WhatsApp. |
 | `durationLabel` | 1 day, early start | 1 hari, berangkat pagi buta |
 | `includes[0]` | Morning boat trip to see dolphins | Trip perahu pagi untuk melihat lumba-lumba |
 | `includes[1]` | Waterfall visit and swim | Kunjungan dan berenang di air terjun |
 | `includes[2]` | Transfer and guide for the whole day | Transfer dan pemandu seharian |
 | `kicker` | 08 / Day Tours | 08 / Wisata Harian |
 | `lead` | A two-day route around Nusa Lembongan and Nusa Ceningan: signature spots, snorkeling and kayaking. | Rute dua hari keliling Nusa Lembongan dan Nusa Ceningan: spot andalan, snorkeling, dan kayak. |
+| `seoDescription` | A two-day trip to Nusa Lembongan and Nusa Ceningan with the islands' signature spots, snorkeling and kayaking. Book your island trip on WhatsApp. | Trip dua hari ke Nusa Lembongan dan Nusa Ceningan dengan spot andalan pulau, snorkeling, dan kayak. Pesan perjalanan pulau Anda via WhatsApp. |
 | `durationLabel` | 2 days / 1 night | 2 hari / 1 malam |
 | `includes[0]` | Signature island spots | Spot andalan pulau |
 | `includes[1]` | Snorkeling | Snorkeling |
 | `includes[2]` | Kayaking | Kayak |
 | `kicker` | Sumba | Sumba |
 | `lead` |  |  |
+| `seoDescription` | A Sumba Island trip for 3 days and 2 nights, planned with KAIFO. Ask us about the route, the dates and the price on WhatsApp before you book. | Trip ke Pulau Sumba selama 3 hari 2 malam bersama KAIFO. Tanyakan rute, tanggal, dan harga lewat WhatsApp sebelum Anda memesan perjalanan ini. |
 | `durationLabel` | 3 days / 2 nights | 3 hari / 2 malam |
 
 ## Карточки историй и сцен с маршрутов

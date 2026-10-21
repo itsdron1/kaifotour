@@ -1,7 +1,27 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
+import { resolveMedia } from "@/data/media";
+import { getPublishedTour } from "@/data/tours";
+import { getDictionary } from "@/lib/dictionaries";
+import type { Locale } from "@/lib/i18n";
 
 export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
+
+/** Пропорции логотипа 4352 × 1228 */
+const LOGO_WIDTH = 198;
+const LOGO_HEIGHT = 56;
+
+let logoPromise: Promise<string | null> | null = null;
+
+/** Логотип для тёмной карточки: SVG из public/brand как data URI, next/og растеризует его сам */
+function loadLogo(): Promise<string | null> {
+  logoPromise ??= readFile(path.join(process.cwd(), "public", "brand", "kaifo-logo-light.svg"))
+    .then((buffer) => `data:image/svg+xml;base64,${buffer.toString("base64")}`)
+    .catch(() => null);
+  return logoPromise;
+}
 
 /** next/og не понимает CSS-переменные, поэтому цвета палитры Deep Ocean & Brass продублированы из globals.css */
 const colors = {
@@ -62,7 +82,7 @@ interface OgCardOptions {
 
 /** Карточка для соцсетей 1200x630: фото слева, курсивный заголовок на тёмной базе справа */
 export async function renderOgImage({ title, kicker, photo }: OgCardOptions): Promise<ImageResponse> {
-  const fonts = await loadFonts();
+  const [fonts, logo] = await Promise.all([loadFonts(), loadLogo()]);
 
   return new ImageResponse(
     (
@@ -86,9 +106,14 @@ export async function renderOgImage({ title, kicker, photo }: OgCardOptions): Pr
             padding: "60px 64px",
           }}
         >
-          <div style={{ display: "flex", fontFamily: "Sofia Sans Condensed", fontSize: 26, letterSpacing: 6, color: colors.accent }}>
-            KAIFO
-          </div>
+          {logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logo} alt="KAIFO" width={LOGO_WIDTH} height={LOGO_HEIGHT} style={{ width: LOGO_WIDTH, height: LOGO_HEIGHT }} />
+          ) : (
+            <div style={{ display: "flex", fontFamily: "Sofia Sans Condensed", fontSize: 26, letterSpacing: 6, color: colors.accent }}>
+              KAIFO
+            </div>
+          )}
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontFamily: "Sofia Sans Condensed", fontSize: 24, letterSpacing: 3, color: colors.mist }}>
               {kicker.toUpperCase()}
@@ -112,4 +137,20 @@ export async function renderOgImage({ title, kicker, photo }: OgCardOptions): Pr
     ),
     { ...ogSize, fonts },
   );
+}
+
+/** Метаданные карточки тура для соцсетей: og:image:alt — название тура, а не общее «KAIFO» */
+export function tourOgImageMetadata(slug: string) {
+  const tour = getPublishedTour(slug);
+  return [{ id: "card", alt: tour ? tour.title : "KAIFO", size: ogSize, contentType: ogContentType }];
+}
+
+/** Карточка тура: фото тура, логотип, кикер и название; для неизвестного адреса — общая карточка сайта */
+export function renderTourOgImage(locale: Locale, slug: string): Promise<ImageResponse> {
+  const tour = getPublishedTour(slug);
+  if (!tour) {
+    const t = getDictionary(locale);
+    return renderOgImage({ title: t.hero.title, kicker: t.footer.tagline });
+  }
+  return renderOgImage({ title: tour.title, kicker: tour.kicker[locale], photo: resolveMedia(tour.image, locale).src });
 }

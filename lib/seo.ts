@@ -60,3 +60,12 @@ export function buildPageMetadata({
 export function jsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
+
+/** Телефон для разметки — в международном формате, без пробелов и дефисов */
+export const schemaTelephone = `+${site.whatsapp.number}`;
+
+/** Один @id компании: разметка главной и страниц туров ссылается на один и тот же объект */
+export const organizationId = `${site.url}/#organization`;
+
+/** Логотип для разметки: PNG, потому что не все проверки Google принимают SVG */
+export const schemaLogo = `${site.url}/brand/kaifo-logo.png`;

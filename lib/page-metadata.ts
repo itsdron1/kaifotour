@@ -4,13 +4,11 @@ import { getDictionary } from "@/lib/dictionaries";
 import type { Locale } from "@/lib/i18n";
 import type { LegalDoc } from "@/lib/legal";
 import { buildPageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
+import { formatPriceFrom } from "@/lib/tour-view";
 
-const DESCRIPTION_LIMIT = 158;
-
-function truncate(text: string, limit = DESCRIPTION_LIMIT): string {
-  if (text.length <= limit) return text;
-  return `${text.slice(0, limit - 1).replace(/\s+\S*$/, "")}…`;
-}
+/** Title с ценой длиннее этого Google обрезает в выдаче: тогда цену убираем, название оставляем */
+const TITLE_LIMIT = 62;
 
 export function homeMetadata(locale: Locale): Metadata {
   const t = getDictionary(locale);
@@ -33,15 +31,27 @@ export function catalogMetadata(locale: Locale): Metadata {
   });
 }
 
+/**
+ * «Mount Batur Sunrise Trekking in Bali — from 1.3M IDR | KAIFO».
+ * Цену подставляет код из priceFromIDR, чтобы title не расходился с ценой тура;
+ * у туров «по запросу» и там, где с ценой не помещается, title без цены.
+ * Описание пишется для каждого тура отдельно, а не обрезается из текста тура.
+ */
 export function tourMetadata(locale: Locale, slug: string): Metadata {
   const tour = getPublishedTour(slug);
   if (!tour) return {};
-  const t = getDictionary(locale);
+
+  const name = tour.seoTitle[locale];
+  const withPrice =
+    tour.priceFromIDR === null ? null : `${name} — ${formatPriceFrom(tour.priceFromIDR, locale)} | ${site.name}`;
+  const title = withPrice && withPrice.length <= TITLE_LIMIT ? withPrice : `${name} | ${site.name}`;
+
   return buildPageMetadata({
     locale,
     path: `/tours/${tour.slug}`,
-    title: tour.title,
-    description: truncate(`${tour.lead[locale]} ${t.meta.tourSuffix}`),
+    title,
+    description: tour.seoDescription[locale],
+    absoluteTitle: true,
   });
 }
 

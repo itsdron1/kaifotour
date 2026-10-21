@@ -13,7 +13,7 @@ import type { Tour } from "@/data/tours";
 import { cn } from "@/lib/cn";
 import { getDictionary } from "@/lib/dictionaries";
 import { localizedPath, type Locale } from "@/lib/i18n";
-import { jsonLd } from "@/lib/seo";
+import { jsonLd, organizationId, schemaLogo, schemaTelephone } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { toTourCard } from "@/lib/tour-view";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -37,29 +37,56 @@ export function TourPage({ locale, tour }: { locale: Locale; tour: Tour }) {
     { label: t.tour.price, value: card.priceLabel, accent: true },
   ];
 
+  const tourUrl = `${site.url}${card.href}`;
+  /*
+   * Разметка тура: TouristTrip с предложением и хлебные крошки.
+   * У туров «по запросу» Offer нет — без цены Google его не примет.
+   * Рейтинга и отзывов в разметке нет намеренно.
+   */
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "TouristTrip",
+        "@id": `${tourUrl}#trip`,
         name: tour.title,
         description: tour.lead[locale],
-        url: `${site.url}${card.href}`,
+        url: tourUrl,
         image: heroImage.src,
+        inLanguage: locale,
         provider: {
           "@type": "TravelAgency",
+          "@id": organizationId,
           name: site.name,
           url: site.url,
-          telephone: site.whatsapp.display,
+          logo: schemaLogo,
+          telephone: schemaTelephone,
           email: site.email,
         },
+        ...(tour.priceFromIDR === null
+          ? {}
+          : {
+              offers: {
+                "@type": "Offer",
+                price: tour.priceFromIDR,
+                priceCurrency: "IDR",
+                // цена на сайте — «от»: минимальную отдельно указывает PriceSpecification
+                priceSpecification: {
+                  "@type": "PriceSpecification",
+                  minPrice: tour.priceFromIDR,
+                  priceCurrency: "IDR",
+                },
+                url: tourUrl,
+                availability: "https://schema.org/InStock",
+              },
+            }),
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: t.nav.home, item: `${site.url}${homeHref}` },
           { "@type": "ListItem", position: 2, name: t.nav.tours, item: `${site.url}${catalogHref}` },
-          { "@type": "ListItem", position: 3, name: tour.title, item: `${site.url}${card.href}` },
+          { "@type": "ListItem", position: 3, name: tour.title, item: tourUrl },
         ],
       },
     ],

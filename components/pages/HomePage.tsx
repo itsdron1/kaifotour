@@ -9,11 +9,15 @@ import { ToursWorthRiding } from "@/components/home/ToursWorthRiding";
 import { PageShell } from "@/components/layout/PageShell";
 import { resolveMedia } from "@/data/media";
 import { getDictionary } from "@/lib/dictionaries";
-import { localizedPath, type Locale } from "@/lib/i18n";
+import { localizedPath, locales, type Locale } from "@/lib/i18n";
 import { showReviewsSection } from "@/lib/reviews";
-import { jsonLd } from "@/lib/seo";
+import { jsonLd, organizationId, schemaLogo, schemaTelephone } from "@/lib/seo";
 import { site } from "@/lib/site";
 
+/**
+ * Главная. Разметка компании — TravelAgency. Часов работы в ней нет, пока заказчик их не прислал;
+ * рейтинга и отзывов нет намеренно: Google не показывает звёзды по отзывам на сайте самой компании.
+ */
 export function HomePage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const [latitude, longitude] = site.googleMaps.destination.split(",").map(Number);
@@ -22,11 +26,13 @@ export function HomePage({ locale }: { locale: Locale }) {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
+    "@id": organizationId,
     name: site.name,
     url: `${site.url}${localizedPath(locale, "/")}`,
-    description: t.meta.homeDescription,
+    logo: schemaLogo,
     image: resolveMedia("hero", locale).src,
-    telephone: site.whatsapp.display,
+    description: t.meta.homeDescription,
+    telephone: schemaTelephone,
     email: site.email,
     sameAs: [site.instagram.url],
     ...(Number.isFinite(latitude) && Number.isFinite(longitude)
@@ -34,7 +40,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       : {}),
     ...(address ? { address: { "@type": "PostalAddress", streetAddress: address, addressCountry: "ID" } } : {}),
     areaServed: { "@type": "Place", name: "Bali, Indonesia" },
-    availableLanguage: ["ru", "en"],
+    availableLanguage: [...locales],
   };
 
   return (

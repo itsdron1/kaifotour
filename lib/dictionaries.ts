@@ -19,7 +19,6 @@ const en = {
     toursTitle: "Bali Tours: the Full Catalog",
     toursDescription:
       "Ocean trips, off-road rides, day tours and guided rentals in Bali. Filter by activity, price and duration.",
-    tourSuffix: "Book via WhatsApp.",
     legalDescription: "This KAIFO document is being prepared.",
   },
   a11y: {
@@ -322,7 +321,6 @@ const ru: Dictionary = {
     toursTitle: "Туры на Бали: каталог маршрутов",
     toursDescription:
       "Морские прогулки, бездорожье, экскурсии и прокат с гидом на Бали. Фильтры по типу активности, цене и длительности.",
-    tourSuffix: "Бронирование в WhatsApp.",
     legalDescription: "Документ KAIFO находится в подготовке.",
   },
   a11y: {
@@ -634,7 +632,6 @@ const id: Dictionary = {
     toursTitle: "Tur Bali: katalog lengkap",
     toursDescription:
       "Trip laut, perjalanan off-road, wisata harian, dan sewa dengan pemandu di Bali. Saring menurut aktivitas, harga, dan durasi.",
-    tourSuffix: "Pesan via WhatsApp.",
     legalDescription: "Dokumen KAIFO ini sedang disiapkan.",
   },
   a11y: {
