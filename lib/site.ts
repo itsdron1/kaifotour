@@ -36,13 +36,19 @@ const address: Localized = {
 const googleRating = { value: 5, count: 11 } as { value: number; count: number } | null;
 
 /**
- * Цифры для секции «Мы создаём маршруты…».
- * TODO: реальное число гостей от заказчика, например "800+".
- * Пока null — показатель скрыт: непроверяемые цифры Google Ads может счесть недостоверными,
- * а «1 200+» рядом с 11 отзывами в Google выглядело неправдоподобно.
+ * Цифры для секции «Мы создаём маршруты…». Число гостей подтвердил заказчик 21.10.2026.
+ * Меняется только по данным заказчика; null — показатель скрыт.
  */
 const stats = {
-  guests: null as string | null,
+  /** Выводится с «+» и по правилам языка: 1,000+ / 1 000+ / 1.000+ */
+  guests: 1000 as number | null,
+};
+
+/** Часы работы по времени Бали (UTC+8): отвечаем и принимаем брони каждый день */
+const openingHours = {
+  opens: "08:00",
+  closes: "20:00",
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
 };
 
 /**
@@ -73,4 +79,5 @@ export const site = {
   address,
   googleRating,
   stats,
+  openingHours,
 } as const;

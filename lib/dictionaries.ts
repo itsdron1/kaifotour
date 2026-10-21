@@ -296,6 +296,8 @@ const en = {
     navTitle: "Sections",
     contactsTitle: "Contacts",
     phone: "Phone",
+    hours: "Hours",
+    hoursValue: "Daily, 8:00–20:00 Bali time",
     legalTitle: "Documents",
     disclaimer:
       "Information on this site is for reference only and does not constitute a public offer. Prices are for reference only and are confirmed by our manager before booking.",
@@ -621,6 +623,8 @@ const ru: Dictionary = {
     navTitle: "Разделы",
     contactsTitle: "Контакты",
     phone: "Телефон",
+    hours: "Часы работы",
+    hoursValue: "Ежедневно, 8:00–20:00 по Бали",
     legalTitle: "Документы",
     disclaimer:
       "Информация на сайте носит ознакомительный характер и не является публичной офертой. Цены ориентировочные и подтверждаются менеджером до бронирования.",
@@ -936,6 +940,8 @@ const id: Dictionary = {
     navTitle: "Bagian",
     contactsTitle: "Kontak",
     phone: "Telepon",
+    hours: "Jam buka",
+    hoursValue: "Setiap hari, 08.00–20.00 WITA",
     legalTitle: "Dokumen",
     disclaimer:
       "Informasi di situs ini hanya bersifat perkiraan dan bukan penawaran resmi. Harga hanya perkiraan dan dipastikan oleh manajer kami sebelum pemesanan.",

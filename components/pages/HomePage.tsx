@@ -15,7 +15,7 @@ import { jsonLd, organizationId, schemaLogo, schemaTelephone } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 /**
- * Главная. Разметка компании — TravelAgency. Часов работы в ней нет, пока заказчик их не прислал;
+ * Главная. Разметка компании — TravelAgency с часами работы из lib/site.ts;
  * рейтинга и отзывов нет намеренно: Google не показывает звёзды по отзывам на сайте самой компании.
  */
 export function HomePage({ locale }: { locale: Locale }) {
@@ -41,6 +41,12 @@ export function HomePage({ locale }: { locale: Locale }) {
     ...(address ? { address: { "@type": "PostalAddress", streetAddress: address, addressCountry: "ID" } } : {}),
     areaServed: { "@type": "Place", name: "Bali, Indonesia" },
     availableLanguage: [...locales],
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: site.openingHours.days,
+      opens: site.openingHours.opens,
+      closes: site.openingHours.closes,
+    },
   };
 
   return (

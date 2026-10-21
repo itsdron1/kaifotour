@@ -42,7 +42,7 @@ export interface Review {
 export const reviews: Review[] = [
   {
     id: "google-lilia-golubina",
-    image: "boat-dusk",
+    tourSlug: "traditional-boat",
     author: { ru: "Lilia Golubina", en: "Lilia Golubina" , id: "Lilia Golubina" },
     rating: 5,
     text: {

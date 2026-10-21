@@ -352,7 +352,7 @@ export const tours: Tour[] = [
     },
     durationLabel: { ru: "1-4 часа", en: "1-4 hours" , id: "1-4 jam"},
     duration: "hours",
-    priceFromIDR: null,
+    priceFromIDR: 800_000,
     includes: {
       ru: ["Маршруты от 1 до 4 часов", "Новая техника", "Гид", "Трансфер"],
       en: ["Routes from 1 to 4 hours", "New vehicles", "Guide", "Transfer"],
@@ -481,7 +481,7 @@ export const tours: Tour[] = [
     },
     durationLabel: { ru: "30 мин - 6 ч", en: "30 min - 6 h" , id: "30 menit - 6 jam"},
     duration: "hours",
-    priceFromIDR: null,
+    priceFromIDR: 2_500_000,
     includes: {
       ru: ["Прогулка от 30 минут до 6 часов", "Sanur или Jimbaran", "Nusa Dua или Uluwatu"],
       en: ["Rides from 30 minutes to 6 hours", "Sanur or Jimbaran", "Nusa Dua or Uluwatu"],

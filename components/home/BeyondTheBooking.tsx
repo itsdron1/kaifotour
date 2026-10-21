@@ -4,7 +4,7 @@ import { publishedTours } from "@/data/tours";
 import { cn } from "@/lib/cn";
 import { getDictionary } from "@/lib/dictionaries";
 import { plural } from "@/lib/format";
-import type { Locale } from "@/lib/i18n";
+import { intlLocale, type Locale } from "@/lib/i18n";
 import { site } from "@/lib/site";
 import { getStoryCards } from "@/lib/story-view";
 
@@ -20,7 +20,9 @@ export function BeyondTheBooking({ locale }: { locale: Locale }) {
     { value: String(routeCount), label: plural(locale, routeCount, t.stories.catalogStat) },
     t.stories.stats.activities,
     // число гостей показываем, только когда заказчик его подтвердил (lib/site.ts)
-    ...(site.stats.guests ? [{ value: site.stats.guests, label: t.stories.stats.guests.label }] : []),
+    ...(site.stats.guests
+      ? [{ value: `${new Intl.NumberFormat(intlLocale[locale]).format(site.stats.guests)}+`, label: t.stories.stats.guests.label }]
+      : []),
   ];
 
   return (

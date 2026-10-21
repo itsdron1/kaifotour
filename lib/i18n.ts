@@ -39,3 +39,10 @@ export const openGraphLocale: Localized = {
   en: "en_US",
   id: "id_ID",
 };
+
+/** Локаль для Intl (числа, даты) */
+export const intlLocale: Localized = {
+  en: "en-US",
+  ru: "ru-RU",
+  id: "id-ID",
+};

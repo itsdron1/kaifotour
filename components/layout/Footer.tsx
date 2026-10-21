@@ -1,4 +1,4 @@
-import { EnvelopeSimple, InstagramLogo, Phone, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import { Clock, EnvelopeSimple, InstagramLogo, Phone, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
@@ -74,6 +74,14 @@ export function Footer({ locale }: { locale: Locale }) {
                   </a>
                 </li>
               ))}
+              {/* Часы работы видны на странице и совпадают с разметкой компании в Google */}
+              <li>
+                <span className="kicker block text-[0.75rem] text-ink/70">{t.footer.hours}</span>
+                <span className="mt-1 inline-flex items-center gap-3 text-xl font-medium sm:text-2xl">
+                  <Clock size={20} aria-hidden="true" />
+                  {t.footer.hoursValue}
+                </span>
+              </li>
             </ul>
             <ButtonLink
               href={whatsappUrl()}
