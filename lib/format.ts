@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 
-const NBSP = " ";
+const NBSP = "\u00A0";
 
 function groupDigits(value: number, separator: string): string {
   return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, separator);

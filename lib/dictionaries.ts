@@ -156,13 +156,13 @@ const en = {
     lead: "We're a team of expats and Indonesians for whom Bali isn't just a travel destination — it's home.",
     paragraphs: [
       "We've lived here for more than five years, travel around the island a lot and try different routes, activities and places ourselves. Along the way we learned a simple thing: popular isn't always best, and the most vivid experiences are often far from where standard guidebooks lead.",
-      "That's how KAIFO was born — a wish to share the Bali we love ourselves. We only pick what we'd happily go to ourselves and would recommend to our friends without a second thought.",
+      "That's how KAIFO was born\u00A0— a wish to share the Bali we love ourselves. We only pick what we'd happily go to ourselves and would recommend to our friends without a second thought.",
     ],
     quote: "Our idea is simple: fewer tourist clichés — more real Bali, emotions and pure “kaif” from travelling.",
     why: {
       title: "Why KAIFO?",
       intro:
-        "KAIFO comes from the word “kaif” — that very feeling when everything falls into place and you simply feel good.",
+        "KAIFO comes from the word “kaif”\u00A0— that very feeling when everything falls into place and you simply feel good.",
       letters: [
         { letter: "K", word: "Knowledge", original: "", text: "Knowing Bali deeper than the tourist routes." },
         { letter: "A", word: "Adventure", original: "", text: "Seeking experiences worth remembering." },
@@ -470,16 +470,16 @@ const ru: Dictionary = {
   },
   about: {
     kicker: "О нас",
-    lead: "Мы — команда экспатов и индонезийцев, для которых Бали — не просто туристическое направление, а дом.",
+    lead: "Мы\u00A0— команда экспатов и индонезийцев, для которых Бали\u00A0— не просто туристическое направление, а дом.",
     paragraphs: [
       "Мы живём здесь больше пяти лет, много путешествуем по острову и сами пробуем разные маршруты, активности и места. За это время мы поняли простую вещь: популярное — не всегда лучшее, а самые яркие впечатления часто находятся совсем не там, куда ведут стандартные путеводители.",
-      "Так появился KAIFO — желание делиться тем Бали, который любим мы сами. Мы отбираем то, куда с удовольствием поехали бы сами и что без сомнений посоветовали бы своим друзьям.",
+      "Так появился KAIFO\u00A0— желание делиться тем Бали, который любим мы сами. Мы отбираем то, куда с удовольствием поехали бы сами и что без сомнений посоветовали бы своим друзьям.",
     ],
     quote: "Наша идея простая: меньше туристических шаблонов — больше настоящего Бали, эмоций и кайфа от путешествия.",
     why: {
       title: "Почему KAIFO?",
       intro:
-        "KAIFO родилось от слова «кайф» — того самого ощущения, когда всё сложилось и тебе просто хорошо.",
+        "KAIFO родилось от слова «кайф»\u00A0— того самого ощущения, когда всё сложилось и тебе просто хорошо.",
       letters: [
         { letter: "K", word: "Знание", original: "Knowledge", text: "Знать Бали глубже туристических маршрутов." },
         { letter: "A", word: "Приключение", original: "Adventure", text: "Искать впечатления, которые хочется запомнить." },
@@ -806,7 +806,7 @@ const id: Dictionary = {
     why: {
       title: "Mengapa KAIFO?",
       intro:
-        "KAIFO berasal dari kata “kaif” — perasaan ketika semuanya pas dan Anda merasa senang begitu saja.",
+        "KAIFO berasal dari kata “kaif”\u00A0— perasaan ketika semuanya pas dan Anda merasa senang begitu saja.",
       letters: [
         { letter: "K", word: "Pengetahuan", original: "Knowledge", text: "Mengenal Bali lebih dalam daripada rute turis." },
         { letter: "A", word: "Petualangan", original: "Adventure", text: "Mencari pengalaman yang layak dikenang." },

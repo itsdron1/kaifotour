@@ -131,3 +131,12 @@
 
 - Без `NEXT_PUBLIC_GTM_ID` в исходном коде страницы нет `googletagmanager` и баннера.
 - С ним: в исходном коде есть `consent-default` раньше скрипта GTM; в консоли браузера `dataLayer` после клика по WhatsApp содержит `{event: "whatsapp_click", tour_slug: …, placement: …, locale: …}`.
+
+### После деплоя, за 5 минут
+
+1. Откройте сайт в окне инкогнито (Ctrl+Shift+N): там нет сохранённого выбора, поэтому баннер должен появиться внизу. Если баннера нет — переменная не подхватилась: проверьте `NEXT_PUBLIC_GTM_ID` в Vercel и сделайте **Redeploy**.
+2. Правой кнопкой → **Просмотр кода страницы** (Ctrl+U) → Ctrl+F `GTM-`: должен найтись ваш ID в адресе `googletagmanager.com/gtm.js?id=GTM-…`, а выше него — `consent-default`.
+3. F12 → **Консоль** → введите `dataLayer` и Enter. Первой строкой — `consent`, `default` со значениями `denied`.
+4. Нажмите **Принять** в баннере и снова введите `dataLayer`: добавилась строка `consent`, `update` с `granted`, баннер пропал и после перезагрузки не возвращается.
+5. Нажмите WhatsApp на карточке тура (вкладку WhatsApp можно закрыть) → `dataLayer` → в конце `whatsapp_click` с `tour_slug` и `placement`.
+6. Дальше — Tag Assistant и отчёт «В режиме реального времени» в GA4 (шаг 8 выше).

@@ -11,7 +11,8 @@
     "check:en": "node scripts/check-en-cyrillic.mjs",
     "check:id": "node scripts/check-id-translations.mjs",
     "docs:id": "node scripts/build-id-review-doc.mjs",
-    "check:ld": "node scripts/check-structured-data.mjs"
+    "check:ld": "node scripts/check-structured-data.mjs",
+    "check:meta": "node scripts/check-meta.mjs"
   },
   "dependencies": {
     "@next/third-parties": "16.3.5",
