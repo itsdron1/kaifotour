@@ -596,6 +596,7 @@ export function ScrollMorphHero({
 
   return (
     <section
+      data-placement="hero"
       ref={trackRef}
       aria-labelledby={labelledBy}
       className={cn("relative h-[300svh] bg-deep text-on-dark", className)}

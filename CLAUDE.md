@@ -16,14 +16,15 @@
 | WhatsApp | +62 851-9010-1270 → `https://wa.me/6285190101270` |
 | Instagram | @kaifo.bali → `https://instagram.com/kaifo.bali` |
 | Email | kaifotourbali@gmail.com |
-| Сайт | https://kaifotour-bali.com |
+| Сайт | https://www.kaifotour-bali.com (без www Vercel переадресует на www) |
 
 Контакты лежат в `lib/site.ts` — менять только там, компоненты берут их оттуда.
 
 ## Карта и отзывы
 
 - Точка на Google Картах: профиль «KAIFO Bali | Tours & Activities», короткая ссылка `https://maps.app.goo.gl/HK4zf7YeTPh8icdv6`, координаты `-8.8018513,115.2129072`.
-- Встраивание карты, ссылка на точку, ссылка «Оставить отзыв» и координаты для маршрута лежат в `lib/site.ts` → `googleMaps`. Там же адрес (`address`) и рейтинг Google (`googleRating`): пока пустые, бейдж и строка адреса без них не показываются.
+- Встраивание карты, ссылка на точку, ссылка «Оставить отзыв» и координаты для маршрута лежат в `lib/site.ts` → `googleMaps`. Там же адрес (`address`) и рейтинг Google (`googleRating`, обновляется вручную, пока не подключён Places API).
+- У отзыва фото — только его тура или своё (`image`), общий кадр секции не подставляем. `sourceUrl` — ссылка именно на этот отзыв; общая ссылка на профиль стоит одной кнопкой «Все отзывы в Google» под стопкой.
 - Отзывы — в `data/reviews.ts`. Только реальные отзывы, опубликованные с согласия гостя, слово в слово; придуманных и примерных быть не должно.
 - Если появится Content-Security-Policy, в `frame-src` нужно добавить `https://www.google.com` и `https://maps.google.com`, иначе карта не загрузится.
 
@@ -35,6 +36,20 @@
 - Пути собираем через `localizedPath` из `lib/i18n.ts`, языковые префиксы руками не пишем. Маршруты живут в группах `app/(en)`, `app/(ru)`, `app/(id)` — страницы там тонкие обёртки вокруг компонентов из `components/pages`.
 - Цены форматирует только `formatIDR` / `formatIDRCompact` из `lib/format.ts`: «from 850K IDR», «от 850K IDR», «mulai Rp850 ribu». В компонентах цену руками не собираем.
 - Проверки перевода: `npm run check:en` (нет кириллицы на английских страницах) и `npm run check:id` (нет кириллицы и английских остатков на `/id`). Таблицу для вычитки индонезийского пересобирает `npm run docs:id`.
+
+## SEO
+
+- Адрес сайта — `SITE_URL` в `lib/site.ts` (с www). От него считаются metadataBase, canonical, og:url, sitemap, robots и JSON-LD; адрес без www в коде не пишем. `*.vercel.app` закрыт от индексации заголовком в `next.config.ts`.
+- У каждого тура `seoTitle` (тур и место, без цены и бренда — их добавляет `lib/page-metadata.ts`) и `seoDescription` (140–155 знаков, только факты из данных тура) на трёх языках.
+- Поля тура `itinerary`, `pickup`, `notIncluded`, `whatToBring`, `faq` заполняются только фактами от заказчика (вопросы — `docs/tour-content-questions.md`); пустое поле — блок не показывается.
+- JSON-LD: TravelAgency на главной, TouristTrip + Offer + BreadcrumbList на турах. AggregateRating и Review не добавляем. Проверка — `npm run check:ld` после сборки.
+- Текст страницы не дублируем: декоративные копии текста — псевдоэлементами, обороты карточек туров появляются в DOM только после переворота.
+- Число гостей — `site.stats.guests`; пока `null`, показатель скрыт.
+
+## Аналитика
+
+- Vercel Web Analytics в трёх layout. GTM, Consent Mode v2, баннер cookies и события — `components/analytics/`, включаются переменной `NEXT_PUBLIC_GTM_ID`. Описание и настройка GTM/GA4 — `docs/analytics.md`.
+- События ловит один общий обработчик кликов. Для новой кнопки ничего не нужно, кроме `data-placement` (и `data-tour-slug`, если она про тур) на её блоке.
 
 ## Анимации
 

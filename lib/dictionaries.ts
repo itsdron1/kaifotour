@@ -310,6 +310,13 @@ const en = {
     pending: "This document is being prepared and will be published on this page.",
     contact: "For questions, email",
   },
+  consent: {
+    region: "Cookie consent",
+    text: "We use cookies for analytics and ads to see which tours you like and to make the site better. You can decline: the site works either way.",
+    accept: "Accept",
+    decline: "Decline",
+    policy: "Cookie Policy",
+  },
   notFound: {
     title: "Page not found",
     text: "The link may be out of date, or the tour has moved to another section.",
@@ -628,6 +635,13 @@ const ru: Dictionary = {
     pending: "Документ готовится и будет опубликован на этой странице.",
     contact: "По вопросам пишите на",
   },
+  consent: {
+    region: "Согласие на cookies",
+    text: "Мы используем cookies для аналитики и рекламы, чтобы понимать, какие туры вам интересны, и делать сайт лучше. Можно отказаться: сайт работает в любом случае.",
+    accept: "Принять",
+    decline: "Отклонить",
+    policy: "Политика cookies",
+  },
   notFound: {
     title: "Страница не найдена",
     text: "Возможно, ссылка устарела или тур переехал в другой раздел.",
@@ -935,6 +949,13 @@ const id: Dictionary = {
     },
     pending: "Dokumen ini sedang disiapkan dan akan diterbitkan di halaman ini.",
     contact: "Untuk pertanyaan, kirim email ke",
+  },
+  consent: {
+    region: "Persetujuan cookie",
+    text: "Kami memakai cookie untuk analitik dan iklan agar tahu tur mana yang Anda minati dan membuat situs lebih baik. Anda boleh menolak: situs tetap berfungsi.",
+    accept: "Terima",
+    decline: "Tolak",
+    policy: "Kebijakan Cookie",
   },
   notFound: {
     title: "Halaman tidak ditemukan",

@@ -2,6 +2,8 @@ import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
 interface MobileBookingBarProps {
+  /** Для события whatsapp_click: какой тур бронируют */
+  tourSlug: string;
   priceLabel: string;
   disclaimer: string;
   bookHref: string;
@@ -9,12 +11,20 @@ interface MobileBookingBarProps {
   newTabLabel: string;
 }
 
-/** Фиксированная панель брони на мобильных. Спейсер не даёт ей перекрыть низ футера. */
-export function MobileBookingBar({ priceLabel, disclaimer, bookHref, bookLabel, newTabLabel }: MobileBookingBarProps) {
+/**
+ * Фиксированная панель брони на мобильных. Спейсер не даёт ей перекрыть низ футера.
+ * data-sticky-booking поднимает над ней баннер cookies (globals.css), чтобы он не закрывал кнопку.
+ */
+export function MobileBookingBar({ tourSlug, priceLabel, disclaimer, bookHref, bookLabel, newTabLabel }: MobileBookingBarProps) {
   return (
     <>
       <div aria-hidden="true" className="h-[4.75rem] bg-sand lg:hidden" />
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-on-dark/15 bg-deep px-5 py-3 text-on-dark sm:px-8 lg:hidden">
+      <div
+        data-sticky-booking
+        data-placement="sticky_book"
+        data-tour-slug={tourSlug}
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-on-dark/15 bg-deep px-5 py-3 text-on-dark sm:px-8 lg:hidden"
+      >
         <div className="mx-auto flex max-w-page items-center justify-between gap-4">
           <div className="min-w-0">
             <p className="truncate font-condensed text-lg font-semibold uppercase tracking-caps text-accent">{priceLabel}</p>

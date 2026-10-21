@@ -22,7 +22,7 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
   const Heading = headingLevel;
 
   return (
-    <article className="group relative flex h-full flex-col">
+    <article data-placement="tour_card" data-tour-slug={card.slug} className="group relative flex h-full flex-col">
       <Link href={card.href} tabIndex={-1} aria-hidden="true" className="block overflow-hidden">
         <Photo
           image={card.image}

@@ -3,6 +3,7 @@
 import { CaretDown, WarningCircle, WhatsappLogo } from "@phosphor-icons/react";
 import { useId, useRef, useState, type FormEvent } from "react";
 import { buttonClassName } from "@/components/ui/ButtonLink";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
 import type { Locale } from "@/lib/i18n";
@@ -48,7 +49,8 @@ function isTourType(value: string): value is TourType {
 function formatDate(value: string, locale: Locale): string {
   const [year, month, day] = value.split("-").map(Number);
   // Год добавляется вручную: ru-RU с year: "numeric" дописывает «г.», и в сообщении появлялось «г..»
-  const dayMonth = new Date(year, month - 1, day).toLocaleDateString(locale === "ru" ? "ru-RU" : "en-GB", {
+  const intlLocale = locale === "ru" ? "ru-RU" : locale === "id" ? "id-ID" : "en-GB";
+  const dayMonth = new Date(year, month - 1, day).toLocaleDateString(intlLocale, {
     day: "numeric",
     month: "long",
   });
@@ -98,12 +100,16 @@ export function PlanTripForm({ locale, labels }: PlanTripFormProps) {
     lines.push(fill(labels.message.type, { type: labels.tourTypes[type] }));
 
     const url = whatsappUrl(lines.join("\n"));
+    // Форма открывает WhatsApp из кода, а не ссылкой, поэтому оба события отправляем отсюда:
+    // отправку формы и обращение в WhatsApp — главную цель рекламы
+    track("plan_form_submit", { tour_type: type, locale });
+    track("whatsapp_click", { tour_slug: undefined, placement: "form", locale });
     window.open(url, "_blank", "noopener,noreferrer");
     setSentUrl(url);
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit} className="bg-paper p-6 shadow-postcard sm:p-10">
+    <form noValidate onSubmit={handleSubmit} data-placement="form" className="bg-paper p-6 shadow-postcard sm:p-10">
       <div className="grid gap-7">
         <div className="grid gap-2">
           <label htmlFor={`${id}-name`} className="kicker text-label">

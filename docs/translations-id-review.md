@@ -293,6 +293,16 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `legal.pending` | This document is being prepared and will be published on this page. | Dokumen ini sedang disiapkan dan akan diterbitkan di halaman ini. |
 | `legal.contact` | For questions, email | Untuk pertanyaan, kirim email ke |
 
+## consent
+
+| Ключ | EN | ID |
+|---|---|---|
+| `consent.region` | Cookie consent | Persetujuan cookie |
+| `consent.text` | We use cookies for analytics and ads to see which tours you like and to make the site better. You can decline: the site works either way. | Kami memakai cookie untuk analitik dan iklan agar tahu tur mana yang Anda minati dan membuat situs lebih baik. Anda boleh menolak: situs tetap berfungsi. |
+| `consent.accept` | Accept | Terima |
+| `consent.decline` | Decline | Tolak |
+| `consent.policy` | Cookie Policy | Kebijakan Cookie |
+
 ## Страница 404
 
 | Ключ | EN | ID |

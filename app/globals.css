@@ -170,3 +170,10 @@
     background-size: 100% 1px;
   }
 }
+
+/* Баннер cookies не закрывает панель брони внизу страницы тура: на мобильных встаёт над ней */
+@media (max-width: 1023px) {
+  body:has([data-sticky-booking]) [data-cookie-banner] {
+    bottom: 4.75rem;
+  }
+}

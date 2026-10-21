@@ -25,7 +25,11 @@ interface TourCardBackProps {
  */
 export function TourCardBack({ card, labels, includes = 3, onClose, className }: TourCardBackProps) {
   return (
-    <div className={cn("flex h-full flex-col border border-divider bg-paper p-2.5 text-left text-ink", className)}>
+    <div
+      data-placement="tour_card"
+      data-tour-slug={card.slug}
+      className={cn("flex h-full flex-col border border-divider bg-paper p-2.5 text-left text-ink", className)}
+    >
       <div className="flex items-start justify-between gap-2">
         <p className="kicker text-[0.5625rem] text-secondary">{card.kicker}</p>
         {/* Латунный штамп с номером тура: декор в духе почтовой открытки */}

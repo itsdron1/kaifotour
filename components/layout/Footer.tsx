@@ -48,7 +48,7 @@ export function Footer({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <footer className="border-t border-ink/15 bg-sand text-ink">
+    <footer data-placement="footer" className="border-t border-ink/15 bg-sand text-ink">
       <div className="mx-auto max-w-page px-5 pb-10 pt-16 sm:px-8 lg:px-12 lg:pt-20">
         <Link href={localizedPath(locale, "/")} className="inline-flex items-center">
           <Image src="/brand/kaifo-logo.svg" alt="KAIFO" width={156} height={44} unoptimized className="h-11 w-[156px]" />

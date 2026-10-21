@@ -104,6 +104,7 @@ export function TourPage({ locale, tour }: { locale: Locale; tour: Tour }) {
       locale={locale}
       after={
         <MobileBookingBar
+          tourSlug={tour.slug}
           priceLabel={card.priceLabel}
           disclaimer={t.price.disclaimer}
           bookHref={card.bookHref}
@@ -114,7 +115,7 @@ export function TourPage({ locale, tour }: { locale: Locale; tour: Tour }) {
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
 
-      <article>
+      <article data-placement="tour_page" data-tour-slug={tour.slug}>
         <header className="relative isolate flex min-h-[78svh] flex-col justify-end overflow-hidden bg-deep text-on-dark">
           <Photo image={heroImage} sizes="100vw" preload className="absolute inset-0 -z-10" />
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-deep via-deep/50 to-deep/25" />
@@ -283,7 +284,7 @@ export function TourPage({ locale, tour }: { locale: Locale; tour: Tour }) {
         </div>
       </article>
 
-      <section aria-labelledby="consult-title" className="bg-sand">
+      <section aria-labelledby="consult-title" data-placement="tour_consult" data-tour-slug={tour.slug} className="bg-sand">
         <div className="mx-auto flex max-w-page flex-col gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:px-12 lg:py-20">
           <div>
             <h2 id="consult-title" className="display text-display-lg">

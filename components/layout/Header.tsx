@@ -76,6 +76,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
   return (
     <>
       <header
+        data-placement="header"
         className={cn(
           "fixed inset-x-0 top-0 z-header text-on-dark transition-colors duration-350 ease-editorial",
           solid ? "bg-deep" : "bg-transparent",
@@ -135,6 +136,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
         {menuOpen ? (
           <motion.div
             id="mobile-menu"
+            data-placement="menu"
             role="dialog"
             aria-modal="true"
             aria-label={labels.mainNav}

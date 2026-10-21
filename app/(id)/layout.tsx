@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "../globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { fontVariables } from "@/lib/fonts";
 import { rootMetadata } from "@/lib/seo";
@@ -16,6 +17,7 @@ export default function IndonesianRootLayout({ children }: Readonly<{ children: 
   return (
     <html lang="id" data-palette={site.palette} className={fontVariables}>
       <body>
+        <SiteAnalytics locale="id" />
         <MotionProvider>{children}</MotionProvider>
         <Analytics />
       </body>
