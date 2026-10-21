@@ -44,7 +44,7 @@
 - Поля тура `itinerary`, `pickup`, `notIncluded`, `whatToBring`, `faq` заполняются только фактами от заказчика (вопросы — `docs/tour-content-questions.md`); пустое поле — блок не показывается.
 - JSON-LD: TravelAgency на главной, TouristTrip + Offer + BreadcrumbList на турах. AggregateRating и Review не добавляем. Проверка — `npm run check:ld` после сборки.
 - Текст страницы не дублируем: декоративные копии текста — псевдоэлементами, обороты карточек туров появляются в DOM только после переворота.
-- Число гостей — `site.stats.guests`; пока `null`, показатель скрыт.
+- Число гостей (`site.stats.guests`, сейчас 1000) и часы работы (`site.openingHours`, ежедневно 8:00–20:00 по Бали) — в `lib/site.ts`, только по данным заказчика. Часы показаны в футере и стоят в разметке TravelAgency — менять в одном месте.
 
 ## Аналитика
 

@@ -279,6 +279,8 @@ Enduro, Jeep Tours, Jet Ski, Harley Tours), географические наз�
 | `footer.navTitle` | Sections | Bagian |
 | `footer.contactsTitle` | Contacts | Kontak |
 | `footer.phone` | Phone | Telepon |
+| `footer.hours` | Hours | Jam buka |
+| `footer.hoursValue` | Daily, 8:00–20:00 Bali time | Setiap hari, 08.00–20.00 WITA |
 | `footer.legalTitle` | Documents | Dokumen |
 | `footer.disclaimer` | Information on this site is for reference only and does not constitute a public offer. Prices are for reference only and are confirmed by our manager before booking. | Informasi di situs ini hanya bersifat perkiraan dan bukan penawaran resmi. Harga hanya perkiraan dan dipastikan oleh manajer kami sebelum pemesanan. |
 | `footer.rights` | All rights reserved | Hak cipta dilindungi |
