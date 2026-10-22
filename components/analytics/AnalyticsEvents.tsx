@@ -5,7 +5,7 @@ import { eventForHref, placementOf, tourSlugOf, track } from "@/lib/analytics";
 
 /**
  * Один обработчик на весь документ: любая ссылка на WhatsApp, Instagram, телефон или почту
- * превращается в событие для GTM. Компонентам ничего добавлять не нужно —
+ * превращается в событие GA4. Компонентам ничего добавлять не нужно —
  * достаточно data-placement и data-tour-slug на своём блоке, чтобы событие знало, откуда клик.
  */
 export function AnalyticsEvents() {

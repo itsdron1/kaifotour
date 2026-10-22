@@ -193,7 +193,7 @@ export function CatalogView({ locale, cards, tabs, labels, whatsappHref, filters
           <div className="mt-10 border border-divider px-6 py-16 text-center sm:px-12">
             <p className="display text-display-md">{labels.emptyTitle}</p>
             <p className="mx-auto mt-4 max-w-md text-lg text-label">{labels.emptyText}</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <div data-placement="catalog" className="mt-8 flex flex-wrap justify-center gap-4">
               <button type="button" onClick={reset} className={buttonClassName("outline-light")}>
                 {f.reset}
               </button>

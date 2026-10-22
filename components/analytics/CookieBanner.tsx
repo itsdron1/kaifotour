@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
-import { CONSENT_STORAGE_KEY, consentState, type ConsentChoice } from "@/lib/analytics";
+import { decideConsent, useBannerShown } from "@/components/analytics/consent-store";
 
 export interface CookieBannerLabels {
   region: string;
@@ -12,79 +11,45 @@ export interface CookieBannerLabels {
   policy: string;
 }
 
-const CHANGE_EVENT = "kaifo-consent-change";
-/** Если хранилище недоступно (приватный режим), выбор живёт до конца визита здесь */
-let memoryChoice: ConsentChoice | null = null;
-
-function readChoice(): ConsentChoice | null {
-  try {
-    const saved = window.localStorage.getItem(CONSENT_STORAGE_KEY);
-    if (saved === "granted" || saved === "denied") return saved;
-  } catch {
-    // хранилище закрыто — остаётся выбор из памяти
-  }
-  return memoryChoice;
-}
-
-function subscribe(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener(CHANGE_EVENT, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(CHANGE_EVENT, onChange);
-  };
-}
-
-/** На сервере и при гидрации баннер скрыт: выбор хранится только в браузере */
-const serverSnapshot = () => "pending" as const;
-
 /**
- * Баннер согласия на cookies (Consent Mode v2). Пока посетитель не выбрал, GTM работает
- * с запретом по умолчанию. «Принять» и «Отклонить» сохраняют выбор в браузере и сразу
- * обновляют согласие; при следующих визитах баннера нет, а выбор применяется до загрузки GTM.
- * Баннер не перекрывает сайт: узкая полоса снизу, на странице тура — над панелью брони.
+ * Баннер согласия на cookies (Consent Mode v2). Пока посетитель не выбрал, аналитика работает
+ * с запретом по умолчанию. «Принять» и «Отклонить» равноценны: одного размера и веса.
+ * Выбор хранится в cookie на 6 месяцев; снова открыть баннер можно из футера («Настройки cookie»).
+ * Баннер — узкая бумажная полоса снизу; на странице тура — над панелью брони (globals.css).
+ * Появляется только там, где аналитика реально грузится.
  */
 export function CookieBanner({ labels, policyHref }: { labels: CookieBannerLabels; policyHref: string }) {
-  const choice = useSyncExternalStore(subscribe, readChoice, serverSnapshot);
-  if (choice !== null) return null;
+  const shown = useBannerShown();
+  if (!shown) return null;
 
-  function decide(value: ConsentChoice) {
-    memoryChoice = value;
-    try {
-      window.localStorage.setItem(CONSENT_STORAGE_KEY, value);
-    } catch {
-      // приватный режим: выбор действует до конца визита
-    }
-    window.gtag?.("consent", "update", consentState(value));
-    window.dispatchEvent(new Event(CHANGE_EVENT));
-  }
+  const button = "kicker flex-1 px-4 py-2.5 transition-colors duration-300 sm:min-w-[8.5rem] sm:flex-none";
 
   return (
     <div
       data-cookie-banner
       role="region"
       aria-label={labels.region}
-      className="fixed inset-x-0 bottom-0 z-menu border-t border-on-dark/15 bg-deep text-on-dark shadow-postcard"
+      className="fixed inset-x-0 bottom-0 z-menu border-t border-divider bg-paper text-ink shadow-postcard"
     >
-      <div className="mx-auto flex max-w-page flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 lg:px-12">
-        <p className="text-sm leading-snug text-on-dark/85">
+      <div className="mx-auto flex max-w-page flex-col gap-3 px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 sm:py-4 lg:px-12">
+        <p className="text-[0.8125rem] leading-snug text-ink/80 sm:text-sm">
           {labels.text}{" "}
-          <Link href={policyHref} className="link-underline whitespace-nowrap text-accent">
+          <Link href={policyHref} className="link-underline whitespace-nowrap text-accent-ink">
             {labels.policy}
           </Link>
         </p>
         <div className="flex shrink-0 gap-2">
           <button
             type="button"
-            onClick={() => decide("denied")}
-            className="kicker border border-steel/80 px-4 py-2.5 text-on-dark transition-colors duration-300 hover:border-on-dark"
+            onClick={() => decideConsent("denied")}
+            className={`${button} border border-ink/40 text-ink hover:border-ink`}
           >
             {labels.decline}
           </button>
           <button
             type="button"
-            onClick={() => decide("granted")}
-            className="kicker bg-accent px-4 py-2.5 text-ink transition-colors duration-300 hover:bg-[#D8AE60]"
+            onClick={() => decideConsent("granted")}
+            className={`${button} border border-accent bg-accent text-ink hover:border-[#D8AE60] hover:bg-[#D8AE60]`}
           >
             {labels.accept}
           </button>

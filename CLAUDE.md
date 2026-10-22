@@ -49,7 +49,10 @@
 
 ## Аналитика
 
-- Vercel Web Analytics в трёх layout. GTM, Consent Mode v2, баннер cookies и события — `components/analytics/`, включаются переменной `NEXT_PUBLIC_GTM_ID`. Описание и настройка GTM/GA4 — `docs/analytics.md`.
+- Vercel Web Analytics в трёх layout. GA4 (`GA_MEASUREMENT_ID` в `lib/site.ts`), Consent Mode v2, баннер cookies и события — `components/analytics/`. Грузятся только на хостах из `ANALYTICS_HOSTS` (боевой домен), на localhost и `*.vercel.app` их нет. Описание и проверка — `docs/analytics.md`.
+- GA4 подключён прямым gtag.js. **Если когда-нибудь подключим GTM** (`NEXT_PUBLIC_GTM_ID`), GA4 переносится внутрь GTM, а прямой gtag убирается — `SiteAnalytics` уже переключается сам, вдвоём они не грузятся.
+- Порядок во встроенном скрипте `analytics-init` не менять: consent default → сохранённый выбор (cookie `kaifo_consent`, 6 месяцев) → `js` → `config`. События — только через `track()` из `lib/analytics.ts` (`gtag('event')`); `page_view` вручную не шлём.
+- Для проверки баннера и событий локально: временно добавить `"localhost"` в `ANALYTICS_HOSTS` и подставить фиктивный ID, чтобы не слать тестовые хиты в настоящий ресурс; после проверки вернуть.
 - События ловит один общий обработчик кликов. Для новой кнопки ничего не нужно, кроме `data-placement` (и `data-tour-slug`, если она про тур) на её блоке.
 
 ## Анимации

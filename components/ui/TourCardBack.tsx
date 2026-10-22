@@ -12,6 +12,8 @@ export interface TourCardBackLabels {
 interface TourCardBackProps {
   card: TourCardData;
   labels: TourCardBackLabels;
+  /** Место для событий аналитики: hero_stack в колоде hero, tour_circle в круге туров */
+  placement: "hero_stack" | "tour_circle";
   /** Сколько пунктов включений помещается на карточке этого размера */
   includes?: number;
   /** Крестик в углу: нужен там, где карточку переворачивают тапом */
@@ -23,10 +25,10 @@ interface TourCardBackProps {
  * Оборот открытки: одинаковый вид в круге туров и в колоде hero.
  * Иконки берутся из клиентской сборки Phosphor, поэтому компонент используется внутри клиентских компонентов.
  */
-export function TourCardBack({ card, labels, includes = 3, onClose, className }: TourCardBackProps) {
+export function TourCardBack({ card, labels, placement, includes = 3, onClose, className }: TourCardBackProps) {
   return (
     <div
-      data-placement="tour_card"
+      data-placement={placement}
       data-tour-slug={card.slug}
       className={cn("flex h-full flex-col border border-divider bg-paper p-2.5 text-left text-ink", className)}
     >

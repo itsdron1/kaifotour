@@ -103,7 +103,7 @@ export function PlanTripForm({ locale, labels }: PlanTripFormProps) {
     // Форма открывает WhatsApp из кода, а не ссылкой, поэтому оба события отправляем отсюда:
     // отправку формы и обращение в WhatsApp — главную цель рекламы
     track("plan_form_submit", { tour_type: type, locale });
-    track("whatsapp_click", { tour_slug: undefined, placement: "form", locale });
+    track("whatsapp_click", { tour_slug: "general", placement: "form", locale });
     window.open(url, "_blank", "noopener,noreferrer");
     setSentUrl(url);
   }

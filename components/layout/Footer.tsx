@@ -1,6 +1,7 @@
 import { Clock, EnvelopeSimple, InstagramLogo, Phone, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/analytics/CookieSettingsButton";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { getDictionary } from "@/lib/dictionaries";
@@ -118,6 +119,9 @@ export function Footer({ locale }: { locale: Locale }) {
                   </Link>
                 </li>
               ))}
+              <li>
+                <CookieSettingsButton label={t.consent.settings} className="link-underline text-left text-lg" />
+              </li>
             </ul>
             <LanguageSwitch locale={locale} label={t.a11y.language} tone="light" className="-ml-1.5 mt-8" />
           </div>

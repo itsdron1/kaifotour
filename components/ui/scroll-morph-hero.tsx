@@ -398,6 +398,7 @@ function FlipCard({
             <TourCardBack
               card={card}
               labels={labels}
+              placement="hero_stack"
               onClose={onClose}
               className={cn(
                 "absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]",

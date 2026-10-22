@@ -58,6 +58,15 @@ const openingHours = {
  */
 export const SITE_URL = "https://www.kaifotour-bali.com";
 
+/** Google Analytics 4. ID публичный, он и так виден в коде каждой страницы */
+export const GA_MEASUREMENT_ID = "G-JPJBY0H6VS";
+
+/**
+ * Хосты, на которых грузится аналитика (GA4 или GTM). На localhost, *.vercel.app
+ * и любых других адресах её нет, чтобы тестовые заходы не попадали в статистику.
+ */
+export const ANALYTICS_HOSTS = ["www.kaifotour-bali.com", "kaifotour-bali.com"];
+
 /** Подтверждённые контакты и бренд (docs/tz-main.md, раздел 2) */
 export const site = {
   name: "KAIFO",

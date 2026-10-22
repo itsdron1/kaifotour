@@ -318,6 +318,7 @@ const en = {
     accept: "Accept",
     decline: "Decline",
     policy: "Cookie Policy",
+    settings: "Cookie settings",
   },
   notFound: {
     title: "Page not found",
@@ -645,6 +646,7 @@ const ru: Dictionary = {
     accept: "Принять",
     decline: "Отклонить",
     policy: "Политика cookies",
+    settings: "Настройки cookie",
   },
   notFound: {
     title: "Страница не найдена",
@@ -962,6 +964,7 @@ const id: Dictionary = {
     accept: "Terima",
     decline: "Tolak",
     policy: "Kebijakan Cookie",
+    settings: "Pengaturan cookie",
   },
   notFound: {
     title: "Halaman tidak ditemukan",

@@ -238,6 +238,7 @@ function CircleCard({
             <TourCardBack
               card={card}
               labels={labels}
+              placement="tour_circle"
               includes={size >= 140 ? 3 : 2}
               onClose={onClose}
               className={cn(
