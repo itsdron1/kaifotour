@@ -71,6 +71,12 @@ const en = {
     captionLeft: "We plan each route so you remember it years later",
     captionRight: "The sunrise you almost slept through. The reef only locals know.",
     scrollHint: "Scroll to explore",
+    chooseTour: "Choose a tour",
+    askQuestion: "Ask a question",
+    /** Слова между ** выделяются */
+    ready: "**Everything is ready** — routes, guides and pickup are taken care of. Pick a tour, message us, and we'll plan **your best day in Bali**",
+    deckTitle: "Pick your adventure",
+    deckCount: pf({ one: "{n} route to choose from", other: "{n} routes to choose from" }),
   },
   ride: {
     title: "One island, hundreds of routes",
@@ -384,11 +390,21 @@ const ru: Dictionary = {
     disclaimer: "Цены ориентировочные и уточняются до брони",
   },
   hero: {
-    title: "Весь Бали в одном месте",
+    title: "Весь Бали в\u00A0одном месте",
     subtitle: "Туры, активности, аренда и приключения",
     captionLeft: "Мы продумываем каждый маршрут так, чтобы вы вспоминали его годами",
     captionRight: "Рассвет, который вы чуть не проспали. Риф, о котором знают только местные.",
     scrollHint: "Листайте вниз",
+    chooseTour: "Выбрать тур",
+    askQuestion: "Задать вопрос",
+    ready: "**Мы уже всё подготовили** — маршруты, гидов и трансфер. Выберите тур, напишите нам, и мы организуем **ваш лучший день на Бали**",
+    deckTitle: "Выберите своё приключение",
+    deckCount: pf({
+      one: "{n} маршрут на выбор",
+      few: "{n} маршрута на выбор",
+      many: "{n} маршрутов на выбор",
+      other: "{n} маршрута на выбор",
+    }),
   },
   ride: {
     title: "Один остров, сотни маршрутов",
@@ -711,11 +727,16 @@ const id: Dictionary = {
     disclaimer: "Harga hanya perkiraan",
   },
   hero: {
-    title: "Seluruh Bali dalam satu tempat",
+    title: "Seluruh\u00A0Bali dalam satu tempat",
     subtitle: "Tur, aktivitas, sewa, dan petualangan",
     captionLeft: "Kami menyusun setiap rute agar Anda mengingatnya bertahun-tahun kemudian",
     captionRight: "Matahari terbit yang nyaris Anda lewatkan. Karang yang hanya diketahui warga lokal.",
     scrollHint: "Gulir untuk menjelajah",
+    chooseTour: "Pilih tur",
+    askQuestion: "Ajukan pertanyaan",
+    ready: "**Semuanya sudah kami siapkan** — rute, pemandu, dan penjemputan. Pilih tur, kirim pesan, dan kami atur **hari terbaik Anda di Bali**",
+    deckTitle: "Pilih petualangan Anda",
+    deckCount: pf({ one: "{n} rute untuk dipilih", other: "{n} rute untuk dipilih" }),
   },
   ride: {
     title: "Satu pulau, ratusan rute",

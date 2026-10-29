@@ -52,7 +52,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   return (
     <PageShell locale={locale}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
-      {/* Hero сам прилипает к экрану, пока колода туров превращается из круга в дугу */}
+      {/* Первый экран с призывом, под ним колода туров: круг при прокрутке превращается в дугу */}
       <Hero locale={locale} />
       <HowWeRide locale={locale} />
       <ToursWorthRiding locale={locale} />

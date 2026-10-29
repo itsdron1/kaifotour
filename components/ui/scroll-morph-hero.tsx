@@ -432,6 +432,8 @@ interface ScrollMorphHeroProps {
   /** Подписи на обороте карточки */
   cardLabels: TourCardBackLabels;
   labelledBy?: string;
+  /** Якорь секции: на него ведёт кнопка «Выбрать тур» с первого экрана */
+  id?: string;
   className?: string;
 }
 
@@ -440,6 +442,7 @@ interface ScrollMorphHeroProps {
  * а при прокрутке страницы круг превращается в дугу внизу экрана, и дуга проезжает через все туры.
  * Наведение, фокус или тап приближает карточку, выпрямляет её и переворачивает оборотом открытки
  * с ценой, включениями и кнопками. Карточки доступны с клавиатуры, Escape возвращает карточку.
+ * Секция стоит вторым экраном главной: вступление начинается, когда её видно, а не сразу при загрузке.
  * При prefers-reduced-motion вступление пропускается, пружины и параллакс отключаются.
  */
 export function ScrollMorphHero({
@@ -452,6 +455,7 @@ export function ScrollMorphHero({
   secondaryAction,
   cardLabels,
   labelledBy,
+  id,
   className,
 }: ScrollMorphHeroProps) {
   const trackRef = useRef<HTMLElement>(null);
@@ -463,6 +467,7 @@ export function ScrollMorphHero({
   const [introAway, setIntroAway] = useState(false);
   const [arcReady, setArcReady] = useState(false);
   const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [started, setStarted] = useState(false);
   const leaveTimer = useRef<number | null>(null);
 
   const phase = useMotionValue<number>(PHASE_INDEX.scatter);
@@ -518,8 +523,25 @@ export function ScrollMorphHero({
     };
   }, [mouseX, reducedMotion]);
 
+  // --- Вступление начинается, когда секция показалась на экране ---
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setStarted(true);
+        observer.disconnect();
+      },
+      { threshold: 0.15 },
+    );
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
   // --- Вступление: разброс, линия, круг ---
   useEffect(() => {
+    if (!started) return;
     const toLine = window.setTimeout(
       () => setIntroPhase((current) => (current === "scatter" ? "line" : current)),
       reducedMotion ? 0 : LINE_DELAY_MS,
@@ -529,7 +551,7 @@ export function ScrollMorphHero({
       window.clearTimeout(toLine);
       window.clearTimeout(toCircle);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, started]);
 
   useEffect(() => {
     phase.set(PHASE_INDEX[introPhase]);
@@ -597,10 +619,12 @@ export function ScrollMorphHero({
 
   return (
     <section
-      data-placement="hero"
+      id={id}
+      data-placement="hero_deck"
       ref={trackRef}
       aria-labelledby={labelledBy}
-      className={cn("relative h-[300svh] bg-deep text-on-dark", className)}
+      // -scroll-mt-20 гасит scroll-padding-top у html: по якорю сцена встаёт ровно в верх экрана
+      className={cn("relative h-[300svh] -scroll-mt-20 bg-deep text-on-dark", className)}
     >
       <div ref={stageRef} className="sticky top-0 isolate h-[100svh] overflow-hidden [--ring:min(35vmin,350px)]">
         {/*
