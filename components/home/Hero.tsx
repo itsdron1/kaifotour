@@ -27,7 +27,7 @@ function emphasize(text: string) {
 }
 
 /**
- * Начало главной. Первый экран — призыв и две кнопки: «Выбрать тур» ведёт вниз к колоде,
+ * Начало главной. Первый экран — призыв и две кнопки: «Выбрать тур» ведёт к общему списку туров (#tours),
  * «Задать вопрос» открывает WhatsApp. Внизу — строка о том, что всё уже подготовлено.
  * Вторым экраном идёт колода туров: карточки слетаются в круг, а при прокрутке круг становится дугой.
  */
@@ -74,8 +74,8 @@ export function Hero({ locale }: { locale: Locale }) {
             {t.hero.title}
           </h1>
           <div className="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-            {/* Обычная ссылка-якорь: плавный скролл даёт scroll-behavior у html */}
-            <a href={`#${DECK_ID}`} className={buttonClassName("primary", "w-full sm:w-auto")}>
+            {/* Сразу к общему списку туров (секция #tours). Обычная ссылка-якорь: плавный скролл даёт scroll-behavior у html */}
+            <a href="#tours" className={buttonClassName("primary", "w-full sm:w-auto")}>
               <ArrowDown size={18} aria-hidden="true" />
               <span>{t.hero.chooseTour}</span>
             </a>
