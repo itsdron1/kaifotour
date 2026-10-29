@@ -445,7 +445,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
         <ol aria-label={labels.toursList} className="hidden xl:col-span-4 xl:block">
           {groups.map((group) => (
             <li key={group.id} className="mb-8 last:mb-0">
-              {tab === "all" ? <p className="kicker mb-3 text-[0.75rem] text-note">{group.label}</p> : null}
+              {tab === "all" ? <p className="kicker mb-3 text-[0.75rem] text-mist">{group.label}</p> : null}
               <ol>
                 {group.cards.map((card) => {
                   const isActive = card.slug === activeSlug;
@@ -462,7 +462,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
                         onFocus={() => activate(card.slug)}
                         className={cn(
                           "flex items-baseline gap-4 py-2 transition-colors duration-300",
-                          isActive ? "text-on-dark" : "text-on-dark/55 hover:text-on-dark",
+                          isActive ? "text-on-dark" : "text-on-dark/90 hover:text-on-dark",
                         )}
                       >
                         <span className="kicker w-7 shrink-0 text-accent">{card.number}</span>
@@ -470,7 +470,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
                         <span
                           className={cn(
                             "font-condensed text-[0.8125rem] font-semibold uppercase tracking-caps text-accent transition-opacity duration-300",
-                            isActive ? "opacity-100" : "opacity-60",
+                            isActive ? "opacity-100" : "opacity-85",
                           )}
                         >
                           {card.priceLabel}
