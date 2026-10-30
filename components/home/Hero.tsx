@@ -1,8 +1,8 @@
 import { ArrowDown, ArrowRight, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { Fragment } from "react";
 import { HeroBackdrop } from "@/components/home/HeroBackdrop";
+import { HeroMedia } from "@/components/home/HeroMedia";
 import { buttonClassName, ButtonLink } from "@/components/ui/ButtonLink";
-import { Photo } from "@/components/ui/Photo";
 import { ScrollMorphHero } from "@/components/ui/scroll-morph-hero";
 import { resolveMedia } from "@/data/media";
 import { getDictionary } from "@/lib/dictionaries";
@@ -62,14 +62,11 @@ export function Hero({ locale }: { locale: Locale }) {
         aria-labelledby="hero-title"
         className="relative isolate flex min-h-[max(100svh,40rem)] flex-col overflow-hidden bg-deep text-on-dark"
       >
-        {/* Фото с приоритетом — LCP страницы; снизу оно уходит в тёмный цвет сцены с колодой */}
-        <div className="absolute inset-0 -z-10">
-          <Photo image={image} sizes="100vw" preload className="absolute inset-0" />
-          <div className="absolute inset-0 bg-gradient-to-b from-deep/70 via-deep/35 to-deep" />
-        </div>
+        <HeroMedia />
 
         <div className="mx-auto flex w-full max-w-page flex-1 flex-col items-center justify-center px-5 pt-24 text-center sm:px-8 lg:px-12">
-          <p className="kicker text-sand">{t.hero.subtitle}</p>
+          {/* Лёгкая тень держит мелкую строку на светлых сценах видео */}
+          <p className="kicker text-sand [text-shadow:0_1px_10px_rgb(var(--color-surface-dark)/0.85)]">{t.hero.subtitle}</p>
           <h1 id="hero-title" className="display mt-5 max-w-[16ch] text-balance text-display-2xl">
             {t.hero.title}
           </h1>
@@ -85,7 +82,8 @@ export function Hero({ locale }: { locale: Locale }) {
               newTabLabel={t.a11y.newTab}
               variant="outline-dark"
               icon={<WhatsappLogo size={18} aria-hidden="true" />}
-              className="w-full sm:w-auto"
+              // Подложка: у кнопки-контура нет своей заливки, а за ней идут светлые сцены видео
+              className="w-full bg-deep/45 sm:w-auto"
             >
               {t.hero.askQuestion}
             </ButtonLink>
@@ -94,7 +92,7 @@ export function Hero({ locale }: { locale: Locale }) {
 
         <div className="mx-auto flex w-full max-w-page flex-col items-center px-5 pb-8 pt-12 text-center sm:px-8 lg:px-12 lg:pb-10">
           <span aria-hidden="true" className="h-px w-16 bg-accent" />
-          <p className="mt-5 max-w-[40rem] text-balance text-[0.9375rem] leading-relaxed text-on-dark/80 sm:text-base">
+          <p className="mt-5 max-w-[40rem] text-balance text-[0.9375rem] leading-relaxed text-on-dark/85 sm:text-base">
             {emphasize(t.hero.ready)}
           </p>
           <a href={`#${DECK_ID}`} className="kicker group mt-6 inline-flex items-center gap-2 text-mist">
