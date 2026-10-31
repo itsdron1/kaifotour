@@ -57,8 +57,9 @@
 
 ## Видео на первом экране
 
-- Файлы — `public/media/`: `hero.mp4` и `hero-poster.jpg` для компьютеров, `hero-mobile.mp4` и `hero-mobile-poster.jpg` для экранов до 768px. Имена заданы в одном месте, `components/home/HeroMedia.tsx`.
-- **При замене видео или постера меняем имя файла** (`hero-v2.mp4`) и обновляем его в `HeroMedia.tsx`: `/media/*` кэшируется браузерами на год как immutable (`next.config.ts`), под старым именем посетители увидят старый файл.
+- Файлы — `public/media/`: `hero-v2.mp4` и `hero-poster.jpg` для компьютеров, `hero-mobile-v2.mp4` и `hero-mobile-poster.jpg` для экранов до 768px. Имена заданы в одном месте, `components/home/HeroMedia.tsx`.
+- **При замене видео или постера меняем имя файла** (`hero-v3.mp4`) и обновляем его в `HeroMedia.tsx`: `/media/*` кэшируется браузерами на год как immutable (`next.config.ts`), под старым именем посетители увидят старый файл.
+- Сжатие: 720p, 24 кадра, без звука, `libx264 -preset slow -profile:v high -pix_fmt yuv420p -g 48 -movflags +faststart`; `-crf 33` для компьютера, `-crf 35` для телефона. При `-crf 35` на компьютере в воде и брызгах видны блоки.
 - Постер виден сразу, видео грузится только после события `load` и только одно, под ширину экрана. LCP для Chrome — H1: картинки на весь экран кандидатами не считаются, поэтому `fetchPriority="high"` постеру не ставим (замер: +0,2 с к LCP). При prefers-reduced-motion, saveData и медленной сети (slow-2g, 2g, 3g) видео нет совсем, остаётся постер. Логика — `components/home/HeroVideo.tsx`.
 
 ## Анимации

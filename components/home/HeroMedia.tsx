@@ -6,7 +6,7 @@ import { HeroVideo } from "@/components/home/HeroVideo";
  * Файлы первого экрана. /media/* кэшируется браузером на год (next.config.ts),
  * поэтому новое видео или постер кладём под новым именем (hero-v2.mp4) и меняем его здесь.
  */
-const VIDEO = { desktop: "/media/hero.mp4", mobile: "/media/hero-mobile.mp4" };
+const VIDEO = { desktop: "/media/hero-v2.mp4", mobile: "/media/hero-mobile-v2.mp4" };
 const POSTER = {
   desktop: { src: "/media/hero-poster.jpg", width: 1920, height: 1080 },
   mobile: { src: "/media/hero-mobile-poster.jpg", width: 1080, height: 1920 },
