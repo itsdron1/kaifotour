@@ -29,7 +29,7 @@ export function LanguageSwitch({ locale, label, tone = "dark", className }: Lang
         return (
           <Fragment key={code}>
             {index > 0 ? (
-              <span aria-hidden="true" className={tone === "dark" ? "text-steel" : "text-ink/40"}>
+              <span aria-hidden="true" className={tone === "dark" ? "text-steel" : "text-ink/60"}>
                 /
               </span>
             ) : null}
@@ -43,7 +43,7 @@ export function LanguageSwitch({ locale, label, tone = "dark", className }: Lang
               className={cn(
                 "kicker px-1.5 py-2 transition-colors duration-300",
                 tone === "dark" && (active ? "text-accent" : "text-mist hover:text-on-dark"),
-                tone === "light" && (active ? "text-accent-ink underline underline-offset-4" : "text-ink/70 hover:text-ink"),
+                tone === "light" && (active ? "text-ink underline underline-offset-4" : "text-ink/70 hover:text-ink"),
               )}
             >
               {code.toUpperCase()}

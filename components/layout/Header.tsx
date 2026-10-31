@@ -1,7 +1,8 @@
 "use client";
 
 import { List, WhatsappLogo, X } from "@phosphor-icons/react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence, useMotionValueEvent, useScroll } from "motion/react";
+import * as m from "motion/react-m";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -90,7 +91,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
           )}
         />
         <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-6 px-5 sm:px-8 lg:h-[72px] lg:px-12">
-          <Link href={homeHref} aria-label={labels.home} className="inline-flex items-center">
+          <Link href={homeHref} prefetch={false} aria-label={labels.home} className="inline-flex items-center">
             <Logo />
           </Link>
 
@@ -98,7 +99,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
             <ul className="flex items-center gap-9">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="kicker link-underline pb-1 text-mist transition-colors hover:text-on-dark">
+                  <Link href={item.href} prefetch={false} className="kicker link-underline pb-1 text-mist transition-colors hover:text-on-dark">
                     {item.label}
                   </Link>
                 </li>
@@ -134,7 +135,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
 
       <AnimatePresence>
         {menuOpen ? (
-          <motion.div
+          <m.div
             id="mobile-menu"
             data-placement="menu"
             role="dialog"
@@ -147,7 +148,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
             transition={{ duration: 0.4, ease: EASE_REVEAL }}
           >
             <div className="flex h-16 items-center justify-between px-5 sm:px-8">
-              <Link href={homeHref} onClick={() => setMenuOpen(false)} className="inline-flex items-center">
+              <Link href={homeHref} prefetch={false} onClick={() => setMenuOpen(false)} className="inline-flex items-center">
                 <Logo />
               </Link>
               <button
@@ -164,7 +165,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
             <nav aria-label={labels.mainNav} className="flex flex-1 flex-col justify-center px-5 sm:px-8">
               <ul className="space-y-3">
                 {navItems.map((item, index) => (
-                  <motion.li
+                  <m.li
                     key={item.href}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -172,12 +173,13 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
                   >
                     <Link
                       href={item.href}
+                      prefetch={false}
                       onClick={() => setMenuOpen(false)}
                       className="display block py-1 text-[2.75rem] leading-[1.15] text-on-dark"
                     >
                       {item.label}
                     </Link>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
             </nav>
@@ -194,7 +196,7 @@ export function Header({ locale, homeHref, navItems, whatsappHref, variant = "ov
               </ButtonLink>
               <LanguageSwitch locale={locale} label={labels.language} />
             </div>
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </>

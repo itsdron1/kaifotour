@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "@phosphor-icons/react";
-import { motion, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import Link from "next/link";
 import {
   useCallback,
@@ -13,11 +13,12 @@ import {
   type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { Photo } from "@/components/ui/Photo";
+import { Photo, TOUR_CARD_PHOTO_SIZES } from "@/components/ui/Photo";
 import { TourCardBack } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
 import { DURATION_HOVER, EASE_SOFT, STAGGER_STEP } from "@/lib/motion";
 import type { TourCardData } from "@/lib/tour-view";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 
 export interface ToursCircleLabels {
   categories: string;
@@ -174,7 +175,7 @@ function CircleCard({
   }
 
   return (
-    <motion.div
+    <m.div
       className={cn(ring ? "absolute left-1/2 top-1/2" : "w-full")}
       style={
         ring
@@ -212,7 +213,7 @@ function CircleCard({
           aria-label={`${card.title}, ${card.priceLabel}`}
           className="absolute inset-0 cursor-pointer outline-offset-4"
         />
-        <motion.div
+        <m.div
           className="pointer-events-none relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: active ? 180 : 0 }}
           transition={{ duration: DURATION, ease: EASE, delay: active ? FLIP_DELAY : 0 }}
@@ -227,7 +228,7 @@ function CircleCard({
               active && "motion-reduce:opacity-0",
             )}
           >
-            <Photo image={card.image} sizes="180px" className="min-h-0 w-full flex-1" />
+            <Photo image={card.image} sizes={TOUR_CARD_PHOTO_SIZES} className="min-h-0 w-full flex-1" />
             <p className="kicker mt-2 truncate text-[0.5625rem] text-secondary">
               {card.number} / {card.categoryLabel}
             </p>
@@ -251,9 +252,9 @@ function CircleCard({
               )}
             />
           ) : null}
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -270,10 +271,12 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
   const [layout, setLayout] = useState<{ width: number; mode: CardVariant }>({ width: 0, mode: "ring" });
   const [settled, setSettled] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  /** Карточки появляются за экран до сцены: при загрузке страницы они не нужны, ссылки на туры есть в списке слева */
+  const [near, setNear] = useState(false);
   /** Элемент сцены держим в состоянии: эффект ждёт его появления, а не угадывает момент монтирования */
   const [stage, setStage] = useState<HTMLDivElement | null>(null);
   const leaveTimer = useRef<number | null>(null);
-  const reducedMotion = useReducedMotion() === true;
+  const reducedMotion = useSafeReducedMotion();
 
   const filtered = useMemo(() => (tab === "all" ? cards : cards.filter((card) => card.category === tab)), [cards, tab]);
   const groups = useMemo(() => {
@@ -310,9 +313,20 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
     );
     appear.observe(stage);
 
+    const nearby = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setNear(true);
+        nearby.disconnect();
+      },
+      { rootMargin: "100% 0px" },
+    );
+    nearby.observe(stage);
+
     return () => {
       resize.disconnect();
       appear.disconnect();
+      nearby.disconnect();
     };
   }, [stage]);
 
@@ -487,7 +501,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
           {ring ? (
             <div className="relative mx-auto" style={{ height: ringHeight }}>
               {heading}
-              {cardsMarkup}
+              {near ? cardsMarkup : null}
             </div>
           ) : (
             <>
@@ -495,7 +509,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
               <ul className="-mx-5 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4">
                 {filtered.map((card, index) => (
                   <li key={card.slug} className="w-[70%] shrink-0 snap-center">
-                    {cardsMarkup[index]}
+                    {near ? cardsMarkup[index] : <div style={{ aspectRatio: `1 / ${CARD_RATIO}` }} />}
                   </li>
                 ))}
               </ul>

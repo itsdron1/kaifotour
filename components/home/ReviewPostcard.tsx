@@ -151,7 +151,7 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
             <span className="text-ink/50"> · {review.dateLabel}</span>
           </p>
 
-          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-condensed text-[0.6875rem] font-semibold uppercase tracking-caps text-ink/60">
+          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-condensed text-[0.6875rem] font-semibold uppercase tracking-caps text-ink/75">
             <span className="flex items-center gap-1">
               <SourceIcon size={11} />
               {SOURCE_LABEL[review.source]}

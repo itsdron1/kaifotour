@@ -1,12 +1,17 @@
 import { Barlow, Barlow_Condensed, Playfair_Display } from "next/font/google";
 
-/** Курсивный serif для крупных заголовков (docs/editorial-style.md, раздел 1) */
+/**
+ * Курсивный serif для крупных заголовков (docs/editorial-style.md, раздел 1).
+ * preload: false у всех шрифтов: заранее грузилась только латиница, в том числе на русских страницах, где она почти
+ * не нужна. Браузер сам запрашивает те файлы, которые нужны тексту на экране, а display: swap не задерживает текст.
+ */
 export const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["italic"],
-  weight: ["500", "600"],
+  weight: ["500"],
   variable: "--font-playfair",
   display: "swap",
+  preload: false,
 });
 
 /**
@@ -19,14 +24,16 @@ export const barlow = Barlow({
   variable: "--font-barlow",
   display: "swap",
   adjustFontFallback: false,
+  preload: false,
 });
 
 export const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["600"],
   variable: "--font-barlow-condensed",
   display: "swap",
   adjustFontFallback: false,
+  preload: false,
 });
 
 export const fontVariables = [playfair.variable, barlow.variable, barlowCondensed.variable].join(" ");

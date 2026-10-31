@@ -71,9 +71,13 @@
   --font-condensed: var(--font-barlow-condensed), "Arial Narrow", system-ui, sans-serif;
 }
 
+/*
+ * Barlow здесь записан именем, а не через var(--font-barlow): в этой переменной после шрифта идёт его запасной вариант
+ * без ограничения по алфавиту, и кириллица оставалась в нём (то есть в Arial), не доходя до Sofia Sans.
+ */
 :root:lang(ru) {
-  --font-sans: var(--font-barlow), var(--font-sofia), system-ui, "Segoe UI", sans-serif;
-  --font-condensed: var(--font-barlow-condensed), var(--font-sofia-condensed), "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Barlow", var(--font-sofia), system-ui, "Segoe UI", sans-serif;
+  --font-condensed: "Barlow Condensed", var(--font-sofia-condensed), "Arial Narrow", system-ui, sans-serif;
 }
 
 @layer base {

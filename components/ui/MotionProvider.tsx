@@ -1,9 +1,18 @@
 "use client";
 
-import { MotionConfig } from "motion/react";
+import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
 import type { ReactNode } from "react";
 
-/** Все анимации Motion уважают системную настройку prefers-reduced-motion */
+/**
+ * Все анимации Motion уважают системную настройку prefers-reduced-motion.
+ * LazyMotion и компонент m вместо motion: в сборку не попадают drag и layout-анимации, которых на сайте нет.
+ */
 export function MotionProvider({ children }: { children: ReactNode }) {
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return (
+    <MotionConfig reducedMotion="user">
+      <LazyMotion features={domAnimation} strict>
+        {children}
+      </LazyMotion>
+    </MotionConfig>
+  );
 }

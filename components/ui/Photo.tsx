@@ -4,6 +4,9 @@ import { cn } from "@/lib/cn";
 
 export type { PhotoSource };
 
+/** Один размер для колоды и круга туров: браузер берёт один и тот же файл, а не качает 17 фото дважды */
+export const TOUR_CARD_PHOTO_SIZES = "160px";
+
 interface PhotoProps {
   image: PhotoSource;
   sizes: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { CaretLeft, CaretRight, Pause, Play } from "@phosphor-icons/react";
-import { motion, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import {
   useEffect,
   useRef,
@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/cn";
 import { fill } from "@/lib/format";
 import { useAutoCycle } from "@/lib/use-auto-cycle";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 
 export interface CardStackLabels {
   /** Подпись над стопкой и её название для скринридера */
@@ -74,7 +75,7 @@ export function CardStack<T extends { id: string }>({
   showTitle = true,
   className,
 }: CardStackProps<T>) {
-  const reducedMotion = Boolean(useReducedMotion());
+  const reducedMotion = useSafeReducedMotion();
   const [compact, setCompact] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -278,7 +279,7 @@ export function CardStack<T extends { id: string }>({
           const expanded = isTop && lifted;
 
           return (
-            <motion.div
+            <m.div
               key={item.id}
               className="relative col-start-1 row-start-1"
               style={{ zIndex: isLeaving ? (leaving.behind ? 0 : 40) : visible ? Z_LAYERS[position] : 0 }}
@@ -301,7 +302,7 @@ export function CardStack<T extends { id: string }>({
                   style={{ animationPlayState: running ? "running" : "paused" }}
                 />
               ) : null}
-            </motion.div>
+            </m.div>
           );
         })}
       </div>

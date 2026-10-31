@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useScroll, useTransform } from "motion/react";
+import { useMotionValue, useScroll, useTransform } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useRef } from "react";
 import { Photo, type PhotoSource } from "@/components/ui/Photo";
 import { useDeferredMedia } from "@/lib/use-deferred-media";
@@ -34,13 +35,13 @@ export function HeroBackdrop({ image }: { image: PhotoSource }) {
 
   return (
     <div ref={ref} className="absolute inset-0 -z-10">
-      <motion.div className="absolute inset-0 motion-reduce:!transform-none" style={{ y, scale }}>
+      <m.div className="absolute inset-0 motion-reduce:!transform-none" style={{ y, scale }}>
         {showPhoto ? <Photo image={image} sizes="100vw" className="absolute inset-0" /> : null}
-      </motion.div>
+      </m.div>
       <div className="absolute inset-0 bg-gradient-to-r from-deep/85 via-deep/40 to-deep/5" />
       <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-deep/90 via-deep/35 to-transparent" />
       <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-deep to-transparent" />
-      <motion.div aria-hidden="true" className="absolute inset-0 bg-deep motion-reduce:!opacity-0" style={{ opacity: shade }} />
+      <m.div aria-hidden="true" className="absolute inset-0 bg-deep motion-reduce:!opacity-0" style={{ opacity: shade }} />
     </div>
   );
 }

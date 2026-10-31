@@ -51,7 +51,7 @@ export function Footer({ locale }: { locale: Locale }) {
   return (
     <footer data-placement="footer" className="border-t border-ink/15 bg-sand text-ink">
       <div className="mx-auto max-w-page px-5 pb-10 pt-16 sm:px-8 lg:px-12 lg:pt-20">
-        <Link href={localizedPath(locale, "/")} className="inline-flex items-center">
+        <Link href={localizedPath(locale, "/")} prefetch={false} className="inline-flex items-center">
           <Image src="/brand/kaifo-logo.svg" alt="KAIFO" width={156} height={44} unoptimized className="h-11 w-[156px]" />
         </Link>
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/80">{t.footer.tagline}</p>
@@ -101,7 +101,7 @@ export function Footer({ locale }: { locale: Locale }) {
             <ul className="mt-6 space-y-3">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="link-underline text-lg">
+                  <Link href={item.href} prefetch={false} className="link-underline text-lg">
                     {item.label}
                   </Link>
                 </li>
@@ -114,7 +114,7 @@ export function Footer({ locale }: { locale: Locale }) {
             <ul className="mt-6 space-y-3">
               {legalDocs.map((doc) => (
                 <li key={doc}>
-                  <Link href={localizedPath(locale, `/legal/${doc}`)} className="link-underline text-lg">
+                  <Link href={localizedPath(locale, `/legal/${doc}`)} prefetch={false} className="link-underline text-lg">
                     {t.legal.documents[doc]}
                   </Link>
                 </li>

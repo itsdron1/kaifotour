@@ -10,13 +10,15 @@ export const sofiaSans = Sofia_Sans({
   weight: ["400", "500"],
   variable: "--font-sofia",
   display: "swap",
+  preload: false,
 });
 
 export const sofiaSansCondensed = Sofia_Sans_Condensed({
   subsets: ["cyrillic"],
-  weight: ["400", "600"],
+  weight: ["600"],
   variable: "--font-sofia-condensed",
   display: "swap",
+  preload: false,
 });
 
 export const cyrillicFontVariables = [sofiaSans.variable, sofiaSansCondensed.variable].join(" ");

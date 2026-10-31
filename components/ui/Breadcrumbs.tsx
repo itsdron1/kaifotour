@@ -23,6 +23,7 @@ export function Breadcrumbs({ items, label, tone = "dark", className }: Breadcru
             {item.href ? (
               <Link
                 href={item.href}
+                prefetch={false}
                 className={cn("link-underline transition-colors", tone === "dark" ? "hover:text-on-dark" : "hover:text-ink")}
               >
                 {item.label}

@@ -1,5 +1,4 @@
 import { getImageProps } from "next/image";
-import { preload } from "react-dom";
 import { HeroVideo } from "@/components/home/HeroVideo";
 
 /**
@@ -12,33 +11,20 @@ const POSTER = {
   mobile: { src: "/media/hero-mobile-poster.jpg", width: 1080, height: 1920 },
 };
 const PHONE_QUERY = "(max-width: 767px)";
-const DESKTOP_QUERY = "(min-width: 768px)";
 
 /**
  * Фон первого экрана: постер, поверх него видео и затемнение, при котором текст читается на любой сцене.
- * Постер виден сразу. Это <picture> с заранее объявленной загрузкой под каждую ширину:
- * браузер берёт один файл, а не оба, как было бы с двумя картинками, спрятанными через CSS.
- * LCP для Chrome — заголовок: картинки на весь экран кандидатами не считаются. Поэтому fetchPriority="high"
+ * Постер виден сразу. Это <picture>: браузер берёт один файл, а не оба, как было бы с двумя картинками, спрятанными
+ * через CSS. LCP для Chrome — заголовок: картинки на весь экран кандидатами не считаются. Поэтому fetchPriority="high"
  * постеру не ставим: он отнимает сеть у текста и скриптов, Lighthouse показал +0,2 с к LCP.
+ * Отдельного preload тоже нет: <picture> стоит в начале страницы, браузер находит его сам. preload() из react-dom
+ * срабатывал ещё и при предзагрузке главной с других страниц, и постер качался там, где его нет.
  * Единой цветокоррекции сайта (.photo-grade) здесь нет: иначе цвет прыгал бы при смене постера на видео.
  */
 export function HeroMedia() {
-  const common = { alt: "", sizes: "100vw", loading: "eager" } as const;
+  const common = { alt: "", sizes: "100vw", loading: "eager", quality: 60 } as const;
   const { props: desktop } = getImageProps({ ...common, ...POSTER.desktop });
   const { props: mobile } = getImageProps({ ...common, ...POSTER.mobile });
-
-  preload(desktop.src, {
-    as: "image",
-    imageSrcSet: desktop.srcSet,
-    imageSizes: common.sizes,
-    media: DESKTOP_QUERY,
-  });
-  preload(mobile.src, {
-    as: "image",
-    imageSrcSet: mobile.srcSet,
-    imageSizes: common.sizes,
-    media: PHONE_QUERY,
-  });
 
   return (
     <div className="absolute inset-0 -z-10">

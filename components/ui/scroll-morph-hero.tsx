@@ -2,15 +2,14 @@
 
 import {
   animate,
-  motion,
   useMotionValue,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
+import * as m from "motion/react-m";
 import Link from "next/link";
 import {
   useCallback,
@@ -22,12 +21,13 @@ import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
-import { Photo } from "@/components/ui/Photo";
+import { Photo, TOUR_CARD_PHOTO_SIZES } from "@/components/ui/Photo";
 import { TourCardBack, type TourCardBackLabels } from "@/components/ui/TourCardBack";
 import { cn } from "@/lib/cn";
 import { DURATION_HOVER, EASE_SOFT } from "@/lib/motion";
 import type { TourCardData } from "@/lib/tour-view";
 import { useDeferredMedia } from "@/lib/use-deferred-media";
+import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 
 /*
  * Scroll morph hero (21st.dev, «scroll-morph-hero»), адаптирован под проект:
@@ -223,7 +223,6 @@ interface FlipCardProps {
   labels: TourCardBackLabels;
   reducedMotion: boolean;
   /** Колода ниже первого экрана: её фото не качаем вместе с тем, что уже на экране */
-  showPhoto: boolean;
   active: boolean;
   onActivate: () => void;
   onRelease: () => void;
@@ -237,7 +236,6 @@ function FlipCard({
   inputs,
   labels,
   reducedMotion,
-  showPhoto,
   active,
   onActivate,
   onRelease,
@@ -340,7 +338,7 @@ function FlipCard({
   }
 
   return (
-    <motion.div
+    <m.div
       className="absolute left-1/2 top-1/2"
       style={{
         width: CARD_WIDTH,
@@ -378,7 +376,7 @@ function FlipCard({
           className="absolute -inset-[10px] cursor-pointer outline-offset-4"
         />
         {/* Сама открытка кликов не ловит: они достаются ссылке под ней */}
-        <motion.div
+        <m.div
           className="pointer-events-none relative h-full w-full [transform-style:preserve-3d]"
           animate={{ rotateY: active ? 180 : 0 }}
           transition={FLIP_TRANSITION}
@@ -393,11 +391,7 @@ function FlipCard({
               active && "motion-reduce:opacity-0",
             )}
           >
-            {showPhoto ? (
-              <Photo image={card.image} sizes="150px" className="h-full w-full" />
-            ) : (
-              <div className="photo-grade h-full w-full" />
-            )}
+            <Photo image={card.image} sizes={TOUR_CARD_PHOTO_SIZES} className="h-full w-full" />
             <span
               className={cn("absolute inset-0 bg-deep/10 transition-colors duration-300", active && "bg-transparent")}
             />
@@ -419,9 +413,9 @@ function FlipCard({
               )}
             />
           ) : null}
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -471,8 +465,8 @@ export function ScrollMorphHero({
   const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion() === true;
-  const showPhotos = useDeferredMedia();
+  const reducedMotion = useSafeReducedMotion();
+  const showCards = useDeferredMedia();
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
   const [placement, setPlacement] = useState<ActionsPlacement>("corner");
   const [introAway, setIntroAway] = useState(false);
@@ -644,9 +638,9 @@ export function ScrollMorphHero({
         */}
         <div className="absolute inset-0 -z-10">{backdrop}</div>
 
-        {/* Колода */}
+        {/* Колода. Карточки появляются после загрузки: 17 штук с пружинами были заметной частью запуска страницы на телефоне */}
         <div className="absolute inset-0">
-          {cards.map((card, index) => (
+          {(showCards ? cards : []).map((card, index) => (
             <FlipCard
               key={card.slug}
               card={card}
@@ -655,7 +649,6 @@ export function ScrollMorphHero({
               inputs={inputs}
               labels={cardLabels}
               reducedMotion={reducedMotion}
-              showPhoto={showPhotos}
               active={card.slug === activeCard}
               onActivate={() => activateCard(card.slug)}
               onRelease={releaseCard}
@@ -666,25 +659,25 @@ export function ScrollMorphHero({
 
         {/* Заголовок в центре круга: исчезает, когда круг превращается в дугу. Кегль и ширина следуют за радиусом */}
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-5 sm:px-8">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={introShown ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 20, filter: "blur(10px)" }}
             transition={{ duration: 1 }}
             className="max-w-[calc(2*(var(--ring)_-_3.5rem))] text-center text-[length:clamp(1.5rem,calc(var(--ring)*0.17),3.5rem)] leading-[1.1]"
           >
-            <motion.div style={{ opacity: introFade }} className="flex flex-col items-center">
+            <m.div style={{ opacity: introFade }} className="flex flex-col items-center">
               <div>{intro}</div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
 
         {/* Кнопки у круга: снаружи, чтобы не перекрывать карточки */}
         {primaryAction ? (
-          <motion.div
+          <m.div
             style={{ opacity: introFade }}
             className={cn("pointer-events-none absolute z-10", PLACEMENT_POSITION[placement])}
           >
-            <motion.div
+            <m.div
               ref={actionsRef}
               initial={{ opacity: 0 }}
               animate={{ opacity: introShown ? 1 : 0 }}
@@ -697,13 +690,13 @@ export function ScrollMorphHero({
               <p aria-hidden="true" className="kicker text-mist">
                 {scrollHint}
               </p>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         ) : null}
 
         {/* Текст над дугой: появляется, когда карточки собрались внизу */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center px-5 pt-24 sm:px-8 lg:pt-28">
-          <motion.div
+          <m.div
             style={{ opacity: contentOpacity, y: contentY }}
             className="flex max-w-[40rem] flex-col items-center text-center"
           >
@@ -717,7 +710,7 @@ export function ScrollMorphHero({
                 {secondaryAction ? <div className="flex">{secondaryAction}</div> : null}
               </div>
             ) : null}
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

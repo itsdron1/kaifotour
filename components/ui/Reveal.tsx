@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import { DURATION_REVEAL, EASE_REVEAL } from "@/lib/motion";
 import type { ReactNode } from "react";
 
@@ -17,7 +17,7 @@ interface RevealProps {
  */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   return (
-    <motion.div
+    <m.div
       className={className}
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -25,6 +25,6 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
       transition={{ duration: DURATION_REVEAL, delay, ease: EASE_REVEAL }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
