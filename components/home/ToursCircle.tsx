@@ -208,6 +208,7 @@ function CircleCard({
         {/* Ссылка на тур на всю карточку: содержимое открытки кликов не ловит */}
         <Link
           href={card.href}
+          prefetch={false}
           aria-label={`${card.title}, ${card.priceLabel}`}
           className="absolute inset-0 cursor-pointer outline-offset-4"
         />
@@ -299,8 +300,6 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
     const resize = new ResizeObserver(measure);
     resize.observe(stage);
 
-    // Запасной показ: в фоновой вкладке наблюдатель пересечений молчит, а секция не должна остаться пустой
-    const fallback = window.setTimeout(() => setRevealed(true), 1500);
     const appear = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
@@ -312,7 +311,6 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
     appear.observe(stage);
 
     return () => {
-      window.clearTimeout(fallback);
       resize.disconnect();
       appear.disconnect();
     };
@@ -453,6 +451,7 @@ export function ToursCircle({ cards, tabs, catalogHref, titleId, title, countLab
                     <li key={card.slug}>
                       <Link
                         href={card.href}
+                        prefetch={false}
                         onPointerEnter={(event) => {
                           if (event.pointerType === "mouse") activate(card.slug);
                         }}

@@ -14,6 +14,8 @@ interface StoryCardProps {
   labels: StoryCardLabels;
   /** Карточка наверху стопки и раскрыта: длинный текст показывается целиком */
   expanded: boolean;
+  /** false — карточка далеко в стопке: текст остаётся на странице, фото не грузится */
+  showPhoto: boolean;
 }
 
 /**
@@ -21,7 +23,7 @@ interface StoryCardProps {
  * Вид тот же, что был у одиночной карточки истории гостя; меняется только содержание подписи —
  * у истории гостя это его слова и подпись, у сцены с маршрута — тур, цена и ссылка.
  */
-export function StoryCard({ story, labels, expanded }: StoryCardProps) {
+export function StoryCard({ story, labels, expanded, showPhoto }: StoryCardProps) {
   const guest = story.kind === "guest";
   const text = cn("display mt-3 text-lg leading-snug text-ink", !expanded && "line-clamp-3");
 
@@ -32,7 +34,12 @@ export function StoryCard({ story, labels, expanded }: StoryCardProps) {
         expanded ? "h-auto min-h-full" : "h-full",
       )}
     >
-      <Photo image={story.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
+      {/* Фото дальних карточек не грузим: их не видно, а рамка держит высоту стопки */}
+      {showPhoto ? (
+        <Photo image={story.image} sizes="(min-width: 1024px) 28rem, 90vw" className="aspect-[4/5] w-full" />
+      ) : (
+        <div className="aspect-[4/5] w-full bg-deep" />
+      )}
 
       <figcaption className="flex flex-1 flex-col px-2 pt-5">
         <p className="kicker text-[0.75rem] text-ink/75">{guest ? labels.guestBadge : labels.momentBadge}</p>
@@ -53,6 +60,7 @@ export function StoryCard({ story, labels, expanded }: StoryCardProps) {
               {/* Растянутая ссылка: клик по всей открытке открывает тур */}
               <Link
                 href={story.tour.href}
+                prefetch={false}
                 className="kicker mt-3 inline-flex items-center gap-1.5 text-[0.75rem] text-secondary after:absolute after:inset-0 after:content-['']"
               >
                 <span className="link-underline">{labels.viewTour}</span>

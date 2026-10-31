@@ -174,6 +174,7 @@ export function ReviewPostcard({ review, labels, expanded }: ReviewPostcardProps
             /* Растянутая ссылка: клик по всей открытке открывает тур, о котором отзыв */
             <Link
               href={review.tour.href}
+              prefetch={false}
               className="kicker mt-3 inline-flex items-center gap-1.5 text-[0.75rem] text-secondary after:absolute after:inset-0 after:content-['']"
             >
               <span className="link-underline">{review.tour.title}</span>

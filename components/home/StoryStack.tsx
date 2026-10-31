@@ -16,7 +16,7 @@ export function StoryStack({ stories, labels }: { stories: StoryCardData[]; labe
       items={stories}
       labels={labels}
       className="mx-auto max-w-md lg:ml-auto lg:mr-0"
-      renderCard={(story, { expanded }) => <StoryCard story={story} labels={labels} expanded={expanded} />}
+      renderCard={(story, { expanded, near }) => <StoryCard story={story} labels={labels} expanded={expanded} showPhoto={near} />}
     />
   );
 }

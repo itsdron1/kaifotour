@@ -27,6 +27,7 @@ import { TourCardBack, type TourCardBackLabels } from "@/components/ui/TourCardB
 import { cn } from "@/lib/cn";
 import { DURATION_HOVER, EASE_SOFT } from "@/lib/motion";
 import type { TourCardData } from "@/lib/tour-view";
+import { useDeferredMedia } from "@/lib/use-deferred-media";
 
 /*
  * Scroll morph hero (21st.dev, «scroll-morph-hero»), адаптирован под проект:
@@ -221,6 +222,8 @@ interface FlipCardProps {
   inputs: MotionValue<number>[];
   labels: TourCardBackLabels;
   reducedMotion: boolean;
+  /** Колода ниже первого экрана: её фото не качаем вместе с тем, что уже на экране */
+  showPhoto: boolean;
   active: boolean;
   onActivate: () => void;
   onRelease: () => void;
@@ -234,6 +237,7 @@ function FlipCard({
   inputs,
   labels,
   reducedMotion,
+  showPhoto,
   active,
   onActivate,
   onRelease,
@@ -366,8 +370,10 @@ function FlipCard({
         className="h-full w-full [perspective:1200px]"
       >
         {/* Ссылка на тур перекрывает карточку с запасом: за этот же запас цепляется наведение */}
+        {/* Без предзагрузки: 17 карточек на экране — это 17 запросов страниц, которые почти никто не откроет */}
         <Link
           href={card.href}
+          prefetch={false}
           aria-label={`${card.title}, ${card.priceLabel}`}
           className="absolute -inset-[10px] cursor-pointer outline-offset-4"
         />
@@ -387,7 +393,11 @@ function FlipCard({
               active && "motion-reduce:opacity-0",
             )}
           >
-            <Photo image={card.image} sizes="150px" className="h-full w-full" />
+            {showPhoto ? (
+              <Photo image={card.image} sizes="150px" className="h-full w-full" />
+            ) : (
+              <div className="photo-grade h-full w-full" />
+            )}
             <span
               className={cn("absolute inset-0 bg-deep/10 transition-colors duration-300", active && "bg-transparent")}
             />
@@ -462,6 +472,7 @@ export function ScrollMorphHero({
   const stageRef = useRef<HTMLDivElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion() === true;
+  const showPhotos = useDeferredMedia();
   const [introPhase, setIntroPhase] = useState<AnimationPhase>("scatter");
   const [placement, setPlacement] = useState<ActionsPlacement>("corner");
   const [introAway, setIntroAway] = useState(false);
@@ -644,6 +655,7 @@ export function ScrollMorphHero({
               inputs={inputs}
               labels={cardLabels}
               reducedMotion={reducedMotion}
+              showPhoto={showPhotos}
               active={card.slug === activeCard}
               onActivate={() => activateCard(card.slug)}
               onRelease={releaseCard}

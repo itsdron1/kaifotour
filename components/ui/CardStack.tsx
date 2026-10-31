@@ -50,8 +50,11 @@ const Z_LAYERS = [30, 20, 10];
 
 interface CardStackProps<T extends { id: string }> {
   items: T[];
-  /** Вид карточки: expanded — карточка наверху стопки и раскрыта наведением или тапом */
-  renderCard: (item: T, state: { expanded: boolean }) => ReactNode;
+  /**
+   * Вид карточки: expanded — карточка наверху стопки и раскрыта наведением или тапом;
+   * near — карточка видна или вот-вот появится, только таким нужно грузить фото
+   */
+  renderCard: (item: T, state: { expanded: boolean; near: boolean }) => ReactNode;
   labels: CardStackLabels;
   /** Подпись над стопкой: рядом с собственным заголовком раздела она лишняя */
   showTitle?: boolean;
@@ -61,8 +64,8 @@ interface CardStackProps<T extends { id: string }> {
 /**
  * Стопка открыток с автоматическим перекладыванием раз в 3 секунды.
  * Верхняя карточка уходит вправо, ныряет под низ стопки, остальные сдвигаются на позицию вперёд.
- * Наведение, фокус, тап и скрытая вкладка ставят отсчёт на паузу; при prefers-reduced-motion
- * автосмены нет вовсе, карточки листаются кнопками и меняются кроссфейдом.
+ * Наведение, фокус, тап, скрытая вкладка и уход стопки с экрана ставят отсчёт на паузу: за кадром она не должна
+ * нагружать страницу. При prefers-reduced-motion автосмены нет вовсе, карточки листаются кнопками и меняются кроссфейдом.
  */
 export function CardStack<T extends { id: string }>({
   items,
@@ -77,6 +80,8 @@ export function CardStack<T extends { id: string }>({
   const [focused, setFocused] = useState(false);
   const [held, setHeld] = useState(false);
   const [manualPause, setManualPause] = useState(false);
+  const [inView, setInView] = useState(false);
+  const stackRef = useRef<HTMLDivElement>(null);
   const [leaving, setLeaving] = useState<{ id: string; behind: boolean } | null>(null);
   const [announcement, setAnnouncement] = useState("");
   const previousIndex = useRef(0);
@@ -84,7 +89,7 @@ export function CardStack<T extends { id: string }>({
   const suppressClick = useRef(false);
 
   const total = items.length;
-  const paused = hovered || focused || held || manualPause;
+  const paused = hovered || focused || held || manualPause || !inView;
   const { index, cycle, running, go } = useAutoCycle(total, DELAY_MS, { enabled: !reducedMotion, paused });
   const lifted = hovered || held;
 
@@ -95,6 +100,14 @@ export function CardStack<T extends { id: string }>({
     sync();
     query.addEventListener("change", sync);
     return () => query.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const stack = stackRef.current;
+    if (!stack) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    observer.observe(stack);
+    return () => observer.disconnect();
   }, []);
 
   // Карточка, которая уходит под низ стопки: на середине пути она опускается ниже остальных
@@ -201,6 +214,7 @@ export function CardStack<T extends { id: string }>({
       </div>
 
       <div
+        ref={stackRef}
         data-card-stack="true"
         role="group"
         aria-label={labels.title}
@@ -275,7 +289,7 @@ export function CardStack<T extends { id: string }>({
             >
               {/* Раскрытая карточка выходит из потока и растёт поверх, высота стопки не меняется */}
               <div className={expanded && total > 1 ? "absolute inset-x-0 top-0" : "h-full"}>
-                {renderCard(item, { expanded })}
+                {renderCard(item, { expanded, near: position <= VISIBLE || position === total - 1 })}
               </div>
 
               {/* Индикатор: латунная линия заполняется за 3 секунды и замирает на паузе */}

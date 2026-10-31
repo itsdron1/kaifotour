@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
 import { Photo, type PhotoSource } from "@/components/ui/Photo";
+import { useDeferredMedia } from "@/lib/use-deferred-media";
 
 /**
  * Фон сцены с колодой: сцена прилипает к экрану, поэтому фото лишь слегка смещается (сдвиг меньше запаса масштаба,
@@ -13,6 +14,7 @@ import { Photo, type PhotoSource } from "@/components/ui/Photo";
  */
 export function HeroBackdrop({ image }: { image: PhotoSource }) {
   const ref = useRef<HTMLDivElement>(null);
+  const showPhoto = useDeferredMedia();
   const start = useMotionValue(0);
   const { scrollY } = useScroll();
   const local = useTransform<number, number>([scrollY, start], ([y, top]) => Math.max(y - top, 0));
@@ -33,7 +35,7 @@ export function HeroBackdrop({ image }: { image: PhotoSource }) {
   return (
     <div ref={ref} className="absolute inset-0 -z-10">
       <motion.div className="absolute inset-0 motion-reduce:!transform-none" style={{ y, scale }}>
-        <Photo image={image} sizes="100vw" className="absolute inset-0" />
+        {showPhoto ? <Photo image={image} sizes="100vw" className="absolute inset-0" /> : null}
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-r from-deep/85 via-deep/40 to-deep/5" />
       <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-deep/90 via-deep/35 to-transparent" />

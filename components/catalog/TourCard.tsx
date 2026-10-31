@@ -23,7 +23,7 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
 
   return (
     <article data-placement="tour_card" data-tour-slug={card.slug} className="group relative flex h-full flex-col">
-      <Link href={card.href} tabIndex={-1} aria-hidden="true" className="block overflow-hidden">
+      <Link href={card.href} prefetch={false} tabIndex={-1} aria-hidden="true" className="block overflow-hidden">
         <Photo
           image={card.image}
           sizes="(min-width: 1280px) 30vw, (min-width: 640px) 45vw, 100vw"
@@ -44,6 +44,7 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
           {/* Растянутая ссылка: её ::after накрывает карточку целиком */}
           <Link
             href={card.href}
+            prefetch={false}
             className="transition-colors duration-300 after:absolute after:inset-0 after:content-[''] hover:text-secondary"
           >
             {card.title}
@@ -78,7 +79,7 @@ export function TourCard({ card, labels, headingLevel = "h3" }: TourCardProps) {
             >
               {labels.book}
             </ButtonLink>
-            <Link href={card.href} className="kicker relative z-10 inline-flex items-center gap-2 py-3 text-ink">
+            <Link href={card.href} prefetch={false} className="kicker relative z-10 inline-flex items-center gap-2 py-3 text-ink">
               <span className="link-underline">{labels.details}</span>
               <ArrowRight size={14} aria-hidden="true" />
             </Link>
